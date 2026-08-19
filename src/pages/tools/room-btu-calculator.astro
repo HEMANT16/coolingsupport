@@ -199,20 +199,40 @@ import AuthorBadge from '../../components/AuthorBadge.astro';
       
       <!-- Section 1: The Portable AC Scam -->
       <div>
-        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4 flex items-center gap-3">
           The Portable AC "Vacuum Effect" Warning
         </h2>
+        
+        <!-- AIO / Direct Answer Block -->
+        <div class="bg-slate-900 text-white p-5 rounded-xl border-l-4 border-cyan-400 mb-6 shadow-sm">
+          <p class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-1">Direct Engineering Answer</p>
+          <p class="text-sm text-slate-200 leading-relaxed">
+            Standard room BTU math applies directly to window units and mini-splits (approx. 20–25 BTU per sq. ft.). However, single-hose portable ACs lose 30%–40% efficiency to negative-pressure air infiltration. For portable ACs, always size using <strong>DOE SACC ratings</strong> rather than traditional ASHRAE ratings.
+          </p>
+        </div>
+
         <p class="text-lg text-gray-700 leading-relaxed mb-6">
-          If you are using the calculator above to buy a Window AC or a Mini-Split, the math is perfectly accurate. However, if you are buying a <strong>Portable AC (the floor units with a plastic hose)</strong>, you are being scammed by the box's BTU rating.
+          If you are using the calculator above to buy a Window AC or a Mini-Split, the math is perfectly accurate. However, if you are buying a <strong>Portable AC (the floor units with a plastic hose)</strong>, you need to account for the box's adjusted BTU rating.
         </p>
         <p class="text-lg text-gray-700 leading-relaxed mb-6">
-          A single-hose portable AC uses the cold air inside your room to cool down its internal compressor, and then blows that exhaust heat out the window. This creates a massive <strong>Negative Pressure Vacuum</strong> in your bedroom. Because it is blowing air out, the laws of physics dictate that air must be sucked back in. It literally sucks 90-degree hot air from outside underneath your bedroom door and through your window cracks to replace the air it just exhausted.
+          A single-hose portable AC uses the cold air inside your room to cool down its internal compressor, and then blows that exhaust heat out the window. This creates a massive <strong>Negative Pressure Vacuum</strong> in your bedroom. Because it is blowing air out, the laws of physics dictate that air must be sucked back in through window cracks and door gaps.
         </p>
         <div class="bg-gray-900 text-white p-6 rounded-sm border-l-4 border-red-500 shadow-md">
           <p class="font-bold text-red-400 mb-2 uppercase tracking-wider text-sm">The 10-Year Veteran Rule:</p>
-          <p class="text-gray-300 leading-relaxed">
+          <p class="text-gray-300 leading-relaxed mb-4">
             A "10,000 BTU" Portable AC will only give you about 6,500 BTUs of actual cooling power. If our calculator tells you that your room requires 8,000 BTUs, you must buy a <strong>12,000 BTU</strong> single-hose Portable AC to compensate for the vacuum effect. Or, better yet, buy a Dual-Hose unit.
           </p>
+          <div class="pt-4 border-t border-gray-800 flex flex-wrap gap-4 text-xs font-semibold">
+            <a href="/portable-ac/sacc-sizing/" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1">
+              📊 Use DOE SACC Portable AC Sizer &rarr;
+            </a>
+            <a href="/tools/window-venting-builder/" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1">
+              🪟 Custom Window Venting Builder &rarr;
+            </a>
+            <a href="/portable-ac/breaker-check/" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1">
+              ⚡ Electrical Breaker Capacity Checker &rarr;
+            </a>
+          </div>
         </div>
       </div>
 

@@ -6,6 +6,60 @@ export interface Props {
 }
 
 const { title } = Astro.props;
+const siteUrl = "https://coolingsupport.com";
+let canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+if (!canonicalUrl.endsWith('/')) {
+  canonicalUrl += '/';
+}
+
+// Generate BreadcrumbList Schema dynamically for all sub-pages
+const segments = Astro.url.pathname.split('/').filter(Boolean);
+let breadcrumbSchema = null;
+
+if (segments.length > 0) {
+  const formatName = (slug: string) => {
+    const customMap: Record<string, string> = {
+      'portable-ac': 'Portable AC',
+      'ac-error-codes': 'AC Error Codes',
+      'tools': 'Tools',
+      'guides': 'Guides',
+      'about-us': 'About Us',
+      'privacy': 'Privacy Policy',
+      'contact': 'Contact'
+    };
+    if (customMap[slug]) return customMap[slug];
+    return slug
+      .split('-')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+  };
+
+  const items = [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://coolingsupport.com/"
+    }
+  ];
+
+  let currentPath = "https://coolingsupport.com";
+  segments.forEach((seg, idx) => {
+    currentPath += `/${seg}`;
+    items.push({
+      "@type": "ListItem",
+      "position": idx + 2,
+      "name": idx === segments.length - 1 ? title.split('|')[0].trim() : formatName(seg),
+      "item": `${currentPath}/`
+    });
+  });
+
+  breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": items
+  };
+}
 ---
 
 <!DOCTYPE html>
@@ -16,6 +70,10 @@ const { title } = Astro.props;
     <title>{title} | Cooling Support</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <slot name="head" />
+
+    {breadcrumbSchema && (
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    )}
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4764QH1WJ5"></script>

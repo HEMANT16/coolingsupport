@@ -227,9 +227,18 @@ import AuthorBadge from '../../components/AuthorBadge.astro';
       
       <!-- Section 1: Inverter ACs -->
       <div>
-        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4 flex items-center gap-3">
           The Inverter Secret (Saving 40% on Bills)
         </h2>
+
+        <!-- AIO / Direct Answer Block -->
+        <div class="bg-slate-900 text-white p-5 rounded-xl border-l-4 border-cyan-400 mb-6 shadow-sm">
+          <p class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-1">Direct Cost Calculation Formula</p>
+          <p class="text-sm text-slate-200 leading-relaxed">
+            To calculate your AC running cost: <code>Cost = (BTU ÷ SEER2 ÷ 1,000) × Hours/Day × Electricity Rate ($/kWh)</code>. For example, a 3-ton (36,000 BTU) 14-SEER2 system drawing 2.57 kW at $0.16/kWh costs approximately <strong>$0.41 per hour</strong> or <strong>$98.40 per month</strong> (at 8 hours/day).
+          </p>
+        </div>
+
         <p class="text-lg text-gray-700 leading-relaxed mb-6">
           If you run the calculator above and your jaw drops at how much your 10-SEER unit is costing you, you might be wondering how people in Florida survive the summer. The secret is <strong>Inverter Technology.</strong>
         </p>
@@ -250,9 +259,20 @@ import AuthorBadge from '../../components/AuthorBadge.astro';
           <p class="text-blue-800 mb-4 leading-relaxed">
             An Inverter AC (which typically starts at 18-SEER) acts like a dimmer switch. It completely eliminates the start-up spike.
           </p>
-          <p class="text-blue-800 leading-relaxed">
+          <p class="text-blue-800 leading-relaxed mb-4">
             Instead of violently kicking on and off, the compressor smoothly ramps up to cool the house. Once it hits 74°F, it doesn't shut off. It slows down to a crawl—drawing just a tiny trickle of electricity—to perfectly maintain the temperature. Because it never shuts off, it never has to pay the start-up penalty again. This variable-speed operation is how modern units cut electricity bills by up to 40% compared to a standard 14-SEER unit.
           </p>
+          <div class="pt-4 border-t border-blue-200 flex flex-wrap gap-4 text-xs font-bold text-blue-900">
+            <a href="/tools/inverter-roi-simulator/" class="hover:text-blue-600 underline underline-offset-4 flex items-center gap-1">
+              📈 Calculate Inverter Payback Period (ROI) &rarr;
+            </a>
+            <a href="/tools/seer2-savings-calculator/" class="hover:text-blue-600 underline underline-offset-4 flex items-center gap-1">
+              💰 SEER2 Energy Savings Calculator &rarr;
+            </a>
+            <a href="/guides/data/state-electricity-rates/" class="hover:text-blue-600 underline underline-offset-4 flex items-center gap-1">
+              🗺️ 50-State Electricity Rates Database &rarr;
+            </a>
+          </div>
         </div>
       </div>
 

@@ -4,15 +4,68 @@ export interface Props {
   description: string;
   canonical?: string;
   type?: "website" | "article" | "WebApplication";
-  schema?: any[];
+  schema?: any[] | Record<string, any>;
 }
 
-const { title, description, canonical, type = "website", schema = [] } = Astro.props;
+const { title, description, canonical, type = "website", schema } = Astro.props;
 const siteUrl = "https://coolingsupport.com";
 let canonicalUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
 if (!canonicalUrl.endsWith('/')) {
   canonicalUrl += '/';
 }
+
+// Generate BreadcrumbList Schema dynamically for sub-pages
+const segments = Astro.url.pathname.split('/').filter(Boolean);
+let breadcrumbSchema = null;
+
+if (segments.length > 0) {
+  const formatName = (slug: string) => {
+    const customMap: Record<string, string> = {
+      'portable-ac': 'Portable AC',
+      'ac-error-codes': 'AC Error Codes',
+      'tools': 'Tools',
+      'guides': 'Guides',
+      'about-us': 'About Us',
+      'privacy': 'Privacy Policy',
+      'contact': 'Contact'
+    };
+    if (customMap[slug]) return customMap[slug];
+    return slug
+      .split('-')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+  };
+
+  const items = [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://coolingsupport.com/"
+    }
+  ];
+
+  let currentPath = "https://coolingsupport.com";
+  segments.forEach((seg, idx) => {
+    currentPath += `/${seg}`;
+    items.push({
+      "@type": "ListItem",
+      "position": idx + 2,
+      "name": idx === segments.length - 1 ? title.split('|')[0].trim() : formatName(seg),
+      "item": `${currentPath}/`
+    });
+  });
+
+  breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": items
+  };
+}
+
+// Normalize schema prop
+const userSchemas = Array.isArray(schema) ? schema : (schema ? [schema] : []);
+const combinedSchemas = breadcrumbSchema ? [...userSchemas, breadcrumbSchema] : userSchemas;
 ---
 
 <!-- SEO Meta Tags -->
@@ -27,6 +80,6 @@ if (!canonicalUrl.endsWith('/')) {
 <meta property="og:site_name" content="Cooling Support" />
 
 <!-- JSON-LD Schema -->
-{schema.length > 0 && (
-  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+{combinedSchemas.length > 0 && (
+  <script type="application/ld+json" set:html={JSON.stringify(combinedSchemas.length === 1 ? combinedSchemas[0] : combinedSchemas)} />
 )}

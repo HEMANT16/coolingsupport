@@ -198,15 +198,43 @@ import AuthorBadge from '../../components/AuthorBadge.astro';
       
       <!-- Section 1: What is an HVAC Load Calculation? -->
       <div>
-        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4 flex items-center gap-3">
           What is an HVAC Load Calculation?
         </h2>
+
+        <!-- AIO / Direct Answer Block -->
+        <div class="bg-slate-900 text-white p-5 rounded-xl border-l-4 border-cyan-400 mb-6 shadow-sm">
+          <p class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-1">Direct Engineering Definition</p>
+          <p class="text-sm text-slate-200 leading-relaxed">
+            An <strong>HVAC Load Calculation</strong> determines the exact heat gain (summer cooling) and heat loss (winter heating) of a structure in BTUs/hr or Tons (1 Ton = 12,000 BTU/hr). Standard Manual J calculations evaluate building envelope square footage, regional outdoor design temperatures, window solar heat gain coefficients (SHGC), and air infiltration rates.
+          </p>
+        </div>
+
         <p class="text-lg text-gray-700 leading-relaxed mb-6">
           An <strong>HVAC Load Calculation</strong> is a mathematical process used to determine the exact heating and cooling capacity (measured in BTUs or Tonnage) required to maintain a comfortable temperature in a building. If you want to know exactly how big your AC needs to be, a formal calculation—often referred to in the industry as a "Manual J"—is the only proven way to find out.
         </p>
-        <p class="text-lg text-gray-700 leading-relaxed">
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
           While professional software requires hundreds of data points (exact wall R-values, duct leakage CFM, etc.), our free HVAC load calculator uses standard industry base multipliers combined with modifiers for insulation, solar load, and ceiling height to give you a highly accurate estimate in seconds.
         </p>
+
+        <!-- Contextual Linking Hub -->
+        <div class="bg-cyan-50 border border-cyan-200 p-6 rounded-xl my-6">
+          <p class="text-sm font-bold text-cyan-900 uppercase tracking-wider mb-3">Explore Related HVAC Sizing & Efficiency Engines:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <a href="/tools/central-ac-tonnage-calculator/" class="text-cyan-800 hover:text-cyan-600 font-semibold flex items-center gap-2">
+              <span>🏠</span> Central AC Tonnage Sizer &rarr;
+            </a>
+            <a href="/tools/mini-split-cost-estimator/" class="text-cyan-800 hover:text-cyan-600 font-semibold flex items-center gap-2">
+              <span>❄️</span> Ductless Mini-Split Cost Estimator &rarr;
+            </a>
+            <a href="/tools/manual-j-worksheet/" class="text-cyan-800 hover:text-cyan-600 font-semibold flex items-center gap-2">
+              <span>📋</span> ACCA Manual J Worksheet Guide &rarr;
+            </a>
+            <a href="/tools/seer2-savings-calculator/" class="text-cyan-800 hover:text-cyan-600 font-semibold flex items-center gap-2">
+              <span>⚡</span> SEER2 Electricity Savings Simulator &rarr;
+            </a>
+          </div>
+        </div>
       </div>
 
       <!-- Section 2: Rule of Thumb vs Manual J -->

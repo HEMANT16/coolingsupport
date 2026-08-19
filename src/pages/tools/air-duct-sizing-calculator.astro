@@ -293,9 +293,18 @@ import AuthorBadge from '../../components/AuthorBadge.astro';
       
       <!-- Section 1: The Flex Duct Chokehold -->
       <div>
-        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4 flex items-center gap-3">
           The Flex Duct Chokehold
         </h2>
+
+        <!-- AIO / Direct Answer Block -->
+        <div class="bg-slate-900 text-white p-5 rounded-xl border-l-4 border-cyan-400 mb-6 shadow-sm">
+          <p class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-1">Direct Duct Sizing Formula</p>
+          <p class="text-sm text-slate-200 leading-relaxed">
+            Duct sizing is calculated from required airflow (CFM) at an industry standard friction rate of <strong>0.1 inches water column (w.c.) per 100 ft</strong>. A 1-ton system requires 400 CFM. At 0.1 friction, 400 CFM requires a <strong>10-inch round sheet metal duct</strong> or a <strong>12-inch flexible duct</strong> to prevent high air velocity noise.
+          </p>
+        </div>
+
         <p class="text-lg text-gray-700 leading-relaxed mb-6">
           Contractors love flexible ductwork because it is cheap and extremely fast to install. Homeowners hate it because it often ruins their airflow.
         </p>
@@ -304,9 +313,20 @@ import AuthorBadge from '../../components/AuthorBadge.astro';
         </p>
         <div class="bg-gray-900 text-white p-6 rounded-sm shadow-md mb-6">
           <p class="font-bold text-cyan-400 mb-2 uppercase tracking-wider text-sm">The 10-Year Veteran Reality:</p>
-          <p class="text-gray-300 leading-relaxed">
+          <p class="text-gray-300 leading-relaxed mb-4">
             If you are using flex duct, you must "upsize" to overcome the friction. A good rule of thumb is that to match the airflow of a 6-inch metal pipe, you need an 8-inch flex duct pulled completely taut. If the flex is sagging, pinched, or coiled up like a snake in the attic, the airflow dies completely.
           </p>
+          <div class="pt-4 border-t border-gray-800 flex flex-wrap gap-4 text-xs font-semibold">
+            <a href="/tools/central-ac-tonnage-calculator/" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1">
+              🏠 Calculate System Tonnage & CFM &rarr;
+            </a>
+            <a href="/tools/merv-filter-selector/" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1">
+              🌬️ MERV Filter Static Pressure Selector &rarr;
+            </a>
+            <a href="/tools/manual-j-worksheet/" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1">
+              📋 Manual D & J Engineering Worksheets &rarr;
+            </a>
+          </div>
         </div>
       </div>
 

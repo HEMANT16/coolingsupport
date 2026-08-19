@@ -190,9 +190,18 @@ import AuthorBadge from '../../components/AuthorBadge.astro';
       
       <!-- Section 1: The Physics -->
       <div>
-        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4 flex items-center gap-3">
           <span class="text-blue-500">️</span> How Central AC Tonnage Math Actually Works
         </h2>
+
+        <!-- AIO / Direct Answer Block -->
+        <div class="bg-slate-900 text-white p-5 rounded-xl border-l-4 border-cyan-400 mb-6 shadow-sm">
+          <p class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-1">Direct Engineering Definition</p>
+          <p class="text-sm text-slate-200 leading-relaxed">
+            In residential HVAC, <strong>1 Ton of AC capacity equals 12,000 BTU/hour</strong> of heat removal. On average, residential systems require 1 Ton per 500–700 sq. ft. depending on regional climate zone, building airtightness, and duct design. A 2,000 sq. ft. home typically requires a <strong>3.0 to 3.5 Ton</strong> central split system.
+          </p>
+        </div>
+
         <p class="text-lg text-gray-700 leading-relaxed mb-6">
           "Tonnage" has absolutely nothing to do with how much the metal box outside weighs. It is a measurement of thermal heat extraction. 
         </p>
@@ -216,9 +225,28 @@ Step 2: Base BTUs × Insulation Factor = Required BTUs
 Step 3: Required BTUs ÷ 12,000 = Recommended Tonnage</code></pre>
         </div>
         
-        <p class="text-md text-gray-700 leading-relaxed bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl">
+        <p class="text-md text-gray-700 leading-relaxed bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl mb-6">
           <strong>The Insulation Factor:</strong> If you live in an old, drafty house built before 1980 with poor insulation, we multiply the base BTUs by <strong>1.15</strong> (adding 15% more capacity to handle the heat leaking in). If you live in a brand new, spray-foam insulated home, we multiply by <strong>0.85</strong> (reducing the required capacity by 15% because the house holds its cold air perfectly).
         </p>
+
+        <!-- Contextual Cross-Links -->
+        <div class="bg-slate-900 text-white p-5 rounded-xl border border-slate-800">
+          <p class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-3">Next Steps for System Design:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-semibold">
+            <a href="/tools/air-duct-sizing-calculator/" class="text-cyan-300 hover:text-white underline underline-offset-4 flex items-center gap-1">
+              💨 Size Ductwork for Tonnage CFM &rarr;
+            </a>
+            <a href="/tools/hvac-load-calculator/" class="text-cyan-300 hover:text-white underline underline-offset-4 flex items-center gap-1">
+              📐 Full Manual J Whole-House Load &rarr;
+            </a>
+            <a href="/tools/seer2-savings-calculator/" class="text-cyan-300 hover:text-white underline underline-offset-4 flex items-center gap-1">
+              ⚡ Compare SEER2 Efficiency & Savings &rarr;
+            </a>
+            <a href="/tools/ac-noise-analyzer/" class="text-cyan-300 hover:text-white underline underline-offset-4 flex items-center gap-1">
+              🔊 Outdoor Condenser Noise Analyzer &rarr;
+            </a>
+          </div>
+        </div>
       </div>
 
       <!-- Section 2: The Bigger is Better Lie -->
