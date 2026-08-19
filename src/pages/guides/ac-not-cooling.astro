@@ -1,0 +1,268 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const frontmatter = {
+  title: "AC Running But Not Cooling? 5 Common Causes & Diagnostic Guide",
+  description: "Is your central air conditioner running but blowing warm air? Learn the top 5 reasons why your AC is not cooling, read our diagnostic metrics, and compare repair costs.",
+  keywords: "ac not cooling, air conditioner blowing warm air, ac diagnostic chart, temperature split delta t, ac repair costs, clean condenser coils, frozen evaporator coil",
+  schema: "TechArticle",
+  author: "Mike Reynolds",
+  credentials: "Master HVAC Technician",
+  date: "2026-06-15T00:00:00Z",
+  categoryName: "Repair Guides",
+  categoryUrl: "/guides/how-to",
+  image: "/images/repair_cost_comparison.png"
+};
+---
+
+<GuideLayout frontmatter={frontmatter}>
+  <p class="lead">
+    There is nothing more frustrating than hearing your central air conditioner running on a scorching 95-degree day, only to realize the air blowing out of your vents is lukewarm. Before you panic and call a contractor for an expensive emergency service visit, check these five common culprits. 
+  </p>
+
+  <p>
+    This guide breaks down the diagnostic metrics (like Delta-T temperature splits), estimated repair costs, and step-by-step instructions to troubleshoot a system that is running but not cooling.
+  </p>
+
+  <!-- Key Metrics Summary Table -->
+  <div class="my-8 overflow-x-auto not-prose">
+    <table class="w-full text-sm text-left text-slate-700 border border-slate-200">
+      <thead class="text-xs uppercase bg-slate-100 text-slate-800 border-b border-slate-200">
+        <tr>
+          <th scope="col" class="px-6 py-3.5 font-bold">AC Issue</th>
+          <th scope="col" class="px-6 py-3.5 font-bold">Primary Indicator</th>
+          <th scope="col" class="px-6 py-3.5 font-bold">DIY vs Pro</th>
+          <th scope="col" class="px-6 py-3.5 font-bold">Est. Repair Cost</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100 bg-white">
+        <tr>
+          <td class="px-6 py-4 font-bold text-slate-900">Thermostat Fan "ON"</td>
+          <td class="px-6 py-4">Warm air blows when compressor cycles off</td>
+          <td class="px-6 py-4 text-emerald-600 font-semibold">100% DIY Safe</td>
+          <td class="px-6 py-4 font-mono">$0</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 font-bold text-slate-900">Clogged Air Filter</td>
+          <td class="px-6 py-4">Weak airflow, iced-over suction line</td>
+          <td class="px-6 py-4 text-emerald-600 font-semibold">100% DIY Safe</td>
+          <td class="px-6 py-4 font-mono">$15 – $40</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 font-bold text-slate-900">Dirty Condenser fins</td>
+          <td class="px-6 py-4">Outdoor fan runs, compressor cuts out</td>
+          <td class="px-6 py-4 text-emerald-600 font-semibold">100% DIY Safe</td>
+          <td class="px-6 py-4 font-mono">$0 (Garden Hose)</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 font-bold text-slate-900">Dead Run Capacitor</td>
+          <td class="px-6 py-4">Loud hum from condenser, fan blades idle</td>
+          <td class="px-6 py-4 text-amber-600 font-semibold">Moderate DIY / Pro</td>
+          <td class="px-6 py-4 font-mono">$150 – $300 (Pro)</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 font-bold text-slate-900">Refrigerant Leak</td>
+          <td class="px-6 py-4">Lukewarm vents, frozen indoor coil, hissing</td>
+          <td class="px-6 py-4 text-rose-600 font-semibold">Professional Only</td>
+          <td class="px-6 py-4 font-mono">$300 – $1,500+</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="my-8" />
+
+  <h2>Diagnostic Metric: Testing Your System's "Delta-T"</h2>
+  <p>
+    Before diving into individual causes, you can diagnose the cooling performance of your system using the <strong>Delta-T (Temperature Split)</strong> metric. This is the temperature difference between the warm air entering your system (Return) and the cooled air coming out (Supply).
+  </p>
+  
+  <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-8 not-prose">
+    <h3 class="text-base font-bold text-slate-900 mb-3">How to Measure Temperature Split:</h3>
+    <ol class="list-decimal pl-5 space-y-2 text-sm text-slate-700">
+      <li>Ensure the AC has been running continuously for at least 15–20 minutes.</li>
+      <li>Use a digital thermometer to measure the temperature at your main return air grill.</li>
+      <li>Measure the temperature inside the supply register closest to the indoor blower fan.</li>
+      <li>Subtract the supply temperature from the return temperature.</li>
+    </ol>
+  </div>
+
+  <p>
+    <strong>Analyzing the Split:</strong>
+  </p>
+  <ul>
+    <li><strong>Normal Split (16°F to 20°F / 9°C to 11°C)</strong>: Your system is cooling correctly. If your house feels warm, it is likely due to extreme outdoor heat, poor attic insulation, or duct leaks.</li>
+    <li><strong>Low Split (Under 15°F / 8°C)</strong>: The system is not extracting enough heat. This indicates low refrigerant charge, dirty outdoor condenser fins, or a failing compressor valve.</li>
+    <li><strong>High Split (Over 22°F / 12°C)</strong>: This points to restricted airflow. The air is staying in contact with the freezing evaporator coil for too long. Inspect your air filter immediately.</li>
+  </ul>
+
+  <!-- Embed Cost Graph -->
+  <div class="my-8 text-center bg-slate-50 border border-slate-200 p-4 rounded-xl not-prose">
+    <img src="/images/repair_cost_comparison.png" alt="HVAC Repair Cost Comparison Graph" class="mx-auto rounded-lg shadow-sm border max-w-full h-auto" />
+    <p class="text-xs text-slate-500 mt-3 italic">Figure 1: Average cost ranges for typical AC repair services (includes standard parts and technician labor rates).</p>
+  </div>
+
+  <hr class="my-8" />
+
+  <h2>1. The Thermostat is Set to "ON" instead of "AUTO"</h2>
+  <p>
+    If your thermostat's fan setting is set to <strong>ON</strong>, the indoor blower fan runs continuously, even when the outdoor condenser shuts off. When the outdoor unit cycles off, the indoor blower keeps blowing uncooled room air, resulting in warm air blowing from your vents.
+  </p>
+  <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 not-prose mb-8">
+    <h3 class="text-lg font-bold text-blue-900 mb-2">✅ The Fix</h3>
+    <p class="text-blue-800">Switch your thermostat's Fan setting back to <strong>AUTO</strong>. The fan will now only run when the system is actively cooling.</p>
+  </div>
+
+  <h2>2. A Clogged Air Filter</h2>
+  <p>
+    When your return filter gathers dirt and dander, it restricts airflow. Without sufficient warm air flowing over the indoor evaporator coil, the liquid refrigerant inside the coil cannot boil off correctly. The coil temperature quickly plunges below 32°F, freezing the condensation on the coil into solid ice. Once frozen, the ice acts as an insulator, blocking all air circulation.
+  </p>
+  
+  <div class="my-8 text-center bg-slate-50 border border-slate-200 p-4 rounded-xl not-prose">
+    <img src="/images/coil_soiling_chart.png" alt="AC Airflow Capacity vs Dust buildup" class="mx-auto rounded-lg shadow-sm border max-w-full h-auto" />
+    <p class="text-xs text-slate-500 mt-3 italic">Figure 2: Impact of coil dust accumulation and dirty filters on air handler capacity.</p>
+  </div>
+
+  <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 not-prose mb-8">
+    <h3 class="text-lg font-bold text-blue-900 mb-2">✅ The Fix</h3>
+    <p class="text-blue-800">
+      Turn off the system immediately to prevent compressor lock (slugging). Change the clogged filter. Turn your thermostat to <strong>OFF</strong> and set the fan to <strong>ON</strong> for 3–4 hours to completely melt the ice block before restarting the AC.
+    </p>
+  </div>
+
+  <h2>3. Dirty Outdoor Condenser Coils</h2>
+  <p>
+    The outdoor condenser unit extracts heat from your indoor air and releases it outside. If the condenser's aluminum fins are covered in grass clippings, mud, or leaves, the heat gets trapped. This spikes the pressure inside the compressor, triggering the internal overload switch to shut down the compressor while the indoor fan keeps running.
+  </p>
+  
+  <!-- Embed Failure Graph -->
+  <div class="my-8 text-center bg-slate-50 border border-slate-200 p-4 rounded-xl not-prose">
+    <img src="/images/compressor_failure_chart.png" alt="Deferred maintenance vs compressor failure rate" class="mx-auto rounded-lg shadow-sm border max-w-full h-auto" />
+    <p class="text-xs text-slate-500 mt-3 italic">Figure 3: Correlation between dirty coils/deferred maintenance and premature compressor failure.</p>
+  </div>
+
+  <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 not-prose mb-8">
+    <h3 class="text-lg font-bold text-blue-900 mb-2">✅ The Fix</h3>
+    <p class="text-blue-800">
+      Shut off the electrical disconnect switch at the outdoor unit. Take a garden hose (on a gentle spray setting to avoid bending the aluminum fins) and wash down the coil from top to bottom to clean out dirt.
+    </p>
+  </div>
+
+  <h2>4. Blown Run Capacitor</h2>
+  <p>
+    The dual-run capacitor supplies the necessary starting torque and running electrical current to both the compressor and the outdoor fan motor. Over time, heat and power surges cause capacitors to fail and swell. If your outdoor unit is buzzing loudly but the fan blades are stationary, the capacitor is likely dead.
+  </p>
+  <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200 not-prose mb-8">
+    <h3 class="text-lg font-bold text-yellow-900 mb-2">⚠️ The Fix (Requires Electrical Safety)</h3>
+    <p class="text-yellow-800">
+      Capacitors store high voltage and can shock you even when power is off. If you are comfortable using a multimeter and discharging voltage, you can swap it DIY. Otherwise, a technician can replace it in 15 minutes. Use our <a href="/tools/capacitor-matcher" class="underline font-bold text-yellow-900 hover:text-yellow-950">Capacitor Matcher Tool</a> to verify specifications.
+    </p>
+  </div>
+
+  <h2>5. Refrigerant Leak (Low Freon)</h2>
+  <p>
+    Refrigerant moves in a closed loop. If your system is low on Freon (R-22, R-410A, or R-454B), there is a physical leak in the copper joints or coils. Low refrigerant lowers the operating pressure of the evaporator coil, dropping its temperature below 32°F and causing it to freeze. 
+  </p>
+  <div class="bg-red-50 p-6 rounded-xl border border-red-200 not-prose mb-8">
+    <h3 class="text-lg font-bold text-red-900 mb-2">🛑 The Fix (EPA Section 608 Certified Tech Required)</h3>
+    <p class="text-red-800">
+      Handling refrigerants is restricted by law to certified professionals. A technician must perform a nitrogen leak search, braze the leak site, pull a vacuum to extract moisture, and recharge the system with the exact weight specified on the nameplate.
+    </p>
+  </div>
+
+  <hr class="my-8" />
+
+  <h2>Homeowner Diagnostic Checklist</h2>
+  <p>
+    Before paying for a diagnostic service call, verify these items to ensure you aren't paying a service fee for a simple oversight:
+  </p>
+  <div class="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm not-prose mb-8">
+    <div class="mb-4 flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wide">
+      <span>Diagnostic Verification</span>
+      <span id="checklist-progress-text">0 of 4 items verified</span>
+    </div>
+    <div class="w-full bg-slate-100 rounded-full h-1.5 mb-6 overflow-hidden">
+      <div id="checklist-progress-bar" class="bg-blue-600 h-1.5 w-0 transition-all duration-300"></div>
+    </div>
+
+    <ul class="space-y-4">
+      <li class="flex items-start gap-3">
+        <input type="checkbox" class="mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" id="chk-thermostat" />
+        <label for="chk-thermostat" class="text-sm text-slate-700 leading-normal cursor-pointer select-none">
+          <strong>Thermostat Check</strong>: Is it set to COOL, fan on AUTO, with the target temperature set below current room temperature?
+        </label>
+      </li>
+      <li class="flex items-start gap-3">
+        <input type="checkbox" class="mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" id="chk-breaker" />
+        <label for="chk-breaker" class="text-sm text-slate-700 leading-normal cursor-pointer select-none">
+          <strong>Breaker Check</strong>: Has the outdoor unit circuit breaker in your electrical panel tripped? If yes, reset it once. If it trips again, call a pro.
+        </label>
+      </li>
+      <li class="flex items-start gap-3">
+        <input type="checkbox" class="mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" id="chk-filter" />
+        <label for="chk-filter" class="text-sm text-slate-700 leading-normal cursor-pointer select-none">
+          <strong>Air Filter Check</strong>: Is the filter clean? When was the last time it was changed?
+        </label>
+      </li>
+      <li class="flex items-start gap-3">
+        <input type="checkbox" class="mt-1 w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" id="chk-coils" />
+        <label for="chk-coils" class="text-sm text-slate-700 leading-normal cursor-pointer select-none">
+          <strong>Outdoor Fins Check</strong>: Is there any grass, leaves, or plastic bags blocking air intake around the sides of the outdoor cabinet?
+        </label>
+      </li>
+    </ul>
+
+    <!-- Dynamic Feedback Box -->
+    <div id="checklist-feedback" class="mt-6 p-5 rounded-2xl border border-emerald-100 bg-emerald-50 text-emerald-800 text-sm hidden transition-all duration-300">
+      <p class="font-bold text-base mb-1.5 flex items-center gap-2">🔍 All Checks Completed!</p>
+      <p class="leading-relaxed">
+        You have verified all basic homeowner checks. If your system is still blowing warm air, the problem is likely a component failure (like a dead run capacitor) or a refrigerant leak. We recommend scheduling a certified technician to run pressure diagnostics.
+      </p>
+    </div>
+  </div>
+
+  <p class="mt-8">
+    If your system needs a major component replaced, use our <a href="/tools/repair-vs-replace">Repair vs. Replace Calculator</a> to see whether replacing the air conditioner makes financial sense.
+  </p>
+</GuideLayout>
+
+<script>
+  const checkboxes = document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
+  const progressBar = document.getElementById('checklist-progress-bar');
+  const progressText = document.getElementById('checklist-progress-text');
+  const feedback = document.getElementById('checklist-feedback');
+
+  function updateChecklist() {
+    let checkedCount = 0;
+    checkboxes.forEach((cb) => {
+      if (cb.checked) checkedCount++;
+      localStorage.setItem(cb.id, cb.checked ? 'true' : 'false');
+    });
+
+    const total = checkboxes.length;
+    const pct = (checkedCount / total) * 100;
+
+    if (progressBar) progressBar.style.width = `${pct}%`;
+    if (progressText) progressText.textContent = `${checkedCount} of ${total} items verified`;
+
+    if (feedback) {
+      if (checkedCount === total) {
+        feedback.classList.remove('hidden');
+      } else {
+        feedback.classList.add('hidden');
+      }
+    }
+  }
+
+  // Load from localStorage & bind events
+  checkboxes.forEach((cb) => {
+    const saved = localStorage.getItem(cb.id);
+    if (saved === 'true') {
+      cb.checked = true;
+    }
+    cb.addEventListener('change', updateChecklist);
+  });
+
+  // Initial update
+  updateChecklist();
+</script>

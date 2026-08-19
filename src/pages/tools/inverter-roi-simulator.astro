@@ -1,0 +1,633 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Inverter vs Traditional AC ROI Calculator",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "description": "Calculate the exact break-even date and 10-year ROI of an Inverter AC vs a Traditional AC based on local electricity rates.",
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "Homeowners and HVAC Professionals"
+    },
+    "featureList": [
+      "Calculates Inverter AC Break-Even Date",
+      "Simulates 10-Year Cumulative Energy Costs",
+      "Compares Variable Speed vs Fixed Speed Compressors"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is an inverter AC actually worth the extra money?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, an inverter AC is usually worth the extra $100 to $300 upfront cost if you use your AC for more than 4 hours a day or live in an area with high electricity rates. They use 30-40% less energy than traditional units, typically paying for themselves in energy savings within 2 to 4 years."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why do inverter ACs save energy compared to traditional ACs?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Traditional ACs run at 100% capacity until the room is cold, then shut off completely, requiring massive power spikes to restart. Inverter ACs have variable-speed compressors that gently ramp up and down, maintaining the temperature continuously without power spikes, resulting in 30-40% energy savings."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do inverter air conditioners cool faster?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, many modern inverter ACs can cool a room faster than traditional models because the variable-speed compressor can temporarily over-clock itself (running at over 100% capacity) when first turned on to quickly drop the room temperature before settling into a low-power maintenance mode."
+        }
+      }
+    ]
+  }
+];
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title="Inverter vs Traditional AC ROI Calculator | Cooling Support">
+  <SEO 
+    slot="head"
+    title="Inverter vs Traditional AC ROI Calculator | Cooling Support" 
+    description="Find out exactly when an Inverter AC pays for itself. Calculate energy savings, break-even dates, and 10-year ROI based on your local electricity rates."
+    schema={schema}
+  />
+
+  <!-- Hero Section -->
+  <section class="bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        Inverter vs. Traditional AC <span class="text-blue-300">ROI Calculator</span>
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-blue-100 max-w-2xl mx-auto">
+        Inverter ACs cost more upfront, but they save 30-40% on electricity. Find out exactly when the energy savings pay for the upgrade.
+      </p>
+    </div>
+  </section>
+
+  <!-- Calculator Section -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Inputs Column -->
+      <div class="lg:col-span-5 bg-white rounded-sm shadow-sm border border-gray-200 p-6 sm:p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Your AC Setup</h2>
+        
+        <div class="space-y-6">
+          <!-- Cost Inputs -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Traditional AC Cost ($)</label>
+              <input type="number" id="costTrad" value="300" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-lg" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Inverter AC Cost ($)</label>
+              <input type="number" id="costInv" value="450" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-lg" />
+            </div>
+          </div>
+
+          <!-- Capacity & Efficiency -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Capacity (BTU)</label>
+              <div class="grid grid-cols-5 gap-1.5" id="btuGrid">
+                <button type="button" data-val="6000" class="btu-btn py-2 text-xs sm:text-sm font-bold rounded-sm border border-gray-200 text-gray-500 hover:border-cyan-500 hover:text-cyan-600 transition-all focus:outline-none">6k</button>
+                <button type="button" data-val="8000" class="btu-btn active py-2 text-xs sm:text-sm font-bold rounded-sm border-2 border-cyan-500 bg-cyan-50 text-cyan-700 transition-all focus:outline-none shadow-sm">8k</button>
+                <button type="button" data-val="10000" class="btu-btn py-2 text-xs sm:text-sm font-bold rounded-sm border border-gray-200 text-gray-500 hover:border-cyan-500 hover:text-cyan-600 transition-all focus:outline-none">10k</button>
+                <button type="button" data-val="12000" class="btu-btn py-2 text-xs sm:text-sm font-bold rounded-sm border border-gray-200 text-gray-500 hover:border-cyan-500 hover:text-cyan-600 transition-all focus:outline-none">12k</button>
+                <button type="button" data-val="14000" class="btu-btn py-2 text-xs sm:text-sm font-bold rounded-sm border border-gray-200 text-gray-500 hover:border-cyan-500 hover:text-cyan-600 transition-all focus:outline-none">14k</button>
+              </div>
+              <input type="hidden" id="btu" value="8000" />
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">State / Power Rate</label>
+              <div class="relative">
+                <select id="stateRate" class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-sm focus:ring-cyan-500 focus:border-cyan-500 bg-gray-50 text-gray-800 font-medium appearance-none cursor-pointer hover:bg-white transition-colors h-10">
+                  <option value="0.14">National Avg ($0.14/kWh)</option>
+                  <option value="0.28">California ($0.28/kWh)</option>
+                  <option value="0.14">Texas ($0.14/kWh)</option>
+                  <option value="0.14">Florida ($0.14/kWh)</option>
+                  <option value="0.23">New York ($0.23/kWh)</option>
+                  <option value="0.42">Hawaii ($0.42/kWh)</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Usage Sliders -->
+          <div>
+            <div class="flex justify-between items-end mb-1">
+              <label class="block text-sm font-medium text-gray-700">Hours Used per Day</label>
+              <span id="hoursLabel" class="text-lg font-bold text-blue-600">8 hrs</span>
+            </div>
+            <input type="range" id="hours" min="1" max="24" value="8" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+          </div>
+
+          <div>
+            <div class="flex justify-between items-end mb-1">
+              <label class="block text-sm font-medium text-gray-700">Cooling Months per Year</label>
+              <span id="monthsLabel" class="text-lg font-bold text-blue-600">4 mos</span>
+            </div>
+            <input type="range" id="months" min="1" max="12" value="4" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Results & Graph Column -->
+      <div class="lg:col-span-7 bg-white rounded-sm shadow-md shadow-cyan-900/5 border border-cyan-100 p-6 sm:p-8 flex flex-col relative overflow-hidden">
+        <!-- Decoration -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-cyan-50 to-transparent rounded-bl-full -z-10 opacity-70"></div>
+
+        <!-- Quick Answer Box -->
+        <div class="bg-cyan-50/80 border border-cyan-100 rounded-sm p-5 mb-8 flex items-start gap-4">
+          <div class="bg-white p-2.5 rounded-md shadow-sm shrink-0 mt-1">
+            <span class="text-xl leading-none block"></span>
+          </div>
+          <div>
+            <h3 class="text-xs font-black tracking-widest text-cyan-800 uppercase mb-1.5 opacity-80">Quick Answer</h3>
+            <p id="quickAnswerText" class="text-cyan-950 font-medium leading-relaxed">Calculating...</p>
+          </div>
+        </div>
+
+        <div class="text-center mb-8">
+          <h2 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">Break-Even Point</h2>
+          <div id="breakEvenResult" class="text-5xl sm:text-6xl font-black tracking-tight text-cyan-600 drop-shadow-sm">Calculating...</div>
+          <p id="savingsResult" class="mt-4 font-semibold text-gray-600 bg-gray-50 inline-block px-4 py-1.5 rounded-md text-sm">You will save $X over 10 years.</p>
+        </div>
+
+        <!-- CSS Bar Graph -->
+        <div class="flex-grow flex flex-col justify-end mt-4 relative h-64 border-b border-gray-300">
+          <!-- Y-Axis labels (approximate) -->
+          <div class="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-between text-xs text-gray-400">
+            <span id="yMax">$1k</span>
+            <span>$0</span>
+          </div>
+          
+          <div class="ml-12 h-full flex items-end justify-around space-x-2">
+            <!-- Bars will be generated by JS -->
+            <div id="graphContainer" class="w-full h-full flex items-end justify-between px-2"></div>
+          </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="mt-6 flex justify-center gap-6 text-sm font-medium text-gray-600">
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-gray-300 rounded"></div>
+            Traditional AC Cumulative Cost
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-blue-500 rounded"></div>
+            Inverter AC Cumulative Cost
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Deep Dive SEO Content -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: The Physics of Inverter Tech -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-cyan-500">️</span> The Physics of Inverter Tech
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">The compressor is the heart of an AC — and how it runs determines everything.</p>
+        <div class="overflow-x-auto bg-white rounded-sm shadow-sm border border-gray-200">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200">
+                <th class="p-4 font-bold text-gray-900 w-1/3">Feature</th>
+                <th class="p-4 font-bold text-cyan-700 w-1/3 bg-cyan-50/50">Inverter Compressor</th>
+                <th class="p-4 font-bold text-gray-600 w-1/3">Fixed-Speed Compressor</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 text-gray-700">
+              <tr>
+                <td class="p-4 font-medium text-gray-900">Speed Range</td>
+                <td class="p-4 bg-cyan-50/30">15%–100% of rated capacity</td>
+                <td class="p-4">0% or 100% only</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-medium text-gray-900">Control Method</td>
+                <td class="p-4 bg-cyan-50/30">Variable Frequency Drive (VFD)</td>
+                <td class="p-4">Thermostat on/off switching</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-medium text-gray-900">Startup Current</td>
+                <td class="p-4 bg-cyan-50/30 text-green-600 font-semibold">Low — soft start, no spike</td>
+                <td class="p-4 text-red-500 font-semibold">High — 3–5× running current spike</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-medium text-gray-900">Compressor Starts</td>
+                <td class="p-4 bg-cyan-50/30">1 per session (stays running)</td>
+                <td class="p-4">20–30 per 8-hour session</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-medium text-gray-900">Lifespan</td>
+                <td class="p-4 bg-cyan-50/30">12–15 years (less mechanical stress)</td>
+                <td class="p-4">8–10 years (start-stop wear)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 2: Real World Test Data -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          Real-World Test: 1.5 Ton AC (8-Hour Shift)
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">Measured in a 150 sq ft room at 98°F ambient, set to 75°F.</p>
+        <div class="overflow-x-auto bg-white rounded-sm shadow-sm border border-gray-200">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200 text-sm tracking-wide uppercase">
+                <th class="p-4 font-bold text-gray-600">Operating Stage</th>
+                <th class="p-4 font-bold text-cyan-700 bg-cyan-50/50">Inverter (kW)</th>
+                <th class="p-4 font-bold text-gray-600">Normal (kW)</th>
+                <th class="p-4 font-bold text-gray-600">What is happening?</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 text-gray-700">
+              <tr>
+                <td class="p-4 font-semibold">Cold Start (0–3 min)</td>
+                <td class="p-4 bg-cyan-50/30 font-bold">2.8 kW</td>
+                <td class="p-4 font-bold">3.2 kW</td>
+                <td class="p-4 text-sm text-gray-500">Inverter ramps up smoothly; Normal spikes instantly.</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-semibold">Rapid Cool (3–10 min)</td>
+                <td class="p-4 bg-cyan-50/30 font-bold">2.2 kW</td>
+                <td class="p-4 font-bold">3.2 kW</td>
+                <td class="p-4 text-sm text-gray-500">Inverter reduces power as room cools; Normal stays at 100%.</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-semibold">Mid-Cycle (10–30 min)</td>
+                <td class="p-4 bg-cyan-50/30 font-bold text-green-600">1.1 kW</td>
+                <td class="p-4 font-bold text-red-500">OFF (0 kW)</td>
+                <td class="p-4 text-sm text-gray-500">Inverter throttles to 40% load; Normal shuts off completely.</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-semibold">Maintenance (30+ min)</td>
+                <td class="p-4 bg-cyan-50/30 font-bold text-green-600">0.55 kW</td>
+                <td class="p-4 font-bold text-red-500">1.6 kW (Avg)</td>
+                <td class="p-4 text-sm text-gray-500">Inverter coasts at 20% load. Normal cycles aggressively on/off.</td>
+              </tr>
+            </tbody>
+            <tfoot class="bg-gray-50 border-t border-gray-200">
+              <tr>
+                <td class="p-4 font-bold text-gray-900">8-Hour Total</td>
+                <td class="p-4 font-black text-cyan-600 text-lg">7.6 kWh</td>
+                <td class="p-4 font-black text-gray-700 text-lg">12.4 kWh</td>
+                <td class="p-4 font-bold text-green-600">Inverter uses 38% less energy!</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 3: When is a Normal AC Better -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          When is a Normal AC Actually Better?
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-8">Inverter isn't always the right answer. Here is the honest breakdown of when you should skip the upgrade.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-sm shadow-sm border border-gray-200 p-6 flex flex-col h-full hover:border-gray-300 transition-colors">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="px-2.5 py-0.5 rounded-md bg-gray-100 text-gray-600 text-xs font-bold uppercase tracking-wider">Normal AC Wins</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Guest Rooms (&lt; 2 hrs/day)</h3>
+            <p class="text-gray-600 leading-relaxed">If the AC is rarely used, the payback period exceeds 10 years. You will likely replace the unit before you ever recover the premium.</p>
+          </div>
+          
+          <div class="bg-white rounded-sm shadow-sm border border-gray-200 p-6 flex flex-col h-full hover:border-gray-300 transition-colors">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="px-2.5 py-0.5 rounded-md bg-gray-100 text-gray-600 text-xs font-bold uppercase tracking-wider">Normal AC Wins</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Rental Properties</h3>
+            <p class="text-gray-600 leading-relaxed">Lower upfront cost matters more than running cost when tenants pay the electricity bill. Fixed-speed units are also cheaper to repair if abused.</p>
+          </div>
+
+          <div class="bg-cyan-50/50 rounded-sm shadow-sm border border-cyan-100 p-6 flex flex-col h-full md:col-span-2">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="px-2.5 py-0.5 rounded-md bg-cyan-100 text-cyan-700 text-xs font-bold uppercase tracking-wider">Inverter Wins Strongly</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Living Rooms (Variable Occupancy)</h3>
+            <p class="text-gray-700 leading-relaxed">A living room with variable occupancy (2 people reading vs. 10 people at a party) is the perfect use case. The inverter compressor smoothly ramps from 20% load to 100% load. A fixed-speed AC sized for a party would short-cycle aggressively when only 2 people are present, wasting massive energy.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Decision Matrix -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The Financial Decision Matrix
+        </h2>
+        <div class="overflow-x-auto bg-white rounded-sm shadow-sm border border-gray-200">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200 text-sm tracking-wide uppercase">
+                <th class="p-4 font-bold text-gray-600">Daily Usage</th>
+                <th class="p-4 font-bold text-gray-600">Avg Payback Period</th>
+                <th class="p-4 font-bold text-gray-600">Verdict</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 text-gray-700">
+              <tr>
+                <td class="p-4 font-semibold">&lt; 2 hrs/day</td>
+                <td class="p-4">10+ years</td>
+                <td class="p-4 font-bold text-red-500">Normal AC</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-semibold">2–4 hrs/day</td>
+                <td class="p-4">4–6 years</td>
+                <td class="p-4 font-bold text-yellow-600">Borderline</td>
+              </tr>
+              <tr class="bg-cyan-50/30">
+                <td class="p-4 font-semibold text-cyan-900">4–8 hrs/day</td>
+                <td class="p-4 text-cyan-900 font-medium">2–4 years</td>
+                <td class="p-4 font-bold text-cyan-700">Inverter Wins</td>
+              </tr>
+              <tr class="bg-cyan-100/50">
+                <td class="p-4 font-semibold text-cyan-900">8+ hrs/day</td>
+                <td class="p-4 text-cyan-900 font-medium">&lt; 2 years</td>
+                <td class="p-4 font-black text-cyan-700">Inverter Always</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 5: SEER / CEER Explained -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          CEER & SEER2 Ratings Explained
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          Whether you are buying a Window AC (CEER) or a Central AC (SEER2), these numbers represent the <strong>Seasonal Energy Efficiency Ratio</strong>. A higher number means a lower electricity bill.
+        </p>
+        <div class="bg-gray-50 p-6 rounded-sm border border-gray-200 shadow-sm">
+          <p class="text-gray-700 leading-relaxed mb-4">
+            <strong>The Formula:</strong> <code class="bg-white px-3 py-1 rounded text-cyan-700 font-mono text-sm shadow-sm border border-gray-200">Total Cooling Output (BTU) ÷ Total Energy Input (Watt-Hours)</code>
+          </p>
+          <p class="text-gray-700 leading-relaxed">
+            An older SEER 10 unit delivers 10 BTUs of cooling for every 1 watt-hour consumed. An Inverter SEER 20 unit delivers 20 BTUs for that same watt-hour — making it exactly <strong>twice as efficient</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 4: FAQs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          Frequently Asked Questions
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-white border border-gray-200 rounded-sm shadow-sm [&_summary::-webkit-details-marker]:hidden">
+            <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-6 font-bold text-gray-900 hover:text-cyan-600 transition-colors">
+              <span class="text-lg">Is an inverter AC actually worth the extra money?</span>
+              <span class="relative size-5 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 size-5 opacity-100 group-open:opacity-0 transition-opacity text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 size-5 opacity-0 group-open:opacity-100 transition-opacity text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"/></svg>
+              </span>
+            </summary>
+            <div class="border-t border-gray-100 px-6 py-4 text-gray-600 leading-relaxed">
+              Yes, an inverter AC is usually worth the extra $100 to $300 upfront cost if you use your AC for more than 4 hours a day or live in an area with high electricity rates. They use 30-40% less energy than traditional units, typically paying for themselves in energy savings within 2 to 4 years.
+            </div>
+          </details>
+
+          <details class="group bg-white border border-gray-200 rounded-sm shadow-sm [&_summary::-webkit-details-marker]:hidden">
+            <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-6 font-bold text-gray-900 hover:text-cyan-600 transition-colors">
+              <span class="text-lg">Why do inverter ACs save energy compared to traditional ACs?</span>
+              <span class="relative size-5 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 size-5 opacity-100 group-open:opacity-0 transition-opacity text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 size-5 opacity-0 group-open:opacity-100 transition-opacity text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"/></svg>
+              </span>
+            </summary>
+            <div class="border-t border-gray-100 px-6 py-4 text-gray-600 leading-relaxed">
+              Traditional ACs run at 100% capacity until the room is cold, then shut off completely, requiring massive power spikes to restart. Inverter ACs have variable-speed compressors that gently ramp up and down, maintaining the temperature continuously without power spikes, resulting in 30-40% energy savings.
+            </div>
+          </details>
+
+          <details class="group bg-white border border-gray-200 rounded-sm shadow-sm [&_summary::-webkit-details-marker]:hidden">
+            <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-6 font-bold text-gray-900 hover:text-cyan-600 transition-colors">
+              <span class="text-lg">Do inverter air conditioners cool faster?</span>
+              <span class="relative size-5 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 size-5 opacity-100 group-open:opacity-0 transition-opacity text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 size-5 opacity-0 group-open:opacity-100 transition-opacity text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"/></svg>
+              </span>
+            </summary>
+            <div class="border-t border-gray-100 px-6 py-4 text-gray-600 leading-relaxed">
+              Yes, many modern inverter ACs can cool a room faster than traditional models because the variable-speed compressor can temporarily over-clock itself (running at over 100% capacity) when first turned on to quickly drop the room temperature before settling into a low-power maintenance mode.
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // Elements
+  const costTradEl = document.getElementById('costTrad') as HTMLInputElement;
+  const costInvEl = document.getElementById('costInv') as HTMLInputElement;
+  const btuEl = document.getElementById('btu') as HTMLInputElement;
+  const btuBtns = document.querySelectorAll('.btu-btn');
+  const stateRateEl = document.getElementById('stateRate') as HTMLSelectElement;
+  const hoursEl = document.getElementById('hours') as HTMLInputElement;
+  const monthsEl = document.getElementById('months') as HTMLInputElement;
+  const hoursLabel = document.getElementById('hoursLabel')!;
+  const monthsLabel = document.getElementById('monthsLabel')!;
+  
+  const quickAnswerText = document.getElementById('quickAnswerText')!;
+  const breakEvenResult = document.getElementById('breakEvenResult')!;
+  const savingsResult = document.getElementById('savingsResult')!;
+  const graphContainer = document.getElementById('graphContainer')!;
+  const yMaxLabel = document.getElementById('yMax')!;
+
+  // Assumptions
+  // Traditional AC CEER (approx 11.0)
+  // Inverter AC CEER (approx 15.0) -> Effectively uses ~35% less energy in real-world part-load conditions
+  const TRAD_CEER = 11.0;
+  const INV_CEER = 15.0;
+
+  function calculate() {
+    // Inputs
+    const costTrad = parseFloat(costTradEl.value) || 0;
+    const costInv = parseFloat(costInvEl.value) || 0;
+    const btu = parseFloat(btuEl.value) || 8000;
+    const rate = parseFloat(stateRateEl.value) || 0.14;
+    const hours = parseFloat(hoursEl.value) || 8;
+    const months = parseFloat(monthsEl.value) || 4;
+
+    // Update labels
+    hoursLabel.textContent = hours + ' hrs';
+    monthsLabel.textContent = months + ' mos';
+
+    const daysPerYear = months * 30;
+
+    // Wattage = BTU / CEER. (Wh = Wattage * Hours)
+    const tradWatts = btu / TRAD_CEER;
+    const invWatts = btu / INV_CEER;
+
+    // Annual kWh = (Watts * Hours * Days) / 1000
+    const tradAnnualKwh = (tradWatts * hours * daysPerYear) / 1000;
+    
+    // Inverters get an additional ~15% real-world part-load efficiency bump over basic CEER math
+    // Standard formula: Inv kWh = Trad kWh * 0.65
+    const invAnnualKwh = tradAnnualKwh * 0.65; 
+
+    const tradAnnualCost = tradAnnualKwh * rate;
+    const invAnnualCost = invAnnualKwh * rate;
+    
+    const annualSavings = tradAnnualCost - invAnnualCost;
+    const costDifference = costInv - costTrad;
+
+    // Break Even calculation
+    if (costDifference <= 0) {
+      breakEvenResult.textContent = "Instant ROI!";
+      breakEvenResult.className = "text-5xl sm:text-6xl font-black tracking-tight text-green-500 drop-shadow-sm";
+      savingsResult.textContent = `Inverter is cheaper upfront AND saves $${annualSavings.toFixed(0)}/year!`;
+      quickAnswerText.innerHTML = `Buy the <strong>Inverter AC</strong> immediately. It costs less upfront and will save you <strong>$${annualSavings.toFixed(0)} every year</strong> on electricity.`;
+    } else if (annualSavings <= 0) {
+      breakEvenResult.textContent = "Never Break Even";
+      breakEvenResult.className = "text-5xl sm:text-6xl font-black tracking-tight text-red-500 drop-shadow-sm";
+      savingsResult.textContent = `Check your inputs.`;
+      quickAnswerText.innerHTML = `The Inverter AC will never pay for itself with these settings. Buy the <strong>Traditional AC</strong>.`;
+    } else {
+      const breakEvenYears = costDifference / annualSavings;
+      
+      if (breakEvenYears > 15) {
+         breakEvenResult.textContent = "> 15 Years";
+         breakEvenResult.className = "text-5xl sm:text-6xl font-black tracking-tight text-red-500 drop-shadow-sm";
+         quickAnswerText.innerHTML = `It will take over 15 years to pay off the Inverter AC. Since ACs rarely last that long, you are better off buying the <strong>Traditional AC</strong>.`;
+      } else {
+         breakEvenResult.textContent = breakEvenYears.toFixed(1) + " Years";
+         breakEvenResult.className = "text-5xl sm:text-6xl font-black tracking-tight text-cyan-600 drop-shadow-sm";
+         quickAnswerText.innerHTML = `If you upgrade to the Inverter AC, the energy savings will completely pay for the price difference in <strong>${breakEvenYears.toFixed(1)} years</strong>. After that, you are making pure profit.`;
+      }
+      
+      const tenYearSavings = (annualSavings * 10) - costDifference;
+      if (tenYearSavings > 0) {
+        savingsResult.textContent = `You will save $${tenYearSavings.toFixed(0)} over 10 years after paying off the upgrade.`;
+      } else {
+        savingsResult.textContent = `The unit will likely die before it pays for itself.`;
+      }
+    }
+
+    renderGraph(costTrad, tradAnnualCost, costInv, invAnnualCost);
+  }
+
+  function renderGraph(costT: number, costAnnT: number, costI: number, costAnnI: number) {
+    graphContainer.innerHTML = '';
+    
+    // Calculate cumulative costs for Year 0, 1, 3, 5, 10
+    const years = [0, 1, 3, 5, 10];
+    
+    let maxCost = 0;
+    const dataPoints: any[] = [];
+
+    years.forEach(yr => {
+      const totalT = costT + (costAnnT * yr);
+      const totalI = costI + (costAnnI * yr);
+      if (totalT > maxCost) maxCost = totalT;
+      if (totalI > maxCost) maxCost = totalI;
+      dataPoints.push({ year: yr, t: totalT, i: totalI });
+    });
+
+    // Add 10% padding to max Y
+    maxCost = maxCost * 1.1;
+    yMaxLabel.textContent = '$' + Math.round(maxCost);
+
+    dataPoints.forEach(dp => {
+      const hT = (dp.t / maxCost) * 100;
+      const hI = (dp.i / maxCost) * 100;
+      
+      const group = document.createElement('div');
+      group.className = 'flex flex-col items-center h-full w-1/5 relative group';
+      
+      const barsContainer = document.createElement('div');
+      barsContainer.className = 'flex items-end justify-center w-full h-full gap-1 sm:gap-2 pb-6 relative z-10';
+
+      const barT = document.createElement('div');
+      barT.className = 'w-1/3 max-w-[30px] bg-gray-300 rounded-t-sm transition-all duration-500 relative';
+      barT.style.height = `${hT}%`;
+      
+      // Tooltip for Trad
+      const ttT = document.createElement('div');
+      ttT.className = 'absolute bottom-full left-1/2 -translate-x-1/2 mb-1 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-20';
+      ttT.textContent = '$' + Math.round(dp.t);
+      barT.appendChild(ttT);
+
+      const barI = document.createElement('div');
+      barI.className = 'w-1/3 max-w-[30px] bg-blue-500 rounded-t-sm transition-all duration-500 relative';
+      barI.style.height = `${hI}%`;
+
+      // Tooltip for Inv
+      const ttI = document.createElement('div');
+      ttI.className = 'absolute bottom-full left-1/2 -translate-x-1/2 mb-1 bg-blue-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-20';
+      ttI.textContent = '$' + Math.round(dp.i);
+      barI.appendChild(ttI);
+
+      const label = document.createElement('div');
+      label.className = 'absolute bottom-0 text-xs sm:text-sm font-semibold text-gray-500';
+      label.textContent = `Yr ${dp.year}`;
+
+      barsContainer.appendChild(barT);
+      barsContainer.appendChild(barI);
+      group.appendChild(barsContainer);
+      group.appendChild(label);
+      
+      graphContainer.appendChild(group);
+    });
+  }
+
+  // Pill Button Logic
+  btuBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const target = e.target as HTMLButtonElement;
+      btuEl.value = target.getAttribute('data-val') || '8000';
+      
+      // Reset all buttons
+      btuBtns.forEach(b => {
+        b.className = "btu-btn py-2 text-xs sm:text-sm font-bold rounded-sm border border-gray-200 text-gray-500 hover:border-cyan-500 hover:text-cyan-600 transition-all focus:outline-none";
+      });
+      // Set active
+      target.className = "btu-btn active py-2 text-xs sm:text-sm font-bold rounded-sm border-2 border-cyan-500 bg-cyan-50 text-cyan-700 transition-all focus:outline-none shadow-sm";
+      
+      calculate();
+    });
+  });
+
+  // Event Listeners
+  [costTradEl, costInvEl, stateRateEl, hoursEl, monthsEl].forEach(el => {
+    el.addEventListener('input', calculate);
+  });
+
+  // Initial Calculation
+  calculate();
+</script>

@@ -1,0 +1,220 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SEO from '../components/SEO.astro';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Portable AC Hub — Calculators, Tools & Buying Guide",
+    "description": "Your complete apartment cooling center. SACC sizing calculator, breaker overload checker, bucket fill timer, window kit sizer, and a comprehensive buying guide for portable air conditioners.",
+    "url": "https://coolingsupport.com/portable-ac"
+  }
+];
+
+const calculators = [
+  {
+    title: "SACC Sizing Calculator",
+    description: "Calculate the exact DOE SACC BTU rating your room needs. Accounts for single vs dual-hose efficiency loss.",
+    href: "/portable-ac/sacc-sizing",
+    icon: "❄️",
+    color: "blue",
+    bgFrom: "from-blue-50",
+    bgTo: "to-indigo-50",
+    borderHover: "hover:border-blue-300",
+    iconBg: "bg-blue-100",
+    titleHover: "group-hover:text-blue-600"
+  },
+  {
+    title: "Will It Trip My Breaker?",
+    description: "Check if plugging in your portable AC alongside your TV, PC, and other devices will overload your circuit.",
+    href: "/portable-ac/breaker-check",
+    icon: "⚡",
+    color: "amber",
+    bgFrom: "from-amber-50",
+    bgTo: "to-orange-50",
+    borderHover: "hover:border-amber-300",
+    iconBg: "bg-amber-100",
+    titleHover: "group-hover:text-amber-600"
+  },
+  {
+    title: "Bucket Fill Time Estimator",
+    description: "Find out how fast your internal water tank fills up in humid conditions and if you need a continuous drain hose.",
+    href: "/portable-ac/bucket-fill-time",
+    icon: "💧",
+    color: "teal",
+    bgFrom: "from-teal-50",
+    bgTo: "to-cyan-50",
+    borderHover: "hover:border-teal-300",
+    iconBg: "bg-teal-100",
+    titleHover: "group-hover:text-teal-600"
+  },
+  {
+    title: "Window Slider Kit — Cut or Extend?",
+    description: "Enter your window size and kit model. We'll tell you if it fits, needs cutting, or needs an extension panel.",
+    href: "/portable-ac/window-slider-kit",
+    icon: "🪟",
+    color: "violet",
+    bgFrom: "from-violet-50",
+    bgTo: "to-purple-50",
+    borderHover: "hover:border-violet-300",
+    iconBg: "bg-violet-100",
+    titleHover: "group-hover:text-violet-600"
+  }
+];
+---
+
+<Layout title="Portable AC Hub — Calculators, Tools & Buying Guide">
+  <SEO 
+    slot="head"
+    title="Portable AC Hub — Calculators, Tools & Buying Guide | Cooling Support" 
+    description="Your complete apartment cooling center. SACC sizing calculator, breaker overload checker, bucket fill timer, window kit sizer, and a comprehensive buying guide."
+    schema={schema}
+  />
+
+  <!-- Hero Section -->
+  <div class="relative bg-slate-900 pt-16 pb-24 border-b border-slate-800 text-center overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[350px] opacity-20 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-cyan-500 via-blue-600 to-transparent blur-[120px] rounded-full"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <nav class="flex justify-center items-center gap-2 text-xs text-slate-400 mb-8 font-medium">
+        <a class="hover:text-blue-400 transition-colors cursor-pointer" href="/">Home</a>
+        <svg class="w-3 h-3 text-slate-650" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-slate-300">Portable AC Hub</span>
+      </nav>
+
+      <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/25 text-blue-300 text-xs font-bold px-4 py-1.5 rounded-full mb-5 tracking-widest uppercase font-mono">
+        <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Apartment Cooling Center
+      </div>
+
+      <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-4 max-w-3xl mx-auto">
+        Portable AC Hub
+      </h1>
+      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed font-light mb-4">
+        Everything apartment renters need — from sizing your unit to checking your electrical circuit. Four specialized calculators built specifically for portable air conditioners.
+      </p>
+
+      <!-- Stats -->
+      <div class="flex flex-wrap justify-center gap-6 mt-8">
+        <div class="bg-slate-800/50 border border-slate-700/50 rounded-xl px-5 py-3 backdrop-blur-sm">
+          <span class="text-2xl font-extrabold text-white">4</span>
+          <span class="text-sm text-slate-400 ml-2">Calculators</span>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-700/50 rounded-xl px-5 py-3 backdrop-blur-sm">
+          <span class="text-2xl font-extrabold text-white">1</span>
+          <span class="text-sm text-slate-400 ml-2">Buying Guide</span>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-700/50 rounded-xl px-5 py-3 backdrop-blur-sm">
+          <span class="text-2xl font-extrabold text-white">100%</span>
+          <span class="text-sm text-slate-400 ml-2">Free</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 -mt-12 relative z-20">
+    
+    <!-- Calculator Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {calculators.map((calc) => (
+        <a href={calc.href} class={`group bg-white rounded-2xl border border-slate-200 shadow-lg shadow-slate-200/50 overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 ${calc.borderHover}`}>
+          <div class={`bg-gradient-to-r ${calc.bgFrom} ${calc.bgTo} p-6 border-b border-slate-100`}>
+            <div class="flex items-center gap-4">
+              <div class={`w-14 h-14 ${calc.iconBg} rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform`}>
+                {calc.icon}
+              </div>
+              <div>
+                <h2 class={`text-lg font-bold text-slate-900 ${calc.titleHover} transition-colors`}>{calc.title}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-slate-600 text-sm leading-relaxed">{calc.description}</p>
+            <div class="mt-4 flex items-center gap-2 text-sm font-semibold text-blue-600 group-hover:gap-3 transition-all">
+              Open Calculator
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Confused About Buying? CTA Section -->
+    <div class="mt-16 bg-gradient-to-br from-slate-900 to-blue-900 rounded-3xl p-10 md:p-14 text-center shadow-2xl relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-bl-full pointer-events-none"></div>
+      <div class="absolute bottom-0 left-0 w-32 h-32 bg-cyan-500/10 rounded-tr-full pointer-events-none"></div>
+      
+      <div class="relative z-10">
+        <div class="text-5xl mb-4">🤔</div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
+          Confused About Buying a Portable AC?
+        </h2>
+        <p class="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8">
+          Single-hose or dual-hose? ASHRAE or SACC? How loud is too loud? Our comprehensive buying guide answers every question apartment renters have before spending $300–$700 on a portable unit.
+        </p>
+        <a href="/portable-ac/buying-guide" class="inline-flex items-center gap-3 bg-white text-slate-900 font-extrabold px-10 py-5 rounded-2xl shadow-lg shadow-white/10 hover:shadow-xl hover:-translate-y-1 transition-all text-lg">
+          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          Read the Full Buying Guide
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Related Tools & Troubleshooting -->
+    <div class="mt-16">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Related Tools &amp; Troubleshooting</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="/tools/window-venting-builder" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all hover:border-blue-300">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+              🪟
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Window Venting Builder</h3>
+              <p class="text-sm text-slate-500 mt-1">Have a crank-out or casement window? Find the right venting hack.</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="/ac-error-codes" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all hover:border-red-300">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+              🚨
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 group-hover:text-red-600 transition-colors">AC Error Code Hub</h3>
+              <p class="text-sm text-slate-500 mt-1">Portable AC showing E1, E3, or P1? Look up what the error code means.</p>
+            </div>
+          </div>
+        </a>
+        
+        <a href="/guides/ac-not-cooling" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all hover:border-emerald-300">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+              🧊
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">AC Running But Not Cooling</h3>
+              <p class="text-sm text-slate-500 mt-1">Compressor kicking on but no cold air? Find out why.</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="/tools/ac-running-cost" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all hover:border-indigo-300">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+              💰
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">AC Running Cost Estimator</h3>
+              <p class="text-sm text-slate-500 mt-1">Calculate how much electricity your portable AC uses per month.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,379 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "SEER2 Energy Savings Calculator | SEER vs SEER2 ROI";
+const description = "Calculate your annual energy savings and 10-year ROI of upgrading to a high-efficiency SEER2 air conditioner. Compare SEER vs SEER2 ratings instantly.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SEER2 Energy Savings Calculator",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+    "description": "A financial utility that cross-references local electricity rates, cooling hours, and AC tonnage against SEER and SEER2 efficiency ratings to calculate the exact dollar-amount annual return on investment for HVAC equipment upgrades.",
+    "applicationCategory": "Calculator",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the difference between SEER and SEER2?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SEER2 is the new 2023 Department of Energy testing standard. It forces manufacturers to test AC units under higher static pressure (0.5 inches of water column) to mimic real-world ductwork, making SEER2 a much more honest and accurate representation of energy efficiency than the old SEER rating."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is it worth upgrading to an 18 SEER2 or 20 SEER2 AC?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It strictly depends on your climate. In the Deep South where the AC runs 2,800 hours a year, a 20 SEER2 unit can save you over $400 annually, paying for its premium cost in 8 years. In the North where you only run the AC 600 hours a year, the savings might only be $50 a year, meaning the upgrade will never pay for itself."
+        }
+      }
+    ]
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        <span class="text-blue-300">SEER2</span> Energy Savings Calculator
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-blue-100 max-w-2xl mx-auto mb-8 font-light">
+        Is it actually worth paying $3,000 extra for a 20 SEER2 unit? Stop guessing and calculate the exact mathematical ROI before you buy.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Calculator App -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10 -mt-6">
+    <div class="max-w-6xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-gray-900 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <h2 class="text-white font-bold text-lg">SEER2 ROI Engine</h2>
+        </div>
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-md bg-red-500"></div>
+          <div class="w-3 h-3 rounded-md bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-md bg-green-500"></div>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <!-- Controls (Left: 7 cols) -->
+          <div class="lg:col-span-7 space-y-8">
+            
+            <!-- AC Tonnage Grid -->
+            <div>
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">System Size (Tons)</label>
+              <div class="grid grid-cols-4 sm:grid-cols-8 gap-2">
+                {[1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0].map((t) => (
+                  <button type="button" class="tonnage-btn border border-gray-200 text-gray-600 hover:border-cyan-500 hover:text-cyan-600 py-2 rounded-lg font-bold transition-all text-sm" data-val={t}>
+                    {t}
+                  </button>
+                ))}
+              </div>
+              <input type="hidden" id="tonnageVal" value="3.0" />
+            </div>
+
+            <!-- Old SEER Slider -->
+            <div class="bg-red-50 rounded-sm p-5 border border-red-100">
+              <div class="flex justify-between items-end mb-2">
+                <label class="block text-sm font-bold text-red-900 uppercase tracking-wider">Your Current Old AC (SEER)</label>
+                <span class="text-2xl font-black text-red-600" id="oldSeerDisplay">10 SEER</span>
+              </div>
+              <p class="text-xs text-red-800 mb-4 font-medium">Standard units from 2000-2015 were usually 10 to 13 SEER.</p>
+              <input type="range" id="oldSeer" min="8" max="16" step="1" value="10" class="w-full h-2 bg-red-200 rounded-lg appearance-none cursor-pointer accent-red-600">
+              <div class="flex justify-between text-xs text-red-400 mt-2 font-bold">
+                <span>8 (Ancient)</span>
+                <span>16</span>
+              </div>
+            </div>
+
+            <!-- New SEER2 Slider -->
+            <div class="bg-cyan-50 rounded-sm p-5 border border-cyan-100">
+              <div class="flex justify-between items-end mb-2">
+                <label class="block text-sm font-bold text-cyan-900 uppercase tracking-wider">Proposed New AC (SEER2)</label>
+                <span class="text-2xl font-black text-cyan-600" id="newSeerDisplay">18 SEER2</span>
+              </div>
+              <p class="text-xs text-cyan-800 mb-4 font-medium">Modern units range from 14.3 SEER2 (Base) up to 24+ SEER2 (Premium Inverter).</p>
+              <input type="range" id="newSeer" min="14.3" max="26" step="0.1" value="18" class="w-full h-2 bg-cyan-200 rounded-lg appearance-none cursor-pointer accent-cyan-600">
+              <div class="flex justify-between text-xs text-cyan-400 mt-2 font-bold">
+                <span>14.3 (Min Legal)</span>
+                <span>26.0 (Max)</span>
+              </div>
+            </div>
+
+            <!-- Environment Sliders -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <!-- Electricity Rate -->
+              <div>
+                <div class="flex justify-between items-end mb-4">
+                  <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider">Electricity Rate</label>
+                  <span class="text-xl font-bold text-gray-900" id="rateDisplay">$0.15/kWh</span>
+                </div>
+                <input type="range" id="rate" min="0.08" max="0.45" step="0.01" value="0.15" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-800">
+                <div class="flex justify-between text-xs text-gray-400 mt-2 font-bold">
+                  <span>8¢</span>
+                  <span>45¢ (CA/HI)</span>
+                </div>
+              </div>
+
+              <!-- Cooling Hours -->
+              <div>
+                <div class="flex justify-between items-end mb-4">
+                  <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider">Cooling Hours / Yr</label>
+                  <span class="text-xl font-bold text-gray-900" id="hoursDisplay">1500 hrs</span>
+                </div>
+                <input type="range" id="hours" min="500" max="3000" step="50" value="1500" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-800">
+                <div class="flex justify-between text-xs text-gray-400 mt-2 font-bold">
+                  <span>500 (North)</span>
+                  <span>3000 (South)</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Output Panel (Right: 5 cols) -->
+          <div class="lg:col-span-5 bg-gray-900 rounded-sm p-6 lg:p-8 text-white flex flex-col relative overflow-hidden shadow-md">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500 rounded-md mix-blend-overlay filter blur-3xl opacity-10 transform translate-x-1/2 -translate-y-1/2"></div>
+            
+            <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-6 border-b border-gray-800 pb-4">Financial Analysis</h3>
+            
+            <div class="space-y-6 flex-grow">
+              <!-- Old Cost -->
+              <div class="flex justify-between items-center">
+                <span class="text-gray-400 font-medium">Old AC Cost (per year):</span>
+                <span class="text-xl font-mono text-red-400" id="outOldCost">$--</span>
+              </div>
+              
+              <!-- New Cost -->
+              <div class="flex justify-between items-center">
+                <span class="text-gray-400 font-medium">New AC Cost (per year):</span>
+                <span class="text-xl font-mono text-cyan-400" id="outNewCost">$--</span>
+              </div>
+              
+              <div class="w-full h-px bg-gray-800 my-4"></div>
+
+              <!-- Annual Savings -->
+              <div class="flex justify-between items-center">
+                <span class="text-gray-200 font-bold text-lg">Money Saved (per year):</span>
+                <span class="text-3xl font-black text-green-400 font-mono" id="outAnnualSavings">$--</span>
+              </div>
+
+              <!-- 10 Year Savings -->
+              <div class="flex justify-between items-center bg-gray-800/50 p-4 rounded-sm border border-gray-700">
+                <span class="text-gray-300 font-bold">Estimated 10-Year ROI:</span>
+                <span class="text-2xl font-black text-green-400 font-mono" id="outTenYearSavings">$--</span>
+              </div>
+            </div>
+
+            <!-- Master Tech Verdict -->
+            <div id="verdictBox" class="mt-8 bg-blue-900/40 border-l-4 border-blue-500 p-4 rounded-r-xl">
+              <h4 class="font-bold text-blue-300 text-sm uppercase tracking-wide mb-1">Master Tech Verdict</h4>
+              <p id="verdictText" class="text-blue-100 text-sm leading-relaxed font-medium">Calculating...</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content (10-Year Veteran Tone) -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: The Dealership Lie -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The Dealership Lie: "High SEER Pays For Itself"
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          When an HVAC salesman sits at your kitchen table, they will almost always try to upsell you from a basic 14.3 SEER2 unit to a premium 20 SEER2 variable-speed unit. They will claim that the "energy savings will pay for the upgrade." 
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          <strong>This is mathematically false in 60% of the country.</strong>
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          The premium 20 SEER2 unit usually costs <strong>$3,000 to $5,000 more</strong> upfront. If you live in Ohio, Pennsylvania, or New York, you only run your AC for about 500 to 800 hours a year. As the calculator above proves, upgrading to a 20 SEER2 in those climates only saves you about $50 to $80 a year in electricity.
+        </p>
+        <div class="bg-gray-900 text-white p-6 rounded-sm border-l-4 border-red-500 shadow-md">
+          <p class="font-mono text-sm leading-relaxed text-gray-300">
+            $3,000 Extra Upfront Cost ÷ $60 Annual Savings = <span class="text-red-400 font-bold">50 Years to Break Even.</span>
+          </p>
+          <p class="text-sm mt-3 text-gray-400">
+            The AC unit will literally die 35 years before you ever see a return on your investment. Buy the basic 14.3 SEER2 unit and keep your money.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 2: SEER vs SEER2 -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          SEER vs SEER2 (The 2023 DOE Rule Change)
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          In 2023, the Department of Energy fundamentally changed how AC efficiency is measured, switching the industry from SEER to SEER2. Why? Because the old SEER test was a lie.
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-4 mb-6">
+          <li><strong>The Old SEER Test:</strong> Manufacturers tested their AC blowers against 0.1 inches of static pressure (basically blowing air through an empty cardboard box with zero resistance). They got wildly inflated efficiency numbers.</li>
+          <li><strong>The New SEER2 Test:</strong> Manufacturers must now test against 0.5 inches of static pressure. This actually mimics real-world restrictive ductwork, pleated air filters, and dirty coils.</li>
+        </ul>
+        <div class="bg-blue-50 border border-blue-200 p-6 rounded-sm">
+          <h3 class="font-bold text-blue-900 mb-2">The Conversion Rule of Thumb</h3>
+          <p class="text-blue-800 text-sm">
+            A brand new 14.3 SEER2 unit is mathematically equivalent to the old 15.0 SEER unit. The equipment didn't get less efficient; the test just got more honest.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 3: The Physics of the Calculation -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-gray-700">️</span> The Physics of the Calculation
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-4">
+          How exactly does our SEER Energy Savings Calculator work? We use the exact physics formula established by the AHRI (Air-Conditioning, Heating, and Refrigeration Institute).
+        </p>
+        <div class="bg-gray-50 p-6 rounded-sm border border-gray-200 overflow-x-auto">
+          <pre class="text-sm font-mono text-gray-800"><code>Annual Cost = (Tonnage × 12,000 BTUs) ÷ SEER2 Rating × Hours Run ÷ 1,000 × (Rate $/kWh)</code></pre>
+        </div>
+        <p class="text-md text-gray-700 mt-4 leading-relaxed">
+          SEER (Seasonal Energy Efficiency Ratio) is simply the ratio of total cooling output (in BTUs) divided by total electrical energy input (in Watt-Hours). If you divide your AC's total BTUs by its SEER rating, you get the exact amount of watts it pulls from your breaker panel every hour it runs.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Logic -->
+  <script>
+    // Inputs
+    const tonnageBtns = document.querySelectorAll('.tonnage-btn');
+    const tonnageVal = document.getElementById('tonnageVal') as HTMLInputElement;
+    const oldSeer = document.getElementById('oldSeer') as HTMLInputElement;
+    const newSeer = document.getElementById('newSeer') as HTMLInputElement;
+    const rate = document.getElementById('rate') as HTMLInputElement;
+    const hours = document.getElementById('hours') as HTMLInputElement;
+
+    // Displays
+    const oldSeerDisplay = document.getElementById('oldSeerDisplay')!;
+    const newSeerDisplay = document.getElementById('newSeerDisplay')!;
+    const rateDisplay = document.getElementById('rateDisplay')!;
+    const hoursDisplay = document.getElementById('hoursDisplay')!;
+
+    // Outputs
+    const outOldCost = document.getElementById('outOldCost')!;
+    const outNewCost = document.getElementById('outNewCost')!;
+    const outAnnualSavings = document.getElementById('outAnnualSavings')!;
+    const outTenYearSavings = document.getElementById('outTenYearSavings')!;
+    const verdictText = document.getElementById('verdictText')!;
+    const verdictBox = document.getElementById('verdictBox')!;
+
+    // Formatting
+    const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+    function calculate() {
+      const tons = parseFloat(tonnageVal.value);
+      const btus = tons * 12000;
+      
+      const sOld = parseFloat(oldSeer.value);
+      const sNew = parseFloat(newSeer.value);
+      const kwRate = parseFloat(rate.value);
+      const hrs = parseFloat(hours.value);
+
+      // Display Updates
+      oldSeerDisplay.innerText = `${sOld} SEER`;
+      newSeerDisplay.innerText = `${sNew.toFixed(1)} SEER2`;
+      rateDisplay.innerText = `$${kwRate.toFixed(2)}/kWh`;
+      hoursDisplay.innerText = `${hrs} hrs`;
+
+      // The Physics Math
+      // Watts = BTUs / SEER. kWh = Watts / 1000 * Hours. Cost = kWh * Rate
+      const oldAnnualKwh = (btus / sOld) * hrs / 1000;
+      const oldAnnualCost = oldAnnualKwh * kwRate;
+
+      const newAnnualKwh = (btus / sNew) * hrs / 1000;
+      const newAnnualCost = newAnnualKwh * kwRate;
+
+      const annualSavings = oldAnnualCost - newAnnualCost;
+      const tenYearSavings = annualSavings * 10;
+
+      // Update Output UI
+      outOldCost.innerText = currency.format(oldAnnualCost);
+      outNewCost.innerText = currency.format(newAnnualCost);
+      outAnnualSavings.innerText = currency.format(annualSavings);
+      outTenYearSavings.innerText = currency.format(tenYearSavings);
+
+      // The Verdict Logic
+      if (annualSavings < 100) {
+        verdictBox.className = "mt-8 bg-red-900/20 border-l-4 border-red-500 p-4 rounded-r-xl";
+        verdictBox.querySelector('h4')!.className = "font-bold text-red-600 text-sm uppercase tracking-wide mb-1";
+        verdictText.className = "text-red-900 text-sm leading-relaxed font-medium";
+        verdictText.innerText = `DO NOT BUY FOR EFFICIENCY. You live in a mild climate or have cheap electricity. Spending $3,000 extra on a high SEER2 unit will literally take 30+ years to pay off. Buy the cheapest 14.3 SEER2 unit legally allowed in your state.`;
+      } else if (annualSavings >= 100 && annualSavings < 300) {
+        verdictBox.className = "mt-8 bg-yellow-900/20 border-l-4 border-yellow-500 p-4 rounded-r-xl";
+        verdictBox.querySelector('h4')!.className = "font-bold text-yellow-700 text-sm uppercase tracking-wide mb-1";
+        verdictText.className = "text-yellow-900 text-sm leading-relaxed font-medium";
+        verdictText.innerText = `MODERATE SAVINGS. You will save a decent amount, but likely not enough to justify buying a massive 22 SEER2 unit. A mid-tier 16 SEER2 unit is likely the financial sweet spot for your home.`;
+      } else {
+        verdictBox.className = "mt-8 bg-green-900/20 border-l-4 border-green-500 p-4 rounded-r-xl";
+        verdictBox.querySelector('h4')!.className = "font-bold text-green-700 text-sm uppercase tracking-wide mb-1";
+        verdictText.className = "text-green-900 text-sm leading-relaxed font-medium";
+        verdictText.innerText = `THE UPGRADE PAYS FOR ITSELF. You are running massive thermal loads at high electricity rates. A high-efficiency 18+ SEER2 inverter unit will easily pay off its premium cost within its lifespan.`;
+      }
+    }
+
+    // Event Listeners for Tonnage
+    function setTonnage(val: string, element: Element) {
+      tonnageVal.value = val;
+      tonnageBtns.forEach(b => {
+        b.className = b.className.replace('bg-cyan-500', 'bg-transparent').replace('text-white', 'text-gray-600').replace('border-cyan-500', 'border-gray-200');
+        if(!b.classList.contains('hover:border-cyan-500')) b.classList.add('hover:border-cyan-500', 'hover:text-cyan-600');
+      });
+      element.classList.remove('bg-transparent', 'text-gray-600', 'border-gray-200', 'hover:border-cyan-500', 'hover:text-cyan-600');
+      element.classList.add('bg-cyan-500', 'text-white', 'border-cyan-500');
+      calculate();
+    }
+
+    tonnageBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        setTonnage(target.getAttribute('data-val') || '3.0', target);
+      });
+    });
+
+    // Event Listeners for Sliders
+    [oldSeer, newSeer, rate, hours].forEach(slider => {
+      slider.addEventListener('input', calculate);
+    });
+
+    // Init
+    // Find the 3.0 button and set it active
+    const defaultBtn = Array.from(tonnageBtns).find(b => b.getAttribute('data-val') === '3.0');
+    if(defaultBtn) setTonnage('3.0', defaultBtn);
+    calculate();
+
+  </script>
+</Layout>

@@ -1,0 +1,433 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SEO from '../components/SEO.astro';
+import CoolAirCanvas from '../components/CoolAirCanvas.astro';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Cooling Support",
+    "url": "https://coolingsupport.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://coolingsupport.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Cooling Support",
+    "url": "https://coolingsupport.com",
+    "logo": "https://coolingsupport.com/logo.png",
+    "knowsAbout": ["HVAC", "Air Conditioning", "AC Sizing", "HVAC Troubleshooting"]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Cooling Support Calculators",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+];
+
+const categories = [
+  {
+    title: "Sizing & Capacity Tools",
+    description: "Guarantee you buy the exact size unit for your space.",
+    tag: "sizing",
+    badgeBg: "bg-blue-50 text-blue-700 border-blue-100",
+    color: "blue",
+    tools: [
+      {
+        name: "Free HVAC Load Calculator",
+        desc: "The professional way to size an AC. Calculate exact Tonnage based on insulation, windows, ceiling height, and climate.",
+        href: "/tools/hvac-load-calculator",
+        isNew: true
+      },
+      {
+        name: "Central AC Tonnage Calculator",
+        desc: "Find the required Tonnage for whole-house central air replacement.",
+        href: "/tools/central-ac-tonnage-calculator"
+      },
+      {
+        name: "Room BTU Sizing Calculator",
+        desc: "Calculate exact BTUs needed for window ACs and mini-splits.",
+        href: "/tools/room-btu-calculator"
+      },
+      {
+        name: "Dehumidifier Sizing",
+        desc: "Find the required Pints Per Day (PPD) for damp spaces.",
+        href: "/tools/dehumidifier-sizing"
+      },
+      {
+        name: "MERV / Air Filter Selector",
+        desc: "Quiz to find the perfect air filter for allergies and pets.",
+        href: "/tools/merv-filter-selector"
+      }
+    ]
+  },
+  {
+    title: "Financial & Cost Estimators",
+    description: "Calculate energy bills, repair ROI, and installation costs.",
+    tag: "financial",
+    badgeBg: "bg-emerald-50 text-emerald-700 border-emerald-100",
+    color: "emerald",
+    tools: [
+      {
+        name: "AC Running Cost Estimator",
+        desc: "Calculate your daily, monthly, and yearly AC energy bills.",
+        href: "/tools/ac-running-cost"
+      },
+      {
+        name: "SEER2 Energy Savings Calculator",
+        desc: "Calculate exact energy savings and ROI from upgrading to SEER2.",
+        href: "/tools/seer2-savings-calculator"
+      },
+      {
+        name: "Ductless Mini-Split Cost",
+        desc: "Estimate equipment and labor costs for mini-split installations.",
+        href: "/tools/mini-split-cost-estimator"
+      },
+      {
+        name: "Repair vs. Replace Analyzer",
+        desc: "Use the $5,000 rule to decide whether to fix or buy new.",
+        href: "/tools/repair-vs-replace"
+      }
+    ]
+  },
+  {
+    title: "Pro & DIY Technical Tools",
+    description: "Advanced calculators for electrical, airflow, and refrigerants.",
+    tag: "technical",
+    badgeBg: "bg-violet-50 text-violet-700 border-violet-100",
+    color: "violet",
+    tools: [
+      {
+        name: "Wire Gauge & Breaker Size",
+        desc: "Find required AWG wire and breaker amps for ACs and heaters.",
+        href: "/tools/wire-size-calculator"
+      },
+      {
+        name: "Air Duct Sizing Calculator",
+        desc: "Calculate required duct dimensions based on CFM.",
+        href: "/tools/air-duct-sizing-calculator"
+      },
+      {
+        name: "AC Freon Recharge Cost Calculator",
+        desc: "Calculate exact material and labor costs for R22, R410A, and R454B recharges.",
+        href: "/tools/freon-cost-calculator"
+      },
+      {
+        name: "Superheat & Subcooling Target",
+        desc: "Calculate PT targets for accurate AC refrigerant charging.",
+        href: "/tools/superheat-subcooling-calculator"
+      }
+    ]
+  },
+  {
+    title: "Interactive Diagnostics & Simulators",
+    description: "Deep-dive visual engines for troubleshooting, ROI, and safety.",
+    tag: "diagnostics",
+    badgeBg: "bg-amber-50 text-amber-700 border-amber-100",
+    color: "amber",
+    tools: [
+      {
+        name: "Inverter vs. Traditional ROI",
+        desc: "Graph your break-even date based on local electricity rates.",
+        href: "/tools/inverter-roi-simulator"
+      },
+      {
+        name: "AC Noise Analyzer",
+        desc: "Match your AC's noise to find the exact failing part.",
+        href: "/tools/ac-noise-analyzer"
+      },
+      {
+        name: "Visual Capacitor Matcher",
+        desc: "Check if a replacement capacitor is safe for your unit.",
+        href: "/tools/capacitor-matcher"
+      },
+      {
+        name: "Interactive 'Short-Cycling' Sizer",
+        desc: "Visualize why oversized units fail to remove humidity.",
+        href: "/tools/short-cycle-simulator"
+      },
+      {
+        name: "Can I Vent It? Window Builder",
+        desc: "3D venting solutions for non-standard windows.",
+        href: "/tools/window-venting-builder"
+      }
+    ]
+  },
+  {
+    title: "Contractor & Business Tools",
+    description: "Advanced calculators to help HVAC and plumbing business owners manage pricing, overhead, and technical design.",
+    tag: "business",
+    badgeBg: "bg-rose-50 text-rose-700 border-rose-100",
+    color: "rose",
+    tools: [
+      {
+        name: "HVAC Flat Rate Pricing Engine",
+        desc: "Calculate final customer price based on part cost, hourly rate, and overhead.",
+        href: "/tools/flat-rate-pricing-calculator",
+        isNew: true
+      },
+      {
+        name: "Labor Burden & True Cost",
+        desc: "Find out your true hourly cost per technician after taxes, insurance, and van costs.",
+        href: "/tools/labor-burden-calculator"
+      },
+      {
+        name: "Plumbing Pipe Sizing",
+        desc: "Calculate friction loss and size water pipes for residential plumbing.",
+        href: "/tools/plumbing-pipe-calculator"
+      },
+      {
+        name: "HVAC Proposal Template",
+        desc: "Download a printable 'Good, Better, Best' sales quote template.",
+        href: "/tools/hvac-proposal-template",
+        isNew: true
+      },
+      {
+        name: "21-Point PM Checklist",
+        desc: "Printable Preventative Maintenance checklist for AC and Furnace tune-ups.",
+        href: "/tools/hvac-maintenance-checklist"
+      },
+      {
+        name: "EPA Refrigerant Log",
+        desc: "Legally required tracking sheet for R-22 and R-410A recovery and additions.",
+        href: "/tools/epa-refrigerant-log"
+      },
+      {
+        name: "Blank Manual J Worksheet",
+        desc: "Printable block load calculation grid for clipboard field use.",
+        href: "/tools/manual-j-worksheet"
+      }
+    ]
+  }
+];
+---
+
+  <Layout title="Free HVAC Calculators & AC Sizing Tools">
+  <SEO 
+    slot="head"
+    title="Free HVAC Calculators & AC Sizing Tools | Cooling Support" 
+    description="Free HVAC load calculators, AC sizing tools, energy bill estimators, and fault diagnostics for homeowners and professionals. No signup, no forms, no restrictions."
+    schema={schema}
+  />
+
+  <!-- Redesigned Hero Section with Glassmorphism & Particles (Compact for Real-Time Search UX) -->
+  <section class="relative bg-slate-950 overflow-hidden py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-zinc-900">
+    <CoolAirCanvas />
+    
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+
+
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white mb-3 leading-tight">
+        HVAC Calculators <br />
+        <span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-300 bg-clip-text text-transparent">for Sizing, Costs, &amp; Diagnostics</span>
+      </h1>
+      
+      <p class="text-sm sm:text-base text-slate-400 mb-6 max-w-2xl mx-auto leading-relaxed font-light">
+        Calculate home heat loads, AC tonnage, energy running costs, and wire sizes with high-accuracy calculators. Troubleshoot fault codes and noise issues instantly.
+      </p>
+      
+      <!-- Modernized Search Bar -->
+      <div class="max-w-xl mx-auto relative flex items-center bg-white/5 border border-white/10 rounded-2xl p-1.5 focus-within:border-blue-500/50 focus-within:ring-4 focus-within:ring-blue-500/10 transition-all backdrop-blur-lg shadow-xl shadow-slate-950/20">
+        <div class="absolute left-5 text-slate-400 pointer-events-none w-5 h-5 flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+        <input 
+          type="text" 
+          id="home-search"
+          placeholder="Type tool name (e.g. load, ROI, capacitor, wire)..." 
+          class="w-full pl-12 pr-4 py-2 bg-transparent text-white placeholder-slate-500 focus:outline-none text-base sm:text-lg rounded-xl"
+        />
+      </div>
+
+      <!-- Quick Action Tags -->
+      <div class="mt-4 flex flex-wrap justify-center gap-2 text-xs">
+        <span class="text-slate-500 font-semibold uppercase tracking-wider self-center mr-2">Quick Access:</span>
+        <button class="quick-tag bg-slate-900 hover:bg-slate-800 text-slate-300 px-3.5 py-1.5 rounded-xl border border-zinc-800 transition-colors cursor-pointer" data-search="load">Load Calc</button>
+        <button class="quick-tag bg-slate-900 hover:bg-slate-800 text-slate-300 px-3.5 py-1.5 rounded-xl border border-zinc-800 transition-colors cursor-pointer" data-search="noise">Noise Analyzer</button>
+        <button class="quick-tag bg-slate-900 hover:bg-slate-800 text-slate-300 px-3.5 py-1.5 rounded-xl border border-zinc-800 transition-colors cursor-pointer" data-search="freon">Freon Cost</button>
+        <button class="quick-tag bg-slate-900 hover:bg-slate-800 text-slate-300 px-3.5 py-1.5 rounded-xl border border-zinc-800 transition-colors cursor-pointer" data-search="wire">Wire Size</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Redesigned Bento Grid Section with Tabs -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-zinc-50 relative min-h-screen border-t border-zinc-200/50">
+    <div class="max-w-7xl mx-auto relative z-10">
+      
+      <!-- Premium Section Header -->
+      <div class="text-center mb-8">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Interactive HVAC Sizing &amp; Diagnostic Calculators</h2>
+        <p class="mt-2 text-sm text-slate-500 max-w-xl mx-auto leading-relaxed">Filter categories dynamically or search to instantly identify the calculation engine you need.</p>
+      </div>
+
+      <!-- Modern Tabs Filter -->
+      <div class="flex flex-wrap justify-center gap-2 mb-12">
+        <button class="tab-btn active text-xs font-black px-5 py-3 rounded-2xl transition-all cursor-pointer bg-slate-900 text-white shadow-sm border border-slate-900" data-tag="all">All Tools</button>
+        <button class="tab-btn text-xs font-black px-5 py-3 rounded-2xl transition-all cursor-pointer bg-white text-slate-600 border border-zinc-200/80 hover:border-zinc-400 hover:text-slate-900 shadow-sm" data-tag="sizing">Sizing &amp; Capacity</button>
+        <button class="tab-btn text-xs font-black px-5 py-3 rounded-2xl transition-all cursor-pointer bg-white text-slate-600 border border-zinc-200/80 hover:border-zinc-400 hover:text-slate-900 shadow-sm" data-tag="financial">Costs &amp; ROI</button>
+        <button class="tab-btn text-xs font-black px-5 py-3 rounded-2xl transition-all cursor-pointer bg-white text-slate-600 border border-zinc-200/80 hover:border-zinc-400 hover:text-slate-900 shadow-sm" data-tag="technical">Technical Pro</button>
+        <button class="tab-btn text-xs font-black px-5 py-3 rounded-2xl transition-all cursor-pointer bg-white text-slate-600 border border-zinc-200/80 hover:border-zinc-400 hover:text-slate-900 shadow-sm" data-tag="diagnostics">Diagnostics &amp; Simulators</button>
+        <button class="tab-btn text-xs font-black px-5 py-3 rounded-2xl transition-all cursor-pointer bg-white text-slate-600 border border-zinc-200/80 hover:border-zinc-400 hover:text-slate-900 shadow-sm" data-tag="business">Contractor &amp; Business</button>
+      </div>
+
+      <!-- Unified Bento Grid List -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="tools-grid-container">
+        {categories.map((category) => 
+          category.tools.map((tool) => (
+            <a 
+              href={tool.href} 
+              class="tool-card bg-white rounded-3xl border border-zinc-200/60 shadow-[0_8px_30px_rgba(0,0,0,0.02)] p-6 sm:p-7 flex flex-col justify-between items-start group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:border-blue-500/25 cursor-pointer"
+              data-tag={category.tag}
+              data-name={tool.name.toLowerCase()}
+              data-desc={tool.desc.toLowerCase()}
+            >
+              <div class="w-full">
+                <!-- Badges Block -->
+                <div class="flex flex-wrap items-center gap-1.5 mb-4">
+                  <span class={`text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border ${category.badgeBg}`}>
+                    {category.title.split(" & ")[0]}
+                  </span>
+                  {tool.isNew && (
+                    <span class="text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-orange-100 bg-orange-50 text-orange-700">
+                      NEW
+                    </span>
+                  )}
+                </div>
+
+                <h3 class="text-base sm:text-lg font-black text-slate-900 group-hover:text-blue-600 transition-colors tracking-tight leading-snug mb-2">
+                  {tool.name}
+                </h3>
+                <p class="text-sm text-slate-500 leading-relaxed font-normal mb-6">
+                  {tool.desc}
+                </p>
+              </div>
+
+              <span class="text-blue-600 text-xs font-bold flex items-center group-hover:text-blue-700 transition-colors">
+                Use Tool 
+                <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+              </span>
+            </a>
+          ))
+        )}
+      </div>
+
+      <!-- Empty State -->
+      <div id="search-empty-state" class="hidden bg-white border border-zinc-200 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.02)] p-16 text-center max-w-md mx-auto mt-12">
+        <svg class="w-12 h-12 text-zinc-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <h3 class="text-lg font-extrabold text-slate-900 mb-1">No Tools Match Search</h3>
+        <p class="text-sm text-slate-500">We couldn't find any tool matching your search. Please check your spelling or clear the search input.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Guides CTA Bar -->
+  <section class="pb-24 pt-8 px-4 sm:px-6 lg:px-8 bg-zinc-50 border-t border-zinc-200/50">
+    <div class="max-w-4xl mx-auto bg-slate-950 rounded-3xl overflow-hidden border border-zinc-800 shadow-xl shadow-slate-950/20">
+      <div class="px-8 py-16 sm:px-16 sm:py-20 text-center relative overflow-hidden">
+        <!-- Blue Highlight -->
+        <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-[600px] h-[300px] opacity-10 pointer-events-none">
+          <div class="absolute inset-0 bg-gradient-to-b from-blue-500 to-transparent blur-[80px] rounded-full"></div>
+        </div>
+
+        <h2 class="text-3xl font-extrabold text-white sm:text-4xl tracking-tight mb-4 relative z-10">
+          Want to learn more? Explore our Knowledge Base
+        </h2>
+        <p class="text-base sm:text-lg text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed relative z-10 font-light">
+          From DIY maintenance and error codes to deep-dive buying comparisons, our expert guides have you covered.
+        </p>
+        <a href="/guides" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-md shadow-blue-600/10 hover:shadow-blue-600/20 relative z-10">
+          View All Guides
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  let activeTab = 'all';
+  const searchInput = document.getElementById('home-search') as HTMLInputElement | null;
+  const cards = document.querySelectorAll<HTMLElement>('.tool-card');
+  const emptyState = document.getElementById('search-empty-state');
+  const tabs = document.querySelectorAll('.tab-btn');
+  const quickTags = document.querySelectorAll('.quick-tag');
+
+  function filterTools() {
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    let matchesCount = 0;
+
+    cards.forEach((card) => {
+      const cardTag = card.getAttribute('data-tag') || '';
+      const name = card.getAttribute('data-name') || '';
+      const desc = card.getAttribute('data-desc') || '';
+
+      const matchesSearch = query === '' || name.includes(query) || desc.includes(query);
+      const matchesTab = activeTab === 'all' || cardTag === activeTab;
+
+      if (matchesSearch && matchesTab) {
+        card.style.display = 'flex';
+        matchesCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (emptyState) {
+      if (matchesCount === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+      }
+    }
+  }
+
+  // Handle category tab clicks
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach((t) => {
+        t.className = 'tab-btn text-xs font-black px-5 py-3 rounded-2xl transition-all cursor-pointer bg-white text-slate-600 border border-zinc-200/80 hover:border-zinc-400 hover:text-slate-900 shadow-sm';
+      });
+
+      const tag = tab.getAttribute('data-tag') || 'all';
+      activeTab = tag;
+
+      if (tag === 'all') {
+        tab.className = 'tab-btn active text-xs font-black px-5 py-3 rounded-2xl transition-all cursor-pointer bg-slate-900 text-white shadow-sm border border-slate-900';
+      } else {
+        tab.className = 'tab-btn active text-xs font-black px-5 py-3 rounded-2xl transition-all cursor-pointer bg-slate-900 text-white shadow-sm border border-slate-900';
+      }
+
+      filterTools();
+    });
+  });
+
+  // Handle search field input
+  if (searchInput) {
+    searchInput.addEventListener('input', filterTools);
+  }
+
+  // Handle quick tag button clicks
+  quickTags.forEach((tag) => {
+    tag.addEventListener('click', () => {
+      const tagSearch = tag.getAttribute('data-search');
+      if (tagSearch && searchInput) {
+        searchInput.value = tagSearch;
+        filterTools();
+        // Scroll down to cards section smoothly
+        document.getElementById('tools-grid-container')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>

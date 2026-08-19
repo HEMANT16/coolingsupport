@@ -1,0 +1,345 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Oversized AC Symptoms | Short Cycling Simulator";
+const description = "Experiencing AC short cycling? Use our interactive simulator to visualize the oversized AC symptoms that cause high indoor humidity and the dreaded swamp effect.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Oversized AC Short-Cycling Simulator",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+    "description": "An interactive utility that simulates the physical consequences of installing an oversized air conditioner. By cross-referencing the home's true thermal load against the installed tonnage, it dynamically visualizes AC short cycling runtimes, locked rotor amp stress, and indoor humidity levels (the swamp effect).",
+    "applicationCategory": "Utility",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What are the most common oversized AC symptoms?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The primary symptom of an oversized AC is short cycling (turning on and off rapidly, running for less than 10 minutes). Secondary symptoms include high indoor humidity (the swamp effect), massive temperature swings between rooms, and premature compressor failure due to excessive startup stress."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will an oversized air conditioner cool my house faster?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, but you will hate it. It will blast the sensible temperature down to 72 degrees in 10 minutes and instantly shut off. Because it didn't run long enough to extract latent heat (humidity) from the air, your house will feel like a cold, wet cave."
+        }
+      }
+    ]
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        Oversized AC Symptoms & <span class="text-blue-300">Short Cycling</span> Simulator
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <div class="text-lg text-blue-100 max-w-3xl mx-auto space-y-4 text-left bg-blue-950/50 p-6 rounded-sm border border-blue-800/50">
+        <p>
+          "Bigger is better" is the most expensive myth in HVAC. Use our engine below to simulate what happens when a contractor installs a 5-Ton AC on a house that only needed 3 Tons.
+        </p>
+        <p class="text-sm text-blue-300 italic">
+          Pro Tip: Your air conditioner does two jobs: it drops the temperature (Sensible Heat) and it wrings water out of the air (Latent Heat). If it's oversized, it cools too fast and shuts off before it can remove the water, leaving you shivering in a humid swamp.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Matcher Tool -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10 -mt-6">
+    <div class="max-w-4xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-gray-900 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-cyan-400">️</span>
+          <h2 class="text-white font-bold text-lg">Short-Cycle Engine</h2>
+        </div>
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-md bg-red-500"></div>
+          <div class="w-3 h-3 rounded-md bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-md bg-green-500"></div>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          
+          <!-- Input Controls -->
+          <div class="space-y-8">
+            
+            <!-- True Load -->
+            <div>
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-2">1. Your Home's True Load</label>
+              <p class="text-xs text-gray-500 mb-4">What size your home actually needs.</p>
+              
+              <div class="relative pt-1">
+                <input type="range" id="trueLoad" min="2" max="5" step="0.5" value="3" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-cyan-500">
+                <div class="flex justify-between text-xs text-gray-400 font-bold mt-2 px-1">
+                  <span>2.0 Ton</span>
+                  <span>3.0</span>
+                  <span>4.0</span>
+                  <span>5.0 Ton</span>
+                </div>
+                <div class="text-center mt-2">
+                  <span class="text-2xl font-black text-gray-900" id="trueLoadDisplay">3.0</span> <span class="text-gray-500 font-bold">Tons</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Installed Tonnage -->
+            <div>
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-2">2. The Installed AC Size</label>
+              <p class="text-xs text-gray-500 mb-4">What the contractor put in your backyard.</p>
+              
+              <div class="relative pt-1">
+                <input type="range" id="installedLoad" min="2" max="5" step="0.5" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500">
+                <div class="flex justify-between text-xs text-gray-400 font-bold mt-2 px-1">
+                  <span>2.0 Ton</span>
+                  <span>3.0</span>
+                  <span>4.0</span>
+                  <span>5.0 Ton</span>
+                </div>
+                <div class="text-center mt-2">
+                  <span class="text-2xl font-black text-red-600" id="installedLoadDisplay">5.0</span> <span class="text-red-400 font-bold">Tons</span>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+
+          <!-- Output Panel -->
+          <div class="bg-gray-900 rounded-sm p-6 lg:p-8 text-white flex flex-col justify-center relative overflow-hidden">
+            <!-- Decorative background elements -->
+            <div id="bgGlow" class="absolute top-0 right-0 w-64 h-64 bg-red-500 rounded-md mix-blend-overlay filter blur-3xl opacity-20 transform translate-x-1/2 -translate-y-1/2 pointer-events-none transition-colors duration-500"></div>
+            
+            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-6 text-center">Simulation Results</h3>
+            
+            <!-- Metrics Grid -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+               
+               <!-- Runtime -->
+               <div class="bg-black/40 rounded-sm p-4 border border-white/10 text-center">
+                  <span class="block text-xs font-bold text-gray-400 mb-1 uppercase">Avg Cycle Runtime</span>
+                  <div class="text-3xl font-black text-white" id="runtimeDisplay">10<span class="text-lg text-gray-500">m</span></div>
+               </div>
+
+               <!-- Humidity -->
+               <div class="bg-black/40 rounded-sm p-4 border border-white/10 text-center relative overflow-hidden">
+                  <div id="humidityBar" class="absolute bottom-0 left-0 w-full bg-red-500/20 z-0 transition-all duration-500" style="height: 65%;"></div>
+                  <div class="relative z-10">
+                    <span class="block text-xs font-bold text-gray-400 mb-1 uppercase">Indoor Humidity</span>
+                    <div class="text-3xl font-black text-white" id="humidityDisplay">65<span class="text-lg text-gray-500">%</span></div>
+                  </div>
+               </div>
+
+            </div>
+
+            <!-- Verdict Alert -->
+            <div id="verdictAlert" class="bg-red-900/50 border border-red-500/30 rounded-sm p-4 transition-all duration-300">
+              <h4 id="verdictTitle" class="font-bold text-red-400 flex items-center gap-2 mb-2">
+                <span>️</span> The Swamp Effect
+              </h4>
+              <p id="verdictText" class="text-red-100 text-sm leading-relaxed">
+                Severely Oversized. It blasts the house down to the target temperature in 10 minutes and shuts off. Because it didn't run for at least 20 minutes, the evaporator coil never had time to extract moisture. Your house is now a cold, wet cave.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content (10-Year Veteran Tone) -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: The Physics -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The Physics of Dehumidification
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          Air conditioning is not just about blowing cold air; it is about moisture extraction. When warm, humid indoor air blows across your freezing cold evaporator coil, the water vapor condenses into liquid and drips out the drain pipe. 
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          <strong>Here is the catch:</strong> It takes a minimum of 15-20 minutes of continuous running for an evaporator coil to get cold enough and saturated enough to start pulling meaningful humidity out of the air. 
+        </p>
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-xl">
+          <h3 class="text-lg font-bold text-blue-900 mb-2">Sensible vs Latent Heat</h3>
+          <p class="text-blue-800 text-sm">
+            Dropping the temperature on the thermometer is called removing "Sensible Heat." Removing the humidity is called removing "Latent Heat." An oversized AC drops sensible heat almost instantly, completely ignoring the latent heat. This is the definition of short cycling.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 2: Compressor Murder -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-red-500">️</span> Compressor Murder via LRA
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          Every time your AC condenser kicks on, the compressor pulls massive amperage—called Locked Rotor Amps (LRA)—to overcome the immense refrigerant head pressure. This startup event accounts for 90% of the mechanical wear and tear on your system.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white p-6 rounded-sm border border-gray-200 shadow-sm border-t-4 border-t-green-500">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Proper Sizing (Long Cycles)</h3>
+            <p class="text-gray-700 leading-relaxed text-sm">A perfectly sized 3-ton unit runs for 45 minutes, satisfies the thermostat, and shuts off. It starts up maybe 2 or 3 times per hour. The compressor lives for 15 years.</p>
+          </div>
+          <div class="bg-white p-6 rounded-sm border border-gray-200 shadow-sm border-t-4 border-t-red-500">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Oversized (Short Cycling)</h3>
+            <p class="text-gray-700 leading-relaxed text-sm">A 5-ton unit on that same house blasts cold air for 8 minutes, shuts off, and then kicks back on 5 minutes later. It starts up 8 to 10 times an hour. The immense LRA stress burns the compressor out in 6 years.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: FAQs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          Frequently Asked Questions
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-cyan-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              How do I fix an oversized AC?
+              <span class="text-cyan-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Unfortunately, you cannot magically shrink a compressor. If your AC is severely oversized, the only true fix is replacing the outdoor condensing unit and indoor evaporator coil with the correct tonnage. In mild cases, you can try slowing down the indoor blower motor speed to force the coil to get colder and extract slightly more humidity, or install a whole-home dehumidifier to handle the latent load the AC is missing.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-cyan-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Why did my contractor install a bigger unit?
+              <span class="text-cyan-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Lazy contractors use a terrible "Rule of Thumb" sizing method (e.g., 1 ton per 500 sq ft) instead of performing a mathematical ACCA Manual J load calculation. To avoid callbacks on 100-degree days, they purposefully install a larger unit to "play it safe." They get to avoid a callback, while you get stuck with a humid house and a burned-out compressor.
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Logic -->
+  <script>
+    const trueLoadInput = document.getElementById('trueLoad') as HTMLInputElement;
+    const installedLoadInput = document.getElementById('installedLoad') as HTMLInputElement;
+    
+    const trueLoadDisplay = document.getElementById('trueLoadDisplay')!;
+    const installedLoadDisplay = document.getElementById('installedLoadDisplay')!;
+    
+    const runtimeDisplay = document.getElementById('runtimeDisplay')!;
+    const humidityDisplay = document.getElementById('humidityDisplay')!;
+    const humidityBar = document.getElementById('humidityBar')!;
+    
+    const bgGlow = document.getElementById('bgGlow')!;
+    
+    const verdictAlert = document.getElementById('verdictAlert')!;
+    const verdictTitle = document.getElementById('verdictTitle')!;
+    const verdictText = document.getElementById('verdictText')!;
+
+    function updateSimulator() {
+      const trueLoad = parseFloat(trueLoadInput.value);
+      const installedLoad = parseFloat(installedLoadInput.value);
+      
+      // Format to 1 decimal place
+      trueLoadDisplay.textContent = trueLoad.toFixed(1);
+      installedLoadDisplay.textContent = installedLoad.toFixed(1);
+
+      const delta = installedLoad - trueLoad;
+
+      // Base metrics for a perfectly sized system
+      let runtime = 45; // minutes
+      let humidity = 48; // percent
+
+      if (delta === 0) {
+        // Perfectly sized
+        bgGlow.className = "absolute top-0 right-0 w-64 h-64 bg-green-500 rounded-md mix-blend-overlay filter blur-3xl opacity-20 transform translate-x-1/2 -translate-y-1/2 pointer-events-none transition-colors duration-500";
+        verdictAlert.className = "bg-green-900/50 border border-green-500/30 rounded-sm p-4 transition-all duration-300";
+        verdictTitle.innerHTML = `<span></span> Perfect Comfort`;
+        verdictTitle.className = "font-bold text-green-400 flex items-center gap-2 mb-2";
+        verdictText.className = "text-green-100 text-sm leading-relaxed";
+        verdictText.textContent = "Perfectly Sized. The system runs long enough to wring the humidity out of the air like a sponge. The home feels crisp and dry, and the compressor starts fewer times per hour, maximizing its lifespan.";
+      } 
+      else if (delta > 0) {
+        // Oversized
+        runtime = Math.max(8, 45 - (delta * 15)); // Runtime plummets
+        humidity = Math.min(72, 48 + (delta * 9)); // Humidity skyrockets
+
+        let severity = delta >= 1.5 ? "Severely Oversized" : "Oversized";
+        let colorClass = delta >= 1.5 ? "bg-red-500" : "bg-orange-500";
+        
+        bgGlow.className = `absolute top-0 right-0 w-64 h-64 ${colorClass} rounded-md mix-blend-overlay filter blur-3xl opacity-20 transform translate-x-1/2 -translate-y-1/2 pointer-events-none transition-colors duration-500`;
+        
+        if (delta >= 1.5) {
+            verdictAlert.className = "bg-red-900/50 border border-red-500/30 rounded-sm p-4 transition-all duration-300";
+            verdictTitle.innerHTML = `<span>️</span> The Swamp Effect (${severity})`;
+            verdictTitle.className = "font-bold text-red-400 flex items-center gap-2 mb-2";
+            verdictText.className = "text-red-100 text-sm leading-relaxed";
+            verdictText.textContent = "It blasts the house down to the target temperature in 10 minutes and shuts off. Because it didn't run for at least 20 minutes, the evaporator coil never had time to extract moisture. Your house is now a cold, wet cave.";
+            humidityBar.className = "absolute bottom-0 left-0 w-full bg-red-500/30 z-0 transition-all duration-500";
+        } else {
+            verdictAlert.className = "bg-orange-900/50 border border-orange-500/30 rounded-sm p-4 transition-all duration-300";
+            verdictTitle.innerHTML = `<span>️</span> Short Cycling (${severity})`;
+            verdictTitle.className = "font-bold text-orange-400 flex items-center gap-2 mb-2";
+            verdictText.className = "text-orange-100 text-sm leading-relaxed";
+            verdictText.textContent = "The unit is cooling the air faster than it can dehumidify it. You will notice a clammy feeling in the house, and the rapid stopping and starting will put immense wear on your compressor.";
+            humidityBar.className = "absolute bottom-0 left-0 w-full bg-orange-500/30 z-0 transition-all duration-500";
+        }
+      } 
+      else {
+        // Undersized
+        runtime = 60; // Never turns off
+        humidity = 42; // Very dry
+
+        bgGlow.className = "absolute top-0 right-0 w-64 h-64 bg-cyan-500 rounded-md mix-blend-overlay filter blur-3xl opacity-20 transform translate-x-1/2 -translate-y-1/2 pointer-events-none transition-colors duration-500";
+        verdictAlert.className = "bg-cyan-900/50 border border-cyan-500/30 rounded-sm p-4 transition-all duration-300";
+        verdictTitle.innerHTML = `<span>️</span> Undersized (Constant Run)`;
+        verdictTitle.className = "font-bold text-cyan-400 flex items-center gap-2 mb-2";
+        verdictText.className = "text-cyan-100 text-sm leading-relaxed";
+        verdictText.textContent = "The system is too small. It will run 24/7 on the hottest days and struggle to reach your target sensible temperature. However, because it never shuts off, your indoor humidity will be exceptionally low and crisp.";
+        humidityBar.className = "absolute bottom-0 left-0 w-full bg-cyan-500/30 z-0 transition-all duration-500";
+      }
+
+      // Update UI displays
+      runtimeDisplay.innerHTML = runtime === 60 ? `24/7` : `${Math.round(runtime)}<span class="text-lg text-gray-500">m</span>`;
+      humidityDisplay.innerHTML = `${Math.round(humidity)}<span class="text-lg text-gray-500">%</span>`;
+      humidityBar.style.height = `${humidity}%`;
+
+      if(delta <= 0 && delta >= -1) {
+          humidityBar.className = "absolute bottom-0 left-0 w-full bg-green-500/20 z-0 transition-all duration-500";
+      }
+    }
+
+    trueLoadInput.addEventListener('input', updateSimulator);
+    installedLoadInput.addEventListener('input', updateSimulator);
+
+    // Init
+    updateSimulator();
+  </script>
+</Layout>

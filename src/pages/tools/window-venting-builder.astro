@@ -1,0 +1,369 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "How To Vent Portable AC Out Crank Window | Vent Builder";
+const description = "Struggling to figure out how to vent a portable AC out a crank window? Use our interactive visual vent builder to find the exact portable AC casement window kit and hacks you need.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Portable AC Window Venting Builder",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+    "description": "An interactive visual utility that helps users solve non-standard portable AC venting problems. Users select their specific window architecture (casement, awning, horizontal slider) and the engine outputs the precise custom venting solutions, cloth seal kits, or plexiglass hacks required to exhaust the heat.",
+    "applicationCategory": "Utility",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can I vent a portable AC into another room?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. A portable AC does not create cold air; it extracts heat from the room. The exhaust hose carries that concentrated 120+ degree heat. If you vent it into another room, you will turn that room into a deadly oven, and the heat will eventually bleed right back into the room you are trying to cool."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you vent a portable AC out of a crank casement window?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The standard plastic slider kits will not work. You must use a flexible zip-seal cloth window kit that velcros to the window frame, or custom cut a piece of plexiglass to replace your window screen, cutting a 5-inch hole for the exhaust hose."
+        }
+      }
+    ]
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        How To Vent A Portable AC Out A <span class="text-blue-300">Crank Window</span> (And Other Weird Shapes)
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <div class="text-lg text-blue-100 max-w-3xl mx-auto space-y-4 text-left bg-blue-950/50 p-6 rounded-sm border border-blue-800/50">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">Crowdsourced</span>
+          <span class="text-sm text-blue-300">Curated from r/AirConditioners & HVAC Forums</span>
+        </div>
+        <p>
+          You bought a portable AC, opened the box, and realized the factory plastic window kit absolutely does not fit your weird windows. Don't panic. 
+        </p>
+        <p class="text-sm text-blue-300 italic">
+          Pro Tip: We scraped the top DIY advice from Reddit and master HVAC techs to find the real solutions. Select your exact window architecture below. Our venting engine will show you the exact hacks required to seal the exhaust hose properly so you don't leak 120-degree heat back into your bedroom.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Matcher Tool -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10 -mt-6">
+    <div class="max-w-4xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-gray-900 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-cyan-400">🪟</span>
+          <h2 class="text-white font-bold text-lg">Window Venting Engine</h2>
+        </div>
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-md bg-red-500"></div>
+          <div class="w-3 h-3 rounded-md bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-md bg-green-500"></div>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          
+          <!-- Input Controls -->
+          <div class="space-y-8">
+            
+            <!-- Window Type Selector -->
+            <div>
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Select Your Window Type</label>
+              <div class="grid grid-cols-2 gap-3">
+                <button type="button" class="window-btn active border-2 border-cyan-500 bg-cyan-50 text-cyan-700 py-4 px-4 rounded-sm font-bold transition-all shadow-sm flex flex-col items-center gap-2" data-val="casement">
+                  <span>Crank-Out</span>
+                  <span class="text-xs font-normal opacity-80">(Casement)</span>
+                </button>
+                <button type="button" class="window-btn border border-gray-200 text-gray-500 hover:border-cyan-500 hover:text-cyan-600 py-4 px-4 rounded-sm font-bold transition-all flex flex-col items-center gap-2" data-val="awning">
+                  <span>Push-Out</span>
+                  <span class="text-xs font-normal opacity-80">(Awning)</span>
+                </button>
+                <button type="button" class="window-btn border border-gray-200 text-gray-500 hover:border-cyan-500 hover:text-cyan-600 py-4 px-4 rounded-sm font-bold transition-all flex flex-col items-center gap-2" data-val="slider">
+                  <span>Side-to-Side</span>
+                  <span class="text-xs font-normal opacity-80">(Horizontal Slider)</span>
+                </button>
+                <button type="button" class="window-btn border border-gray-200 text-gray-500 hover:border-cyan-500 hover:text-cyan-600 py-4 px-4 rounded-sm font-bold transition-all flex flex-col items-center gap-2" data-val="standard">
+                  <span>Up/Down</span>
+                  <span class="text-xs font-normal opacity-80">(Single Hung)</span>
+                </button>
+              </div>
+              <input type="hidden" id="windowVal" value="casement" />
+            </div>
+
+          </div>
+
+          <!-- Output Panel -->
+          <div class="bg-gray-900 rounded-sm p-6 lg:p-8 text-white flex flex-col justify-center relative overflow-hidden">
+            <!-- Decorative background elements -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500 rounded-md mix-blend-overlay filter blur-3xl opacity-20 transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+            
+            <!-- Visual Graphic Container -->
+            <div class="mb-8 flex justify-center h-48 items-end relative z-10">
+              <div id="visualGraphic" class="relative transition-all duration-500">
+                <!-- Casement SVG (Default) -->
+                <div class="w-24 h-40 border-4 border-gray-600 bg-blue-900/30 relative perspective-[500px]">
+                   <div class="absolute inset-y-0 right-0 w-full bg-blue-400/20 border-l-2 border-gray-400 origin-left transform rotate-y-45 flex items-center justify-center shadow-lg"></div>
+                   <!-- Zip Cloth Rep -->
+                   <div class="absolute inset-0 bg-white/10 border-2 border-dashed border-gray-400"></div>
+                   <!-- Hose -->
+                   <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-md bg-gray-800 border-2 border-gray-500 shadow-inner"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Verdict Alert -->
+            <div id="verdictAlert" class="bg-blue-900/50 border border-blue-500/30 rounded-sm p-4 transition-all duration-300 relative z-10">
+              <h4 id="verdictTitle" class="font-bold text-blue-300 flex items-center gap-2 mb-2">
+                <span>️</span> Custom Seal Required
+              </h4>
+              <div id="verdictText" class="text-blue-100 text-sm leading-relaxed space-y-2">
+                <p>The factory plastic kit is useless here. You have two options:</p>
+                <ol class="list-decimal pl-4 space-y-1">
+                  <li><strong>The Cloth Hack:</strong> Buy a flexible zip-seal window kit from Amazon. It velcros to the frame and zips around the hose.</li>
+                  <li><strong>The Plexiglass Hack:</strong> Replace the window screen with a custom-cut piece of plexiglass, and cut a 5" hole for the hose.</li>
+                </ol>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content (10-Year Veteran Tone) -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: The Physics -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The Physics of Heat Exhaust
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          A fundamental rule of thermodynamics is that you cannot "create" cold; you can only transfer heat. Your portable AC is physically pulling heat out of the air in your bedroom. That heat does not disappear—it gets concentrated and blown out the massive 5-inch exhaust hose at around 120°F.
+        </p>
+        <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-xl">
+          <h3 class="text-lg font-bold text-red-900 mb-2">Why Sealing is Critical</h3>
+          <p class="text-red-800 text-sm">
+            If your window seal is sloppy, or if you just crack the window and stick the hose out, that 120-degree heat instantly bleeds back into the room. The AC will run 24/7, pulling massive amperage, and your room will never cool down. You MUST achieve an airtight seal.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 2: Master Tech Hacks -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-blue-500">️</span> Crowdsourced Venting Hacks
+        </h2>
+        
+        <div class="space-y-8">
+          <!-- Hack 2 (Plexiglass - Now first because Reddit loves it) -->
+          <div class="bg-white p-6 rounded-sm border-2 border-cyan-500 shadow-md relative">
+            <div class="absolute -top-3 right-6 bg-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-md uppercase tracking-widest shadow-sm">
+              Reddit's Top Choice
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">1. The Plexiglass Screen Replacement</h3>
+            <p class="text-gray-700 leading-relaxed mb-4 text-sm">
+              According to the massive consensus on <strong>r/AirConditioners</strong>, this is the most durable, secure, and professional-looking fix for crank-out or push-out windows. 
+            </p>
+            <ul class="list-disc pl-5 text-gray-700 text-sm space-y-2">
+              <li>Pop out your existing bug screen. Measure the exact dimensions of the screen frame.</li>
+              <li>Go to a hardware store and have them cut a piece of 1/4" plexiglass, acrylic, or Lexan to those exact dimensions.</li>
+              <li>Use a jigsaw (or pay the hardware store) to cut a 5-inch or 5.9-inch circle (depending on your hose size) into the bottom corner of the plexiglass.</li>
+              <li>Snap the plexiglass into the window where the screen used to be, crank the window open, and attach the hose. Perfect, airtight seal.</li>
+            </ul>
+          </div>
+
+          <!-- Hack 1 (Zip Seal) -->
+          <div class="bg-white p-6 rounded-sm border border-gray-200 shadow-sm">
+            <h3 class="text-xl font-bold text-gray-900 mb-3">2. The Casement Zip-Seal Hack (With a Warning)</h3>
+            <p class="text-gray-700 leading-relaxed mb-4 text-sm">
+              If you have a crank-out window, you can buy a "Portable AC Casement Window Kit" (essentially a giant waterproof nylon triangle with a zipper). However, DIY forums are filled with complaints about these. 
+            </p>
+            <ul class="list-disc pl-5 text-gray-700 text-sm space-y-2">
+              <li><strong>The Warning:</strong> The adhesive frequently fails. The 120-degree exhaust heat melts the glue, and the whole rig falls down.</li>
+              <li><strong>The Fix:</strong> Before applying the velcro tape to your window frame, you MUST scrub the frame with rubbing alcohol. For extra security, many Reddit users recommend reinforcing the velcro with heavy-duty mounting tape or staple guns (if it's a wood frame).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: FAQs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          Technical FAQ
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-cyan-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Can I just vent it into my hallway or a drop ceiling?
+              <span class="text-cyan-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Absolutely not. A portable AC exhaust hose pumps out immense heat and moisture. If you vent it into a hallway, you will cook the rest of your house. If you vent it into a drop ceiling or attic, you will dump gallons of condensation into the insulation, causing catastrophic black mold growth and rotting drywall. It MUST vent outside.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-cyan-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              My exhaust hose gets really hot to the touch, is that bad?
+              <span class="text-cyan-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Yes, it's called radiant heat loss. The thin plastic hose is radiating 120-degree heat back into the room you are trying to cool, fighting the AC unit itself. The ultimate pro move is to wrap the exhaust hose in foil-backed fiberglass insulation wrap or a dedicated insulated hose sleeve to force 100% of the heat out the window.
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Logic -->
+  <script>
+    const windowBtns = document.querySelectorAll('.window-btn');
+    const windowVal = document.getElementById('windowVal') as HTMLInputElement;
+    
+    const visualGraphic = document.getElementById('visualGraphic')!;
+    const verdictTitle = document.getElementById('verdictTitle')!;
+    const verdictText = document.getElementById('verdictText')!;
+    const verdictAlert = document.getElementById('verdictAlert')!;
+
+    function updateSimulator() {
+      const type = windowVal.value;
+
+      // Reset
+      verdictAlert.className = "bg-blue-900/50 border border-blue-500/30 rounded-sm p-4 transition-all duration-300 relative z-10";
+      verdictTitle.className = "font-bold text-blue-300 flex items-center gap-2 mb-2";
+
+      if (type === 'casement') {
+        visualGraphic.innerHTML = `
+          <div class="w-24 h-40 border-4 border-gray-600 bg-blue-900/30 relative perspective-[500px]">
+             <div class="absolute inset-y-0 right-0 w-full bg-blue-400/20 border-l-2 border-gray-400 origin-left transform rotate-y-45 flex items-center justify-center shadow-lg"></div>
+             <!-- Zip Cloth Rep -->
+             <div class="absolute inset-0 bg-white/10 border-2 border-dashed border-gray-400"></div>
+             <!-- Hose -->
+             <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-md bg-gray-800 border-2 border-gray-500 shadow-inner"></div>
+          </div>
+        `;
+        verdictTitle.innerHTML = `<span>️</span> Custom Seal Required (Crank-Out)`;
+        verdictText.innerHTML = `
+          <p class="mb-2">The standard plastic kits are useless here. The consensus from DIY forums offers two options:</p>
+          <ol class="list-decimal pl-4 space-y-1">
+            <li><strong>The Plexiglass Fix (Recommended):</strong> Replace the bug screen with a custom-cut piece of plexiglass featuring a 5" exhaust hole.</li>
+            <li><strong>The Cloth Kit:</strong> Buy a flexible zip-seal window kit. Warning: The adhesive often fails from the heat. Prep the frame with alcohol first.</li>
+          </ol>
+        `;
+      } 
+      else if (type === 'awning') {
+        visualGraphic.innerHTML = `
+          <div class="w-40 h-24 border-4 border-gray-600 bg-blue-900/30 relative perspective-[500px]">
+             <div class="absolute inset-x-0 bottom-0 h-full bg-blue-400/20 border-t-2 border-gray-400 origin-top transform -rotate-x-45 flex items-center justify-center shadow-lg"></div>
+             <!-- Zip Cloth Rep -->
+             <div class="absolute inset-0 bg-white/10 border-2 border-dashed border-gray-400"></div>
+             <!-- Hose -->
+             <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 rounded-md bg-gray-800 border-2 border-gray-500 shadow-inner"></div>
+          </div>
+        `;
+        verdictTitle.innerHTML = `<span>️</span> Custom Bottom Seal Required (Push-Out)`;
+        verdictText.innerHTML = `
+          <p class="mb-2">A standard sliding kit will fall right out. The DIY consensus requires:</p>
+          <ol class="list-decimal pl-4 space-y-1">
+            <li><strong>The Plexiglass Fix (Recommended):</strong> Pop the interior screen out and replace it with Lexan/Plexiglass with a drilled exhaust port.</li>
+            <li><strong>Bottom-Zip Seal:</strong> An awning-specific cloth seal kit that bridges the gap at the bottom of the pushed-out pane. (Watch out for failing adhesive).</li>
+          </ol>
+        `;
+      }
+      else if (type === 'slider') {
+        visualGraphic.innerHTML = `
+          <div class="w-40 h-32 border-4 border-gray-600 bg-blue-900/30 relative flex">
+             <div class="w-1/2 h-full bg-white/10 border-r-2 border-gray-400 relative">
+                 <div class="absolute right-0 inset-y-0 w-8 bg-gray-300 border-l border-gray-400 flex flex-col justify-end p-1">
+                    <!-- Hose -->
+                    <div class="w-full h-6 rounded-md bg-gray-800 border border-gray-500 shadow-inner mb-2"></div>
+                 </div>
+             </div>
+             <div class="w-1/2 h-full bg-blue-400/10 border-l-2 border-gray-500 shadow-md z-10 transform -translate-x-4"></div>
+          </div>
+        `;
+        verdictAlert.className = "bg-green-900/50 border border-green-500/30 rounded-sm p-4 transition-all duration-300 relative z-10";
+        verdictTitle.className = "font-bold text-green-400 flex items-center gap-2 mb-2";
+        verdictTitle.innerHTML = `<span></span> Vertical Extension Required`;
+        verdictText.innerHTML = `
+          <p>This is a standard install, but flipped 90 degrees. You can use the included factory plastic kit, but you will likely need to buy the <strong>vertical extension piece</strong> if your sliding door or window is very tall.</p>
+        `;
+      }
+      else if (type === 'standard') {
+        visualGraphic.innerHTML = `
+          <div class="w-24 h-40 border-4 border-gray-600 bg-blue-900/30 relative flex flex-col">
+             <div class="w-full h-1/2 bg-blue-400/10 border-b-2 border-gray-500 shadow-md z-10 transform translate-y-4"></div>
+             <div class="w-full h-1/2 bg-white/10 border-t-2 border-gray-400 relative">
+                 <div class="absolute bottom-0 inset-x-0 h-8 bg-gray-300 border-t border-gray-400 flex items-center justify-center">
+                    <!-- Hose -->
+                    <div class="w-6 h-6 rounded-md bg-gray-800 border border-gray-500 shadow-inner"></div>
+                 </div>
+             </div>
+          </div>
+        `;
+        verdictAlert.className = "bg-green-900/50 border border-green-500/30 rounded-sm p-4 transition-all duration-300 relative z-10";
+        verdictTitle.className = "font-bold text-green-400 flex items-center gap-2 mb-2";
+        verdictTitle.innerHTML = `<span></span> Perfect Factory Match`;
+        verdictText.innerHTML = `
+          <p>You have standard single or double-hung windows. Simply slide the included plastic window kit into the bottom track, shut the window tightly down onto the plastic rail, and attach the exhaust hose.</p>
+        `;
+      }
+    }
+
+    // Event Listeners
+    windowBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        windowVal.value = target.getAttribute('data-val') || '';
+        
+        // Reset styles
+        windowBtns.forEach(b => {
+          b.className = b.className.replace('active', '').replace('border-2', 'border').replace('border-cyan-500', 'border-gray-200').replace('bg-cyan-50', '').replace('text-cyan-700', 'text-gray-500').replace('shadow-sm', '');
+          if(!b.classList.contains('hover:border-cyan-500')) {
+              b.classList.add('hover:border-cyan-500', 'hover:text-cyan-600');
+          }
+        });
+
+        // Set active
+        target.classList.add('active', 'border-2', 'border-cyan-500', 'bg-cyan-50', 'text-cyan-700', 'shadow-sm');
+        target.classList.remove('border-gray-200', 'text-gray-500', 'hover:border-cyan-500', 'hover:text-cyan-600');
+
+        updateSimulator();
+      });
+    });
+
+    // Init
+    updateSimulator();
+  </script>
+</Layout>

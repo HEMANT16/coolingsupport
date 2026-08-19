@@ -1,0 +1,454 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// SEO Metadata
+const title = "Free EPA Refrigerant Tracking Log Sheet Generator";
+const description = "Create a legally compliant EPA Section 608 Refrigerant Tracking Log. Download a blank printable PDF for your van or digitize your records online.";
+const canonicalURL = "https://coolingsupport.com/tools/epa-refrigerant-log";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title}>
+  <slot name="head">
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:type" content="article" />
+    <link rel="canonical" href={canonicalURL} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "EPA Refrigerant Tracking Log Generator",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+          "url": canonicalURL,
+          "description": description,
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Who is required to keep an EPA refrigerant log?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Under EPA Section 608, technicians servicing appliances with 5 to 50 pounds of ozone-depleting refrigerant must keep records of the quantity of refrigerant added or recovered. For appliances with 50 or more pounds, the owner/operator must also maintain detailed leak rate calculations and service records."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How long must I keep refrigerant tracking logs?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The EPA requires that refrigerant records be kept on file by the servicing company and the equipment owner for a minimum of 3 years."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What happens if I vent freon into the atmosphere?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Intentional venting of ozone-depleting refrigerants or their substitutes is strictly prohibited by the Clean Air Act. Violators can face severe civil fines of up to $44,539 per day, per violation, and may lose their EPA certification."
+              }
+            }
+          ]
+        }
+      ]
+    })} />
+  </slot>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">EPA Refrigerant Tracking Log</h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">Generate a legally compliant logbook sheet for your van, or digitize your recovery records instantly.</p>
+    </div>
+
+    <!-- Toggle Buttons -->
+    <div class="flex justify-center mb-12 gap-4">
+      <button onclick="printBlankLog()" class="flex flex-col items-center justify-center p-6 bg-white border-2 border-emerald-500 rounded-sm hover:bg-emerald-50 transition-colors shadow-sm group">
+        <span class="text-3xl mb-2 group-hover:scale-110 transition-transform"></span>
+        <span class="font-bold text-emerald-700">Download Blank PDF</span>
+        <span class="text-sm text-emerald-600 mt-1">Print empty rows for the van</span>
+      </button>
+      
+      <button onclick="printFilledLog()" class="flex flex-col items-center justify-center p-6 bg-white border-2 border-blue-500 rounded-sm hover:bg-blue-50 transition-colors shadow-sm group">
+        <span class="text-3xl mb-2 group-hover:scale-110 transition-transform"></span>
+        <span class="font-bold text-blue-700">Fill Online & Generate</span>
+        <span class="text-sm text-blue-600 mt-1">Digitize your records</span>
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- LEFT COLUMN: Editor Form -->
+      <div class="lg:col-span-4 bg-white rounded-sm shadow-md border border-gray-100 h-fit max-h-[1200px] flex flex-col no-print overflow-hidden">
+        
+        <!-- Sticky Header -->
+        <div class="bg-white p-6 border-b border-gray-100 z-10 shadow-sm relative">
+          <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+             Log Details
+          </h2>
+        </div>
+
+        <!-- Scrollable Content -->
+        <div class="p-6 overflow-y-auto custom-scrollbar">
+          <div class="space-y-8">
+            
+            <!-- Company Information -->
+            <div class="bg-gray-50 p-4 rounded-sm border border-gray-200">
+              <h3 class="font-bold text-gray-900 mb-4">Company Info</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                  <input type="text" id="i_company" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" value="Ace Heating & Cooling">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Master EPA Cert #</label>
+                  <input type="text" id="i_epa_cert" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" value="UNI-123456789">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Sheet Period (e.g. June 2024)</label>
+                  <input type="text" id="i_period" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" value="Current Month">
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Log Entry Engine -->
+            <div class="bg-blue-50 p-4 rounded-sm border border-blue-200">
+              <h3 class="font-bold text-blue-900 mb-4">Log Entries</h3>
+              <p class="text-xs text-blue-700 mb-4">Add your daily recovery and addition records here.</p>
+              
+              <div class="space-y-4 mb-4" id="log_editor">
+                <!-- Dynamically populated via JS -->
+              </div>
+              
+              <div class="bg-white p-4 rounded-lg border border-blue-200 space-y-3 mt-4 shadow-sm">
+                <h4 class="font-bold text-sm text-gray-800">Add New Entry</h4>
+                
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Date</label>
+                    <input type="text" id="new_date" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="MM/DD/YY">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Refrigerant</label>
+                    <select id="new_ref" class="w-full border-gray-300 rounded p-1.5 text-xs">
+                      <option value="R-410A">R-410A</option>
+                      <option value="R-22">R-22</option>
+                      <option value="R-454B">R-454B</option>
+                      <option value="R-134a">R-134a</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div>
+                  <label class="block text-xs text-gray-500 mb-1">Customer / Address</label>
+                  <input type="text" id="new_customer" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="123 Main St, Springfield">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Added (lbs)</label>
+                    <input type="text" id="new_add" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="0">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Recovered (lbs)</label>
+                    <input type="text" id="new_rec" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="0">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Equipment ID</label>
+                    <input type="text" id="new_equip" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="Lennox S#123">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Tech / Cyl #</label>
+                    <input type="text" id="new_tech" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="JD / Cyl #4">
+                  </div>
+                </div>
+
+                <button type="button" onclick="addLogEntry()" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors mt-2"> Add Entry</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Live Preview -->
+      <div class="lg:col-span-8 bg-white p-8 rounded-sm shadow-md border border-gray-200 overflow-x-auto print-friendly-container">
+        
+        <!-- The Actual Document to Print -->
+        <div id="print-area" class="bg-white mx-auto min-w-[700px]">
+          
+          <!-- Document Header -->
+          <div class="flex justify-between items-start border-b-2 border-gray-800 pb-4 mb-6">
+            <div>
+              <h2 class="text-3xl font-bold text-gray-900" id="o_company">Ace Heating & Cooling</h2>
+              <p class="text-gray-600 font-medium">EPA Section 608 Refrigerant Tracking Log</p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm text-gray-600">Master EPA Cert #: <span class="font-bold text-gray-900" id="o_epa_cert">UNI-123456789</span></p>
+              <p class="text-sm text-gray-600">Period: <span class="font-bold text-gray-900" id="o_period">Current Month</span></p>
+            </div>
+          </div>
+
+          <!-- Log Table -->
+          <table class="w-full text-left text-sm border-collapse border border-gray-800 mb-6" id="log_table">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="border border-gray-800 p-2 font-bold w-20">Date</th>
+                <th class="border border-gray-800 p-2 font-bold">Customer / Address</th>
+                <th class="border border-gray-800 p-2 font-bold">Equipment ID</th>
+                <th class="border border-gray-800 p-2 font-bold w-20">Ref. Type</th>
+                <th class="border border-gray-800 p-2 font-bold text-center w-16">Added<br/><span class="text-xs font-normal">(lbs/oz)</span></th>
+                <th class="border border-gray-800 p-2 font-bold text-center w-20">Recovered<br/><span class="text-xs font-normal">(lbs/oz)</span></th>
+                <th class="border border-gray-800 p-2 font-bold w-24">Tech / Cyl #</th>
+              </tr>
+            </thead>
+            <tbody id="log_preview_body">
+              <!-- Dynamically Populated -->
+            </tbody>
+          </table>
+
+          <!-- Footer Legal -->
+          <div class="text-[10px] text-gray-500 italic mt-8 border-t border-gray-300 pt-2 text-center print-avoid-break">
+            NOTICE: This log is maintained to comply with Environmental Protection Agency (EPA) regulations under Section 608 of the Clean Air Act. 
+            Records of refrigerant recovery and addition must be kept on file for a minimum of 3 years. Intentional venting is strictly prohibited.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO Content Section -->
+    <article class="mt-24 max-w-5xl mx-auto">
+      
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 tracking-tight">EPA Section 608 Compliance & Refrigerant Tracking</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Under the Clean Air Act, the EPA strictly regulates the handling, recovery, and disposal of ozone-depleting refrigerants and their substitutes. Maintaining accurate tracking logs is not just best practice—it is a legal requirement.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div class="bg-gradient-to-br from-blue-50 to-white rounded-sm p-8 border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
+          <div class="text-4xl mb-4">️</div>
+          <h3 class="text-2xl font-bold text-blue-900 mb-4">Legal Requirements</h3>
+          <p class="text-gray-700 leading-relaxed">
+            Any technician performing maintenance, service, repair, or disposal of appliances that could reasonably release refrigerants must be properly certified under Section 608. Furthermore, strict records must be kept documenting the amount of refrigerant recovered during disposal or added during service, especially for appliances holding 5 to 50 pounds of refrigerant.
+          </p>
+        </div>
+
+        <div class="bg-gradient-to-br from-red-50 to-white rounded-sm p-8 border border-red-100 shadow-sm hover:shadow-md transition-shadow">
+          <div class="text-4xl mb-4">️</div>
+          <h3 class="text-2xl font-bold text-red-900 mb-4">The Cost of Non-Compliance</h3>
+          <p class="text-gray-700 leading-relaxed">
+            The EPA takes intentional venting of refrigerants incredibly seriously. Failing to recover refrigerant into an approved cylinder, or failing to maintain the proper documentation proving that recovery took place, can result in massive civil penalties. Fines can reach up to <strong>$44,539 per day, per violation</strong>, along with the permanent revocation of the technician's certification.
+          </p>
+        </div>
+      </div>
+
+      <div class="mb-12">
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-8 text-center tracking-tight">Frequently Asked Questions</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <div class="bg-white rounded-sm p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-start gap-2">
+              <span class="text-blue-500 shrink-0"></span> Who needs to keep a log?
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed pl-7">Technicians servicing appliances with 5 to 50 pounds of ozone-depleting refrigerant must keep records of the quantity added or recovered. For appliances with 50+ pounds, owners must maintain detailed leak rate calculations.</p>
+          </div>
+          
+          <div class="bg-white rounded-sm p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-start gap-2">
+              <span class="text-blue-500 shrink-0"></span> How long do I keep records?
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed pl-7">The EPA requires that refrigerant tracking records be kept on file securely by the servicing company and the equipment owner for a minimum of 3 years.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </article>
+
+  </div>
+</Layout>
+
+<!-- Print Styling & Logic -->
+<script is:inline>
+  let logEntries = [
+    { id: 1, date: "06/10/24", customer: "123 Main St, Springfield", equip: "Carrier M#24ACC", ref: "R-410A", add: "2.5", rec: "0", tech: "JD/Cyl#2" },
+    { id: 2, date: "06/11/24", customer: "456 Oak Dr, Riverside", equip: "Trane M#XR14", ref: "R-22", add: "0", rec: "4.2", tech: "MS/Cyl#1" }
+  ];
+
+  // Sync inputs to preview
+  const inputs = ['company', 'epa_cert', 'period'];
+  inputs.forEach(id => {
+    const el = document.getElementById(`i_${id}`);
+    if (el) {
+      el.addEventListener('input', (e) => {
+        document.getElementById(`o_${id}`).innerText = e.target.value || '________';
+      });
+    }
+  });
+
+  window.removeEntry = function(id) {
+    logEntries = logEntries.filter(entry => entry.id !== id);
+    renderLog();
+  }
+
+  window.addLogEntry = function() {
+    const date = document.getElementById('new_date').value.trim();
+    const customer = document.getElementById('new_customer').value.trim();
+    const equip = document.getElementById('new_equip').value.trim();
+    const ref = document.getElementById('new_ref').value.trim();
+    const add = document.getElementById('new_add').value.trim();
+    const rec = document.getElementById('new_rec').value.trim();
+    const tech = document.getElementById('new_tech').value.trim();
+
+    if (customer && ref) {
+      const newId = Date.now();
+      logEntries.push({ id: newId, date, customer, equip, ref, add, rec, tech });
+      
+      // Clear inputs
+      document.getElementById('new_date').value = '';
+      document.getElementById('new_customer').value = '';
+      document.getElementById('new_equip').value = '';
+      document.getElementById('new_add').value = '';
+      document.getElementById('new_rec').value = '';
+      document.getElementById('new_tech').value = '';
+      
+      renderLog();
+    }
+  }
+
+  function renderLog(isBlank = false) {
+    const editorContainer = document.getElementById('log_editor');
+    const previewContainer = document.getElementById('log_preview_body');
+    
+    let editorHTML = '';
+    let previewHTML = '';
+
+    if (isBlank) {
+      // Render 15 empty rows for printing
+      for(let i=0; i<15; i++) {
+        previewHTML += `
+          <tr>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+          </tr>
+        `;
+      }
+    } else {
+      // Render actual data
+      logEntries.forEach((entry) => {
+        // Editor Row
+        editorHTML += `
+          <div class="flex items-center justify-between border-b border-blue-100 py-2 group bg-white px-2 rounded">
+            <div class="text-xs truncate w-full flex items-center gap-2">
+              <button type="button" onclick="removeEntry(${entry.id})" class="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity" title="Remove Entry"></button>
+              <span class="font-bold w-12">${entry.date}</span>
+              <span class="truncate w-32">${entry.customer}</span>
+              <span class="w-12 text-blue-600 font-bold">${entry.ref}</span>
+            </div>
+          </div>
+        `;
+
+        // Preview Row
+        previewHTML += `
+          <tr>
+            <td class="border border-gray-800 p-2">${entry.date}</td>
+            <td class="border border-gray-800 p-2">${entry.customer}</td>
+            <td class="border border-gray-800 p-2">${entry.equip}</td>
+            <td class="border border-gray-800 p-2">${entry.ref}</td>
+            <td class="border border-gray-800 p-2 text-center">${entry.add || '-'}</td>
+            <td class="border border-gray-800 p-2 text-center">${entry.rec || '-'}</td>
+            <td class="border border-gray-800 p-2">${entry.tech}</td>
+          </tr>
+        `;
+      });
+    }
+
+    editorContainer.innerHTML = editorHTML;
+    previewContainer.innerHTML = previewHTML;
+  }
+
+  // Bulletproof Isolation Print Function
+  function executePrint(isBlank) {
+    const originalBody = document.body.innerHTML;
+    
+    // Clear dummy data if printing blank
+    if(isBlank) {
+      document.getElementById('o_company').innerText = '________________________';
+      document.getElementById('o_epa_cert').innerText = '_________________';
+      document.getElementById('o_period').innerText = '_________________';
+      renderLog(true);
+    } else {
+      renderLog(false);
+    }
+
+    const printContent = document.getElementById('print-area').outerHTML;
+    
+    // Completely isolate print area
+    document.body.innerHTML = printContent;
+    
+    // Inject dynamic print stylesheet
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @page { size: portrait; margin: 10mm; }
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white !important; }
+      #print-area { width: 100% !important; max-width: none !important; box-shadow: none !important; padding: 0 !important; }
+      .print-avoid-break { page-break-inside: avoid; }
+    `;
+    document.head.appendChild(style);
+
+    setTimeout(() => {
+      window.print();
+      
+      // Restore the site exactly as it was
+      document.body.innerHTML = originalBody;
+      
+      // Re-bind listeners and render after destroying DOM
+      inputs.forEach(id => {
+        const el = document.getElementById(`i_${id}`);
+        if (el) {
+          el.addEventListener('input', (e) => {
+            document.getElementById(`o_${id}`).innerText = e.target.value || '________';
+          });
+        }
+      });
+      renderLog(false); // Restore data
+    }, 500);
+  }
+
+  window.printBlankLog = () => executePrint(true);
+  window.printFilledLog = () => executePrint(false);
+
+  // Initial render
+  renderLog(false);
+</script>
+
+<style>
+  /* Custom scrollbar for editor */
+  .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+</style>

@@ -1,0 +1,307 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+const lennoxCodes = [
+  { code: "E223", severity: "danger", severityText: "Stop AC — Danger", color: "red", category: "Refrigerant", desc: "Low pressure switch lockout", cause: "Refrigerant charge leak, or severe indoor airflow restriction (frozen evaporator coil).", action: "Shut off AC. Check indoor filter. Call technician for leak search and recharge: ₹2,500 – ₹5,500 / $150 – $350.", difficulty: "Professional Only", occurrence: "Common", proCost: "₹2,500 – ₹5,500 / $150 – $350" },
+  { code: "E228", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Electrical", desc: "Outdoor unit compressor startup lockout", cause: "Failed dual run capacitor, loose terminal wire plug, or locked compressor rotor.", action: "Measure capacitor rating. Replace failed run capacitor: ₹1,500 – ₹3,000 / $100 – $220.", difficulty: "Professional Only", occurrence: "Common", proCost: "₹1,500 – ₹3,000 / $100 – $220" },
+  { code: "E290", severity: "diy", severityText: "DIY Safe", color: "emerald", category: "Ignition", desc: "Ignition retry lockout (Furnace)", cause: "Gas valve turned off, dirty furnace flame sensor, or defective igniter.", action: "Check that gas valve is ON. Clean flame sensor probe using steel wool. Reset power switch.", difficulty: "DIY", occurrence: "Moderate", proCost: "N/A" },
+  { code: "E312", severity: "diy", severityText: "DIY Safe", color: "emerald", category: "Voltage", desc: "Low voltage power protection", cause: "Line voltage input has dropped below 196V or transformer output is low.", action: "Verify household incoming voltage. Install a digital voltage stabilizer to prevent board damage.", difficulty: "DIY", occurrence: "Common", proCost: "N/A" },
+  { code: "E115", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Blower Motor", desc: "Indoor blower motor speed feedback fault", cause: "Blower fan motor hall sensor disconnected or motor winding damaged.", action: "Check fan wheel spins freely. Replace indoor blower motor: $180 – $350.", difficulty: "Moderate", occurrence: "Moderate", proCost: "$180 – $350" },
+  { code: "E411", severity: "technician", severityText: "Call Technician", color: "orange", category: "Communication", desc: "S30 smart thermostat communication link error", cause: "Control wires S, I+, I-, C broken or loose connections at the terminal block.", action: "Verify connections on smart terminal blocks. Swap communication wiring if damaged.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "$250 – $600" },
+];
+
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Lennox AC & Furnace Error Codes | Diagnostic Lookup Guide",
+    "description": "Step-by-step diagnostic lookup for decoding Lennox S30 smart thermostat fault codes (E223, E228, E290, E312) on Lennox split systems.",
+    "category": "HVAC Troubleshooting",
+    "author": {
+      "@type": "Person",
+      "name": "Mike Reynolds",
+      "jobTitle": "Master HVAC Technician"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How to read Lennox smart thermostat fault codes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lennox premium communicating systems display error alerts directly on the home screen of the S30 or S40 Smart Thermostat, detailing the exact fault code (e.g. Alert E223) and severity level."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is Alert E223 on a Lennox AC?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Alert E223 represents a low pressure switch lockout. The safety pressure switch has detected that the refrigerant pressure has dropped below safe operational limits, commonly indicating a gas leak or frozen evaporator coil."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout title="Lennox AC & Furnace Error Codes | Diagnostic Lookup Guide">
+  <SEO
+    slot="head"
+    title="Lennox AC & Furnace Error Codes | Diagnostic Lookup Guide | Cooling Support"
+    description="Decode Lennox air conditioner and furnace error codes (E223, E228, E290, E312) instantly. Find S30 thermostat alerts and resets."
+    type="article"
+    schema={schemaData}
+  />
+
+  <!-- Hero Section -->
+  <section class="relative bg-zinc-950 pt-24 pb-20 border-b border-zinc-800 overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] opacity-10 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-lime-600 to-transparent blur-[120px] rounded-full"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 bg-lime-600/10 border border-lime-500/25 text-lime-400 text-xs font-semibold px-5 py-2 rounded-full mb-6 font-mono">
+        ❄️ Lennox Diagnostics
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
+        Lennox AC &amp; Furnace Codes <br />
+        <span class="text-lime-500">Thermostat &amp; Control Board Diagnostics</span>
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-8">
+        Decode Lennox error codes (E223, E228, E290, E312) on your S30 Smart Thermostat or control board instantly.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Search and Guide -->
+  <div class="bg-zinc-50 min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center space-x-2 text-sm font-semibold text-zinc-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-lime-500 transition-colors">Home</a>
+        <span class="text-zinc-300">/</span>
+        <a href="/ac-error-codes" class="hover:text-lime-500 transition-colors">AC Error Codes</a>
+        <span class="text-zinc-300">/</span>
+        <span class="text-zinc-800 font-bold">Lennox</span>
+      </nav>
+
+      <!-- How to Read Lennox Codes -->
+      <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-4">
+        <h2 class="text-xl font-bold text-zinc-900 flex items-center gap-2">
+          <svg class="w-6 h-6 text-lime-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          How to Read Lennox Error Codes
+        </h2>
+        <div class="text-sm text-zinc-600 space-y-3 leading-relaxed">
+          <p>
+            Lennox HVAC systems report diagnostic faults in two primary ways:
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Lennox S30 Smart Thermostat</strong>: Active codes appear directly on the home screen as alerts (e.g. <strong>Alert 223 - Low Pressure Switch Lockout</strong>).</li>
+            <li><strong>Furnace/Air Handler Control Board</strong>: Red and green diagnostic LEDs blink in patterns. Check the board cover label for exact code translation.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Search Engine -->
+      <section class="space-y-6">
+        <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+          <h2 class="text-2xl font-bold text-zinc-900">Lennox Code Lookup</h2>
+          
+          <div style="position: relative; width: 100%;">
+            <div style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; pointer-events: none; color: #a1a1aa; z-index: 10;">
+              <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input
+              type="text"
+              id="lennox-search"
+              placeholder="Search by code (e.g. E223, E228, E290, E312)..."
+              class="w-full pl-14 pr-5 py-4 text-lg bg-zinc-50 border-2 border-zinc-200 rounded-2xl focus:outline-none focus:border-lime-500 transition-colors text-zinc-800 placeholder-zinc-400 shadow-inner"
+            />
+          </div>
+        </div>
+
+        <!-- Cards Container -->
+        <div class="space-y-4" id="lennox-cards-container">
+          {lennoxCodes.map((item) => (
+            <div
+              class="lennox-card bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 flex flex-col gap-4 transition-all hover:border-zinc-300"
+              data-code={item.code.toLowerCase()}
+              data-desc={item.desc.toLowerCase()}
+              data-cause={item.cause.toLowerCase()}
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-2">
+                  <span class="font-black text-zinc-900 text-xl font-mono tracking-tight">{item.code}</span>
+                  <span class="text-xs bg-zinc-50 text-zinc-500 px-2.5 py-1 rounded-full font-medium">{item.category}</span>
+                </div>
+                
+                <span class={`text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  item.color === 'emerald' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
+                  item.color === 'amber' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                  item.color === 'orange' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
+                  'bg-rose-50 text-rose-700 border border-rose-100'
+                }`}>
+                  <span class={`w-1.5 h-1.5 rounded-full ${
+                    item.color === 'emerald' ? 'bg-emerald-500' :
+                    item.color === 'amber' ? 'bg-amber-500' :
+                    item.color === 'orange' ? 'bg-orange-500' :
+                    'bg-rose-600'
+                  }`}></span>
+                  {item.severityText}
+                </span>
+              </div>
+
+              <div>
+                <p class="font-bold text-zinc-800 text-base leading-snug">{item.desc}</p>
+              </div>
+
+              <!-- Diagnostic Metrics Panel -->
+              <div class="flex flex-wrap gap-2 items-center text-xs border-t border-b border-zinc-100 py-3 my-1">
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Difficulty:</span>
+                  <span class={`font-bold ${
+                    item.difficulty === 'DIY' ? 'text-emerald-600' :
+                    item.difficulty === 'Moderate' ? 'text-amber-600' :
+                    'text-rose-600'
+                  }`}>{item.difficulty}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Occurrence:</span>
+                  <span class="font-bold text-zinc-700">{item.occurrence}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Est. Pro Cost:</span>
+                  <span class="font-bold text-zinc-700">{item.proCost}</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-zinc-100 pt-4">
+                <div class="bg-zinc-50 rounded-2xl p-4 border border-zinc-100">
+                  <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1.5">Likely Cause</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.cause}</p>
+                </div>
+                <div class="bg-lime-500/5 rounded-2xl p-4 border border-lime-500/10">
+                  <p class="text-xs font-bold text-lime-600 uppercase tracking-wider mb-1.5">Recommended Action</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.action}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      
+      <!-- Reddit Verified Solutions Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
+          <h2 class="text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <span class="text-orange-500">💬</span> Reddit Verified HVAC Solutions
+          </h2>
+          <span class="text-xs bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-mono uppercase font-bold tracking-wider">Community Vetted</span>
+        </div>
+        <p class="text-sm text-zinc-500 -mt-2 leading-relaxed">
+          Real-world troubleshooting tips and warning alerts compiled from active discussions on communities like <span class="font-semibold text-zinc-700">r/HVAC</span>, <span class="font-semibold text-zinc-700">r/hvacadvice</span>, and <span class="font-semibold text-zinc-700">r/homeowners</span>.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Community Solution 1 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-orange-500/10 text-orange-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/hvacadvice
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "Lennox E228 is an inducer calibration issue. Check the clear hoses on the pressure switches. Even a tiny water droplet inside the hose will disrupt the sensor. Blow the hoses out completely." (Source: r/hvacadvice Tech Tip)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Tech Tip:</span>
+              <span>Vetted Community Solution</span>
+            </div>
+          </div>
+          
+          <!-- Community Solution 2 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-blue-500/10 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/HVAC
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "Ensure the furnace has a slight forward pitch (per manual) so condensation drains properly. If the cabinet is level or backward, water pools in the inducer housing, causing calibration failure." (Source: r/homeowners Verified Fix)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Homeowner Tip:</span>
+              <span>Verified Fix</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- Visible FAQ Accordion Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {schemaData.find(s => s["@type"] === "FAQPage")?.mainEntity.map((faq) => (
+            <details class="group border border-zinc-200 rounded-2xl transition-all [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-zinc-900 cursor-pointer focus:outline-none select-none">
+                <span>{faq.name}</span>
+                <span class="transition-transform group-open:rotate-180 text-zinc-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-zinc-600 leading-relaxed border-t border-zinc-100 pt-4">
+                {faq.acceptedAnswer.text}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+
+      <!-- Troubleshooting Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Lennox Troubleshooting Guides</h2>
+        
+        <div class="space-y-6">
+          <div class="border-l-4 border-lime-500 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">Resolving Low Pressure switch Lockout E223</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              <strong>Code E223</strong> is triggered when the low pressure switch opens for more than 5 minutes.
+              <strong>Action</strong>: Shut down the system. Inspect the furnace filter; if it is clogged, replace it to restore airflow. If the filter is clean, do not run the AC as this indicates a loss of refrigerant. Call a technician to repair the leak and recharge the gas.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('lennox-search') as HTMLInputElement | null;
+  if (searchInput) {
+    const cards = document.querySelectorAll<HTMLElement>('.lennox-card');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const code = card.getAttribute('data-code') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const cause = card.getAttribute('data-cause') || '';
+
+        if (query === '' || code.includes(query) || desc.includes(query) || cause.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+</script>

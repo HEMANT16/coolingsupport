@@ -1,0 +1,377 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Ductless Mini-Split Cost Calculator | Estimate Equipment & Labor";
+const description = "Calculate the total cost of installing a ductless mini-split system. Estimate equipment prices and local HVAC labor costs for 1 to 5 zones.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Ductless Mini-Split Cost Calculator",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+    "description": "An interactive estimator that calculates the total cost of ductless mini-split installations, breaking down equipment costs by brand tier and labor costs by installation complexity.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How much does it cost to install a 3-zone mini split?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A professionally installed 3-zone mini-split system typically costs between $6,500 and $12,000 depending on the brand (e.g., Mitsubishi vs Pioneer) and how far the indoor heads are from the outdoor compressor."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is mini split labor so expensive?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Mini-split labor is expensive because each indoor zone requires custom copper refrigerant lines to be run through walls, electrical wiring to be routed to the panel, and condensate drain lines to be pitched correctly to prevent water damage."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is a Mitsubishi mini split worth the extra cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Mitsubishi and Daikin systems are generally considered the gold standard. They cost 30% to 50% more upfront than budget brands, but they offer superior Hyper-Heating capabilities (down to -13°F) and significantly longer lifespans with better parts availability."
+        }
+      }
+    ]
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-500/20 text-cyan-300 font-bold text-xs uppercase tracking-widest mb-6 border border-cyan-500/30">
+        Know Before You Buy
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        Ductless Mini-Split <span class="text-cyan-400">Cost Estimator</span>
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-blue-100 max-w-2xl mx-auto mb-8 font-light">
+        Don't get ripped off. Calculate the fair-market cost of equipment and labor for your specific mini-split installation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Calculator App -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10">
+    <div class="max-w-6xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-gray-900 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-cyan-400">️</span>
+          <h2 class="text-white font-bold text-lg">Installation Quote Engine</h2>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <!-- Controls (Left: 7 cols) -->
+          <div class="lg:col-span-7 space-y-8">
+            
+            <!-- Number of Zones -->
+            <div class="bg-blue-50 p-6 rounded-sm border border-blue-100">
+              <div class="flex justify-between items-end mb-4">
+                <label class="block text-sm font-bold text-blue-900 uppercase tracking-wider">Number of Zones (Indoor Heads)</label>
+                <span class="text-2xl font-black text-blue-600" id="zoneDisplay">3 Zones</span>
+              </div>
+              <input type="range" id="zones" min="1" max="5" step="1" value="3" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+              <div class="flex justify-between text-xs text-blue-400 mt-2 font-bold">
+                <span>1 Zone</span>
+                <span>5 Zones</span>
+              </div>
+              <p class="text-xs text-blue-800 mt-3 font-medium">Each room you want to cool/heat requires its own indoor zone head.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              
+              <!-- Brand Tier -->
+              <div>
+                <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">Equipment Quality</label>
+                <select id="brandTier" class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block p-3 shadow-sm font-semibold">
+                  <option value="budget">Budget (MrCool, Pioneer)</option>
+                  <option value="standard" selected>Standard (LG, Fujitsu)</option>
+                  <option value="premium">Premium (Mitsubishi, Daikin)</option>
+                </select>
+              </div>
+
+              <!-- Indoor Unit Type -->
+              <div>
+                <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">Indoor Unit Type</label>
+                <select id="unitType" class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block p-3 shadow-sm font-semibold">
+                  <option value="wall" selected>Standard Wall-Mount</option>
+                  <option value="cassette">Ceiling Cassette (Hidden)</option>
+                </select>
+                <p class="text-xs text-gray-500 mt-2 font-medium">Ceiling cassettes cost significantly more in labor.</p>
+              </div>
+              
+              <!-- Installation Complexity -->
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">Labor Complexity</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <label class="cursor-pointer">
+                    <input type="radio" name="complexity" value="easy" class="peer sr-only">
+                    <div class="p-4 bg-white border-2 border-gray-200 rounded-sm peer-checked:border-blue-500 peer-checked:bg-blue-50 transition-all text-center">
+                      <span class="block font-bold text-gray-900 mb-1">Standard / Easy</span>
+                      <span class="text-xs text-gray-500">1st floor, short pipe runs, existing electrical panel is adequate.</span>
+                    </div>
+                  </label>
+                  <label class="cursor-pointer">
+                    <input type="radio" name="complexity" value="hard" checked class="peer sr-only">
+                    <div class="p-4 bg-white border-2 border-gray-200 rounded-sm peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-center">
+                      <span class="block font-bold text-gray-900 mb-1">Complex / Hard</span>
+                      <span class="text-xs text-gray-500">2nd+ floors, long pipe runs through attic, electrical panel upgrade needed.</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Output Panel (Right: 5 cols) -->
+          <div class="lg:col-span-5 bg-gray-900 rounded-sm p-6 lg:p-8 text-white flex flex-col relative overflow-hidden shadow-md">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500 rounded-md mix-blend-overlay filter blur-3xl opacity-10 transform translate-x-1/2 -translate-y-1/2"></div>
+            
+            <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-6 border-b border-gray-800 pb-4">Estimated Total Quote</h3>
+            
+            <div class="space-y-6 flex-grow">
+              
+              <!-- Total Cost -->
+              <div class="flex flex-col gap-3 bg-blue-900/40 p-6 rounded-sm border border-blue-800 items-center justify-center text-center">
+                <span class="text-blue-300 font-bold uppercase tracking-widest text-xs">Total Turnkey Cost</span>
+                <span class="text-5xl lg:text-6xl font-black text-white leading-none tracking-tight" id="outTotal">$0</span>
+                <span class="text-blue-400 text-xs font-bold mt-2">Fully Installed & Warrantied</span>
+              </div>
+
+              <div class="w-full h-px bg-gray-800 my-4"></div>
+
+              <!-- Itemized Breakdown -->
+              <h4 class="text-gray-400 font-bold uppercase tracking-widest text-xs mb-2">Itemized Breakdown</h4>
+              
+              <div class="flex justify-between items-center bg-gray-800/50 p-3 rounded-lg">
+                <span class="text-gray-300 font-medium text-sm flex items-center gap-2">Equipment Cost:</span>
+                <span class="text-lg font-mono text-white" id="outEquip">$0</span>
+              </div>
+              
+              <div class="flex justify-between items-center bg-gray-800/50 p-3 rounded-lg mt-2">
+                <span class="text-gray-300 font-medium text-sm flex items-center gap-2">Labor & Permits:</span>
+                <span class="text-lg font-mono text-white" id="outLabor">$0</span>
+              </div>
+              
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="mt-6 bg-gray-800 border-l-4 border-gray-600 p-4 rounded-r-xl">
+              <p class="text-gray-400 text-xs leading-relaxed">
+                *Estimates are based on national HVAC averages. Prices can vary heavily based on local supply chains, seasonal contractor demand, and unseen structural obstacles in your home.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content (10-Year Veteran Tone) -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: The "Line-Hide" Lie -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The "Line-Hide" Lie
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          If you get three quotes from HVAC contractors, and one quote is $2,000 cheaper than the rest, do not instantly sign the contract. You need to ask them exactly how they are running the copper lines.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          Mini-splits require thick, insulated copper refrigerant pipes, electrical wires, and a PVC drain line to connect the indoor head to the outdoor unit. Running these neatly requires skill. Cheap contractors will drill a hole straight out the back of the unit and run raw, exposed black and copper pipes diagonally across the entire exterior of your beautiful siding.
+        </p>
+        <div class="bg-gray-900 text-white p-6 rounded-sm shadow-md mb-6">
+          <p class="font-bold text-cyan-400 mb-2 uppercase tracking-wider text-sm">The 10-Year Veteran Rule:</p>
+          <p class="text-gray-300 leading-relaxed">
+            Always verify that the quote includes premium <strong>Line-Hide</strong> (like Slimduct or SpeediChannel). This is a rigid, paintable PVC casing that protects the lines from UV rot and hides the ugly pipes. Running line-hide takes extra labor and materials, which is why "budget" installers skip it. Don't let a cheap contractor ruin the curb appeal of your home.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 2: Mitsubishi vs The World -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          Mitsubishi vs The World
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          When talking to contractors, you will inevitably notice that everyone pushes <strong>Mitsubishi</strong> or <strong>Daikin</strong>, and the quotes are noticeably more expensive than brands like Pioneer or Senville. Here is the honest truth about why we do that:
+        </p>
+        <ul class="space-y-4 text-gray-700 text-lg mb-6">
+          <li class="flex items-start gap-3">
+            <span class="text-blue-500 font-bold">1.</span>
+            <span><strong>Hyper-Heating:</strong> A cheap mini-split will blow lukewarm air when it drops below 30°F outside. A Mitsubishi Hyper-Heat system will pump out blistering hot air even when it is -13°F outside.</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-blue-500 font-bold">2.</span>
+            <span><strong>Parts Availability:</strong> When a cheap, white-label budget system breaks in 4 years, we cannot find the proprietary circuit board to fix it. The unit becomes a paperweight. Mitsubishi guarantees parts availability for decades.</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-blue-500 font-bold">3.</span>
+            <span><strong>No 2 AM Phone Calls:</strong> HVAC guys push premium brands because we hate getting angry phone calls at 2 AM in January when a cheap compressor dies and the homeowner's pipes are freezing.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Section 3: The DIY Pre-Charged Trap -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-yellow-500">️</span> The DIY "Pre-Charged" Trap
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          You have likely seen ads for "DIY" mini-splits like MrCool that claim you don't need an HVAC technician because the lines are pre-charged with refrigerant. Yes, buying these kits will absolutely save you $1,500 to $3,000 in labor.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          But there is a massive catch the marketing doesn't tell you. If you accidentally kink that rigid pre-charged line, or if the quick-connect fitting leaks a year down the road, you are entirely out of luck. 
+        </p>
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl">
+          <p class="text-red-900 font-bold mb-1 text-sm uppercase tracking-wide">The Hidden Cost</p>
+          <p class="text-red-800 text-sm leading-relaxed">
+            You cannot legally buy R-410a refrigerant without an EPA license. If your DIY system leaks, you have to call an HVAC pro. Most companies will refuse to touch a DIY unit for liability reasons. If you find one who will, they will charge you $500+ just to braze the leak, pull a vacuum, and recharge the system—wiping out a massive chunk of the money you thought you saved.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 4: FAQs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          Installation FAQ
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              How much does it cost to install a 3-zone mini split?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              A professionally installed 3-zone mini-split system typically costs between $6,500 and $12,000 depending on the brand (e.g., Mitsubishi vs Pioneer) and how far the indoor heads are from the outdoor compressor.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Why is mini split labor so expensive?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Mini-split labor is expensive because each indoor zone requires custom copper refrigerant lines to be run through walls, electrical wiring to be routed to the panel, and condensate drain lines to be pitched correctly to prevent water damage.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Is a Mitsubishi mini split worth the extra cost?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Mitsubishi and Daikin systems are generally considered the gold standard. They cost 30% to 50% more upfront than budget brands, but they offer superior Hyper-Heating capabilities (down to -13°F) and significantly longer lifespans with better parts availability.
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Logic -->
+  <script>
+    const zonesSlider = document.getElementById('zones') as HTMLInputElement;
+    const brandTierSelect = document.getElementById('brandTier') as HTMLSelectElement;
+    const unitTypeSelect = document.getElementById('unitType') as HTMLSelectElement;
+    const complexityRadios = document.querySelectorAll('input[name="complexity"]');
+
+    const zoneDisplay = document.getElementById('zoneDisplay')!;
+    const outTotal = document.getElementById('outTotal')!;
+    const outEquip = document.getElementById('outEquip')!;
+    const outLabor = document.getElementById('outLabor')!;
+
+    function formatMoney(amount: number) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
+    }
+
+    function calculate() {
+      const zones = parseInt(zonesSlider.value);
+      const brand = brandTierSelect.value;
+      const type = unitTypeSelect.value;
+      
+      let complexity = 'easy';
+      complexityRadios.forEach((r) => {
+        const radio = r as HTMLInputElement;
+        if (radio.checked) complexity = radio.value;
+      });
+
+      zoneDisplay.innerText = `${zones} Zone${zones > 1 ? 's' : ''}`;
+
+      // --- 1. Calculate Equipment Cost ---
+      let baseEquipPerZone = 1800; // Standard
+      if (brand === 'budget') baseEquipPerZone = 1200;
+      if (brand === 'premium') baseEquipPerZone = 2500;
+
+      // Add cassette penalty
+      if (type === 'cassette') baseEquipPerZone += 500;
+
+      let equipCost = baseEquipPerZone * zones;
+      // Add outdoor compressor base scaler (multi-zone condensers cost slightly less than 3 individual single zones)
+      // We simulate this by applying a slight discount scale to multi-zone equipment.
+      if (zones > 1) {
+          equipCost = equipCost * (1 - (zones * 0.05)); // 10% discount for 2 zone, 25% for 5 zone.
+      }
+
+      // --- 2. Calculate Labor Cost ---
+      let laborCost = 1000 + ((zones - 1) * 600);
+      
+      // Cassette Labor Penalty (cutting drywall, hoisting)
+      if (type === 'cassette') laborCost += (400 * zones);
+
+      // Installation Complexity Penalty
+      if (complexity === 'hard') {
+          laborCost = laborCost * 1.5; // 50% increase for 2nd floor runs, line hide routing, electrical upgrades
+      }
+
+      // --- Render Outputs ---
+      const total = equipCost + laborCost;
+
+      outTotal.innerText = formatMoney(total);
+      outEquip.innerText = formatMoney(equipCost);
+      outLabor.innerText = formatMoney(laborCost);
+    }
+
+    // Event Listeners
+    zonesSlider.addEventListener('input', calculate);
+    brandTierSelect.addEventListener('change', calculate);
+    unitTypeSelect.addEventListener('change', calculate);
+    complexityRadios.forEach(r => r.addEventListener('change', calculate));
+
+    // Init
+    calculate();
+  </script>
+</Layout>

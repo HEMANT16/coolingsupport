@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap link for Google Search Console and other crawlers
+Sitemap: https://coolingsupport.com/sitemap-index.xml

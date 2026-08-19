@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SEO from '../components/SEO.astro';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Privacy Policy for Cooling Support",
+    "description": "Privacy Policy details for data processing, transparency, and browser calculator functions on Cooling Support.",
+    "url": "https://coolingsupport.com/privacy"
+  }
+];
+---
+
+<Layout title="Privacy Policy">
+  <SEO 
+    slot="head"
+    title="Privacy Policy | Cooling Support"
+    description="Privacy Policy for Cooling Support. Learn how we handle your data, our stance on privacy, and how our calculators work without tracking you."
+    schema={schema}
+  />
+  <div class="max-w-3xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mb-12">
+      <h1 class="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight sm:text-5xl mb-4">
+        Privacy Policy
+      </h1>
+      <p class="text-slate-500 dark:text-slate-400">Last Updated: June 14, 2026</p>
+    </div>
+
+    <div class="prose prose-blue dark:prose-invert max-w-none">
+      <p>
+        At Cooling Support, we believe that your data is your business. Because we provide tools used by HVAC contractors to calculate internal business costs and estimate job pricing, we take privacy incredibly seriously.
+      </p>
+
+      <h2>1. Our Calculators Process Data Locally</h2>
+      <p>
+        The vast majority of the calculators on Cooling Support (including the Flat Rate Pricing Engine and Labor Burden Calculator) are built using client-side JavaScript. This means that when you enter your technician's hourly wage or your company's overhead costs, <strong>that data never leaves your browser</strong>. It is not sent to our servers, it is not saved to a database, and we have no way of seeing it.
+      </p>
+
+      <h2>2. Information We Do Collect</h2>
+      <p>
+        We collect standard, anonymized analytics data to understand how our site is being used and which calculators are the most popular. This includes:
+      </p>
+      <ul>
+        <li>Pages visited and time spent on the site</li>
+        <li>General geographic location (e.g., State or Country) to help us tailor our local cost guides</li>
+        <li>Browser type and device type (so we know if we need to optimize our mobile view)</li>
+      </ul>
+      <p>
+        If you choose to use our Contact Form, we will collect your name and email address solely for the purpose of replying to your inquiry. We do not add you to marketing newsletters without your explicit consent.
+      </p>
+
+      <h2>3. Cookies</h2>
+      <p>
+        We use essential cookies to remember your preferences (such as your Light/Dark mode settings) and non-essential cookies for analytics. You can choose to disable cookies in your browser settings, though some preferences may not be saved.
+      </p>
+
+      <h2>4. Third-Party Links</h2>
+      <p>
+        Our articles and guides may contain links to external websites (such as ASHRAE or EPA.gov) or affiliate links to HVAC tools. We are not responsible for the privacy practices of those external sites.
+      </p>
+
+      <h2>5. Changes to This Policy</h2>
+      <p>
+        We may update this privacy policy from time to time to reflect changes in our practices or for legal reasons. We will notify users of any significant changes by updating the "Last Updated" date at the top of this page.
+      </p>
+
+      <h2>Contact Us</h2>
+      <p>
+        If you have any questions about this Privacy Policy, please contact us at <a href="/contact">support@coolingsupport.com</a>.
+      </p>
+    </div>
+  </div>
+</Layout>

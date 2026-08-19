@@ -1,0 +1,411 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Room BTU Calculator | Window AC & Mini Split Sizer";
+const description = "Use our free room BTU calculator to find exactly what size window AC or mini-split you need. Calculates BTUs based on room dimensions, sun exposure, and kitchens.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Room BTU Sizing Calculator",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+    "description": "An interactive sizing utility that cross-references a specific room's dimensions against sun exposure, occupancy, and kitchen thermal loads to calculate the required Window AC or Mini-Split BTUs.",
+    "applicationCategory": "Calculator",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What happens if I put a 12,000 BTU AC in a small room?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Putting a 12,000 BTU AC in a tiny 10x10 bedroom is a terrible idea. The unit will blast the temperature down in 5 minutes and shut off before it has time to remove the humidity from the air. Your room will feel like a cold, damp gym sock, and the compressor will burn out from short-cycling."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How many BTUs do I need for a kitchen?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You must add exactly 4,000 BTUs to your baseline calculation if the AC is cooling a kitchen. Ovens, stoves, and refrigerators put off a massive amount of thermal heat that standard room sizing does not account for."
+        }
+      }
+    ]
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        Room <span class="text-blue-300">BTU Sizing</span> Calculator
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-blue-100 max-w-2xl mx-auto mb-8 font-light">
+        Calculate the exact BTUs required for a Window AC, Portable AC, or Mini-Split. 
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Calculator App -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10 -mt-6">
+    <div class="max-w-6xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-gray-900 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-cyan-400">🪟</span>
+          <h2 class="text-white font-bold text-lg">Single-Zone BTU Engine</h2>
+        </div>
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-md bg-red-500"></div>
+          <div class="w-3 h-3 rounded-md bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-md bg-green-500"></div>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <!-- Controls (Left: 7 cols) -->
+          <div class="lg:col-span-7 space-y-8">
+            
+            <!-- Room Dimensions -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-blue-50 p-6 rounded-sm border border-blue-100">
+              <!-- Length -->
+              <div>
+                <div class="flex justify-between items-end mb-4">
+                  <label class="block text-sm font-bold text-blue-900 uppercase tracking-wider">Room Length</label>
+                  <span class="text-xl font-bold text-blue-900" id="lengthDisplay">15 ft</span>
+                </div>
+                <input type="range" id="length" min="5" max="50" step="1" value="15" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+              </div>
+
+              <!-- Width -->
+              <div>
+                <div class="flex justify-between items-end mb-4">
+                  <label class="block text-sm font-bold text-blue-900 uppercase tracking-wider">Room Width</label>
+                  <span class="text-xl font-bold text-blue-900" id="widthDisplay">12 ft</span>
+                </div>
+                <input type="range" id="width" min="5" max="50" step="1" value="12" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+              </div>
+              
+              <div class="sm:col-span-2 mt-2 pt-4 border-t border-blue-200 flex justify-between items-center text-blue-900 font-bold">
+                <span>Calculated Area:</span>
+                <span class="text-2xl font-black" id="areaDisplay">180 sq ft</span>
+              </div>
+            </div>
+
+            <!-- Sun Exposure -->
+            <div>
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Sun Exposure</label>
+              <div class="grid grid-cols-3 gap-2">
+                <button type="button" class="sun-btn border border-gray-200 text-gray-600 hover:border-cyan-500 hover:text-cyan-600 py-3 px-2 rounded-sm font-bold transition-all text-sm flex flex-col items-center gap-1" data-val="-0.1">
+                  <span class="text-2xl"></span>
+                  <span>Heavily Shaded</span>
+                </button>
+                <button type="button" class="sun-btn bg-cyan-500 text-white border-cyan-500 py-3 px-2 rounded-sm font-bold transition-all text-sm flex flex-col items-center gap-1 shadow-sm" data-val="0">
+                  <span class="text-2xl"></span>
+                  <span>Average</span>
+                </button>
+                <button type="button" class="sun-btn border border-gray-200 text-gray-600 hover:border-cyan-500 hover:text-cyan-600 py-3 px-2 rounded-sm font-bold transition-all text-sm flex flex-col items-center gap-1" data-val="0.1">
+                  <span class="text-2xl">️</span>
+                  <span>Very Sunny</span>
+                </button>
+              </div>
+              <input type="hidden" id="sunVal" value="0" />
+            </div>
+
+            <!-- Thermal Modifiers -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <!-- Occupants -->
+              <div class="bg-gray-50 p-6 rounded-sm border border-gray-200">
+                <div class="flex justify-between items-end mb-4">
+                  <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider">Occupants</label>
+                  <span class="text-xl font-bold text-gray-900" id="occupantDisplay">2 people</span>
+                </div>
+                <input type="range" id="occupants" min="1" max="10" step="1" value="2" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-800">
+                <p class="text-xs text-gray-500 mt-3 font-medium leading-tight">Base calculation assumes 2 people. Add 600 BTUs per extra human.</p>
+              </div>
+
+              <!-- Kitchen Toggle -->
+              <div class="bg-orange-50 p-6 rounded-sm border border-orange-200 flex flex-col justify-center">
+                <label class="block text-sm font-bold text-orange-900 uppercase tracking-wider mb-4">Is this a Kitchen?</label>
+                <button type="button" id="kitchenToggle" class="w-full py-3 rounded-sm font-bold transition-all border-2 border-orange-300 text-orange-700 bg-white hover:bg-orange-100 flex items-center justify-center gap-2">
+                  <span class="text-xl"></span> <span id="kitchenText">No, Standard Room</span>
+                </button>
+                <input type="hidden" id="isKitchen" value="false" />
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Output Panel (Right: 5 cols) -->
+          <div class="lg:col-span-5 bg-gray-900 rounded-sm p-6 lg:p-8 text-white flex flex-col relative overflow-hidden shadow-md">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500 rounded-md mix-blend-overlay filter blur-3xl opacity-10 transform translate-x-1/2 -translate-y-1/2"></div>
+            
+            <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-6 border-b border-gray-800 pb-4">Thermal Requirements</h3>
+            
+            <div class="space-y-6 flex-grow">
+              
+              <!-- Exact Math -->
+              <div class="flex justify-between items-center">
+                <span class="text-gray-400 font-medium">Exact BTUs Required:</span>
+                <span class="text-xl font-mono text-cyan-400" id="outExactBtus">6,000 BTUs</span>
+              </div>
+              
+              <div class="w-full h-px bg-gray-800 my-4"></div>
+
+              <!-- Retail Size -->
+              <div class="flex flex-col gap-3 bg-cyan-900/40 p-6 rounded-sm border border-cyan-800 items-center justify-center text-center">
+                <span class="text-cyan-300 font-bold uppercase tracking-widest text-xs">Buy This Retail Size</span>
+                <span class="text-5xl font-black text-white" id="outRetailSize">6,000 <span class="text-2xl text-cyan-500 font-normal">BTU</span></span>
+                <span class="bg-cyan-950 text-cyan-400 px-3 py-1 rounded-md text-xs font-bold mt-2" id="outUnitClass">Standard Window AC</span>
+              </div>
+            </div>
+
+            <!-- Portable AC Warning -->
+            <div class="mt-8 bg-red-900/40 border-l-4 border-red-500 p-4 rounded-r-xl">
+              <h4 class="font-bold text-red-400 text-xs uppercase tracking-wide mb-1 flex items-center gap-2">
+                <span></span> Buying a Portable AC?
+              </h4>
+              <p class="text-red-200 text-sm leading-relaxed font-medium">
+                If you are buying a single-hose Portable AC, you MUST add 30% to the BTUs listed above to compensate for the "Vacuum Effect" (the hose sucks your cold air right back out the window). 
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content (10-Year Veteran Tone) -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: The Portable AC Scam -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The Portable AC "Vacuum Effect" Warning
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          If you are using the calculator above to buy a Window AC or a Mini-Split, the math is perfectly accurate. However, if you are buying a <strong>Portable AC (the floor units with a plastic hose)</strong>, you are being scammed by the box's BTU rating.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          A single-hose portable AC uses the cold air inside your room to cool down its internal compressor, and then blows that exhaust heat out the window. This creates a massive <strong>Negative Pressure Vacuum</strong> in your bedroom. Because it is blowing air out, the laws of physics dictate that air must be sucked back in. It literally sucks 90-degree hot air from outside underneath your bedroom door and through your window cracks to replace the air it just exhausted.
+        </p>
+        <div class="bg-gray-900 text-white p-6 rounded-sm border-l-4 border-red-500 shadow-md">
+          <p class="font-bold text-red-400 mb-2 uppercase tracking-wider text-sm">The 10-Year Veteran Rule:</p>
+          <p class="text-gray-300 leading-relaxed">
+            A "10,000 BTU" Portable AC will only give you about 6,500 BTUs of actual cooling power. If our calculator tells you that your room requires 8,000 BTUs, you must buy a <strong>12,000 BTU</strong> single-hose Portable AC to compensate for the vacuum effect. Or, better yet, buy a Dual-Hose unit.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 2: Why Kitchens Break The Math -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          Why Kitchens Require 4,000 Extra BTUs
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          You'll notice our calculator has a giant toggle for "Is this a Kitchen?" When you click it, the required BTUs jump by exactly 4,000. Why? Because of pure thermal load.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          A standard gas or electric oven baking a pizza at 425°F is a massive heat generator. A refrigerator is essentially an air conditioner running in reverse—it takes the heat out of your food and blasts it out the back coils directly into your kitchen. If you size a kitchen AC based purely on square footage, the unit will completely fail the second you start cooking dinner. The Energy Star standard mandates a strict +4,000 BTU penalty for any space containing kitchen appliances.
+        </p>
+      </div>
+
+      <!-- Section 3: The Danger of Oversizing -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-cyan-500">️</span> The "Damp Gym Sock" Effect (Oversizing)
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-4">
+          Many people think: <i>"My bedroom only requires 5,000 BTUs, but Costco has a massive 14,000 BTU Window AC on sale. I'll buy that so it cools down instantly!"</i>
+        </p>
+        <div class="bg-blue-50 border border-blue-200 p-6 rounded-sm mb-6">
+          <p class="text-blue-900 leading-relaxed">
+            If you do this, your room will smell like damp gym socks within a month.
+          </p>
+        </div>
+        <p class="text-md text-gray-700 mt-4 leading-relaxed">
+          Air conditioners do not just cool the air; they act as giant dehumidifiers. Wringing water out of the air takes time (at least 15-20 minutes of continuous running). If you put a 14,000 BTU unit in a tiny bedroom, it will drop the temperature to 68°F in just 4 minutes and shut off. The room will be freezing, but the humidity will still be 70%. This cold, wet air feels clammy and promotes mold growth inside the AC's evaporator coil (which is what causes the gym sock smell). <strong>Always buy the exact size the calculator recommends.</strong>
+        </p>
+        <!-- Section 4: FAQs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          Sizing FAQ
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-cyan-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              What happens if I put a 12,000 BTU AC in a small room?
+              <span class="text-cyan-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Putting a 12,000 BTU AC in a tiny 10x10 bedroom is a terrible idea. The unit will blast the temperature down in 5 minutes and shut off before it has time to remove the humidity from the air. Your room will feel like a cold, damp gym sock, and the compressor will burn out from short-cycling.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-cyan-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              How many BTUs do I need for a kitchen?
+              <span class="text-cyan-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              You must add exactly 4,000 BTUs to your baseline calculation if the AC is cooling a kitchen. Ovens, stoves, and refrigerators put off a massive amount of thermal heat that standard room sizing does not account for.
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Logic -->
+  <script>
+    const lenSlider = document.getElementById('length') as HTMLInputElement;
+    const widSlider = document.getElementById('width') as HTMLInputElement;
+    const lenDisplay = document.getElementById('lengthDisplay')!;
+    const widDisplay = document.getElementById('widthDisplay')!;
+    const areaDisplay = document.getElementById('areaDisplay')!;
+    
+    const sunBtns = document.querySelectorAll('.sun-btn');
+    const sunVal = document.getElementById('sunVal') as HTMLInputElement;
+    
+    const occSlider = document.getElementById('occupants') as HTMLInputElement;
+    const occDisplay = document.getElementById('occupantDisplay')!;
+
+    const kitchenToggle = document.getElementById('kitchenToggle') as HTMLButtonElement;
+    const isKitchen = document.getElementById('isKitchen') as HTMLInputElement;
+    const kitchenText = document.getElementById('kitchenText')!;
+    
+    const outExactBtus = document.getElementById('outExactBtus')!;
+    const outRetailSize = document.getElementById('outRetailSize')!;
+    const outUnitClass = document.getElementById('outUnitClass')!;
+
+    function calculate() {
+      const len = parseFloat(lenSlider.value);
+      const wid = parseFloat(widSlider.value);
+      const area = len * wid;
+
+      // Update Dimensions UI
+      lenDisplay.innerText = `${len} ft`;
+      widDisplay.innerText = `${wid} ft`;
+      areaDisplay.innerText = `${new Intl.NumberFormat('en-US').format(area)} sq ft`;
+      occDisplay.innerText = `${occSlider.value} people`;
+
+      // 1. Base BTUs based on Energy Star Area Chart approximation
+      // A highly accurate continuous curve for room ACs: Area * 25 + 1500 (approximate)
+      // Let's use strict Energy Star buckets for accuracy:
+      let baseBtus = 5000;
+      if (area > 150 && area <= 250) baseBtus = 6000;
+      else if (area > 250 && area <= 300) baseBtus = 7000;
+      else if (area > 300 && area <= 350) baseBtus = 8000;
+      else if (area > 350 && area <= 400) baseBtus = 9000;
+      else if (area > 400 && area <= 450) baseBtus = 10000;
+      else if (area > 450 && area <= 550) baseBtus = 12000;
+      else if (area > 550 && area <= 700) baseBtus = 14000;
+      else if (area > 700 && area <= 1000) baseBtus = 18000;
+      else if (area > 1000 && area <= 1200) baseBtus = 21000;
+      else if (area > 1200 && area <= 1500) baseBtus = 24000;
+      else if (area > 1500) baseBtus = area * 18; // Rule of thumb for massive open spaces
+
+      // 2. Sun Modifier (-10% or +10%)
+      const sunMod = parseFloat(sunVal.value); // -0.1, 0, or 0.1
+      baseBtus = baseBtus + (baseBtus * sunMod);
+
+      // 3. Occupant Modifier (+600 per person over 2)
+      const occs = parseInt(occSlider.value);
+      if (occs > 2) {
+        baseBtus += (occs - 2) * 600;
+      }
+
+      // 4. Kitchen Modifier (+4000)
+      if (isKitchen.value === 'true') {
+        baseBtus += 4000;
+      }
+
+      // Final Exact BTUs
+      const exactBtus = Math.round(baseBtus);
+      outExactBtus.innerText = `${new Intl.NumberFormat('en-US').format(exactBtus)} BTUs`;
+
+      // Retail Snap (Standard sizes: 5k, 6k, 8k, 10k, 12k, 14k, 18k, 24k)
+      const retailSizes = [5000, 6000, 8000, 10000, 12000, 14000, 18000, 24000, 30000, 36000];
+      let recommendedRetail = retailSizes[0];
+      let minDiff = Math.abs(exactBtus - retailSizes[0]);
+
+      for (let i = 1; i < retailSizes.length; i++) {
+        const diff = Math.abs(exactBtus - retailSizes[i]);
+        if (diff < minDiff) {
+          minDiff = diff;
+          recommendedRetail = retailSizes[i];
+        }
+      }
+
+      // If they need more than 24k, Window ACs don't really exist. They need a mini-split.
+      if (recommendedRetail > 24000) {
+        outRetailSize.innerHTML = `${new Intl.NumberFormat('en-US').format(recommendedRetail)}+ <span class="text-2xl text-cyan-500 font-normal">BTU</span>`;
+        outUnitClass.innerText = "Mini-Split or Multiple Units Required";
+        outUnitClass.className = "bg-orange-950 text-orange-400 px-3 py-1 rounded-md text-xs font-bold mt-2";
+      } else {
+        outRetailSize.innerHTML = `${new Intl.NumberFormat('en-US').format(recommendedRetail)} <span class="text-2xl text-cyan-500 font-normal">BTU</span>`;
+        outUnitClass.innerText = "Standard Window AC or Mini-Split";
+        outUnitClass.className = "bg-cyan-950 text-cyan-400 px-3 py-1 rounded-md text-xs font-bold mt-2";
+      }
+    }
+
+    // Event Listeners
+    [lenSlider, widSlider, occSlider].forEach(el => {
+      el.addEventListener('input', calculate);
+    });
+
+    // Sun Buttons
+    sunBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const val = target.getAttribute('data-val') || '0';
+        sunVal.value = val;
+
+        sunBtns.forEach(b => {
+          b.className = "sun-btn border border-gray-200 text-gray-600 hover:border-cyan-500 hover:text-cyan-600 py-3 px-2 rounded-sm font-bold transition-all text-sm flex flex-col items-center gap-1";
+        });
+        target.className = "sun-btn bg-cyan-500 text-white border-cyan-500 py-3 px-2 rounded-sm font-bold transition-all text-sm flex flex-col items-center gap-1 shadow-sm";
+        calculate();
+      });
+    });
+
+    // Kitchen Toggle
+    kitchenToggle.addEventListener('click', () => {
+      if (isKitchen.value === 'false') {
+        isKitchen.value = 'true';
+        kitchenToggle.className = "w-full py-3 rounded-sm font-bold transition-all border-2 border-red-500 bg-red-500 text-white shadow-md flex items-center justify-center gap-2";
+        kitchenText.innerText = "Yes, +4000 BTU Load";
+      } else {
+        isKitchen.value = 'false';
+        kitchenToggle.className = "w-full py-3 rounded-sm font-bold transition-all border-2 border-orange-300 text-orange-700 bg-white hover:bg-orange-100 flex items-center justify-center gap-2";
+        kitchenText.innerText = "No, Standard Room";
+      }
+      calculate();
+    });
+
+    // Init
+    calculate();
+  </script>
+</Layout>

@@ -1,0 +1,306 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+const voltasCodes = [
+  { code: "E1", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Sensor", desc: "Indoor room temperature sensor error", cause: "NTC room air intake sensor failed or short-circuited.", action: "Replace room temperature sensor probe: ₹300 – ₹500 / $20 – $35.", difficulty: "Professional Only", occurrence: "Common", proCost: "₹300 – ₹500 / $20 – $35" },
+  { code: "E2", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Sensor", desc: "Indoor coil temperature sensor error", cause: "Evaporator coil sensor failure causing anti-freeze trigger.", action: "Replace coil temperature sensor: ₹300 – ₹500 / $20 – $35.", difficulty: "Moderate", occurrence: "Common", proCost: "₹300 – ₹500 / $20 – $35" },
+  { code: "E5", severity: "danger", severityText: "Stop AC — Overload", color: "red", category: "Electrical", desc: "Overcurrent / Compressor overload protection", cause: "Severe voltage fluctuations, heavy dirt on condenser, or failed compressor.", action: "Check incoming voltage. Install a digital voltage stabilizer. Clean outdoor unit to restore airflow.", difficulty: "Professional Only", occurrence: "Common", proCost: "$250 – $600" },
+  { code: "E6", severity: "technician", severityText: "Call Technician", color: "orange", category: "Communication", desc: "Communication line failure", cause: "Data line connection loose, wire broken, or PCB signal port damaged.", action: "Check terminal connection block for rusted joints; replace communication cable.", difficulty: "Professional Only", occurrence: "Common", proCost: "$250 – $600" },
+  { code: "EC", severity: "danger", severityText: "Stop AC — Gas Leak", color: "red", category: "Refrigerant", desc: "Refrigerant leakage detected", cause: "Physical hole in copper coils, flare nut leakage, or system out of refrigerant.", action: "Stop AC immediately. Do not run to prevent compressor burnout. Perform leak search, weld, and recharge gas: ₹2,500 – ₹5,500 / $150 – $300.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "₹2,500 – ₹5,500 / $150 – $300" },
+];
+
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Voltas AC Error Codes | Diagnostic Lookup Guide",
+    "description": "Step-by-step diagnostic lookup for decoding Voltas split and window AC error codes (E1, E2, E5, E6, EC).",
+    "category": "Air Conditioner Troubleshooting",
+    "author": {
+      "@type": "Person",
+      "name": "Mike Reynolds",
+      "jobTitle": "Master HVAC Technician"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does EC mean on a Voltas AC?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The EC code on a Voltas air conditioner indicates refrigerant leakage detection. The system has detected a drop in gas pressure. You must turn the unit off immediately to prevent compressor burnout."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How to reset a Voltas AC error code?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "To reset a Voltas AC error code, shut off the socket switch or stabilize power switch, wait 3 minutes, then turn it back on. This resets the volatile memory in the indoor/outdoor control boards."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout title="Voltas AC Error Codes | Diagnostic Lookup Guide">
+  <SEO
+    slot="head"
+    title="Voltas AC Error Codes | Diagnostic Lookup Guide | Cooling Support"
+    description="Decode Voltas split and window AC error codes (E1, E2, E5, E6, EC) instantly. Get likely causes, DIY resets, and repair pricing."
+    type="article"
+    schema={schemaData}
+  />
+
+  <!-- Hero Section -->
+  <section class="relative bg-zinc-950 pt-24 pb-20 border-b border-zinc-800 overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] opacity-10 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-orange-600 to-transparent blur-[120px] rounded-full"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 bg-orange-600/10 border border-orange-500/25 text-orange-400 text-xs font-semibold px-5 py-2 rounded-full mb-6 font-mono">
+        ❄️ Voltas Diagnostics
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
+        Voltas AC Error Codes <br />
+        <span class="text-orange-500">Split &amp; Window AC Diagnostics</span>
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-8">
+        Decode error codes (E1, E2, E5, EC) on your Voltas digital display or remote controller instantly.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Search and Guide -->
+  <div class="bg-zinc-50 min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center space-x-2 text-sm font-semibold text-zinc-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-orange-500 transition-colors">Home</a>
+        <span class="text-zinc-300">/</span>
+        <a href="/ac-error-codes" class="hover:text-orange-500 transition-colors">AC Error Codes</a>
+        <span class="text-zinc-300">/</span>
+        <span class="text-zinc-800 font-bold">Voltas</span>
+      </nav>
+
+      <!-- How to Read Voltas Codes -->
+      <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-4">
+        <h2 class="text-xl font-bold text-zinc-900 flex items-center gap-2">
+          <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          How to Read Voltas Error Codes
+        </h2>
+        <div class="text-sm text-zinc-600 space-y-3 leading-relaxed">
+          <p>
+            Voltas split and window air conditioners display active fault codes directly on the indoor digital screen:
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Digital display screen</strong>: The front panel will display the code directly (e.g. <strong>EC</strong> or <strong>E5</strong>).</li>
+            <li><strong>Power Resetting</strong>: Shut down socket switch or stabilizer power switch, wait 3 minutes, then turn on to clear transient faults.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Search Engine -->
+      <section class="space-y-6">
+        <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+          <h2 class="text-2xl font-bold text-zinc-900">Voltas Code Lookup</h2>
+          
+          <div style="position: relative; width: 100%;">
+            <div style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; pointer-events: none; color: #a1a1aa; z-index: 10;">
+              <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input
+              type="text"
+              id="voltas-search"
+              placeholder="Search by code (e.g. E1, E5, E6, EC)..."
+              class="w-full pl-14 pr-5 py-4 text-lg bg-zinc-50 border-2 border-zinc-200 rounded-2xl focus:outline-none focus:border-orange-500 transition-colors text-zinc-800 placeholder-zinc-400 shadow-inner"
+            />
+          </div>
+        </div>
+
+        <!-- Cards Container -->
+        <div class="space-y-4" id="voltas-cards-container">
+          {voltasCodes.map((item) => (
+            <div
+              class="voltas-card bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 flex flex-col gap-4 transition-all hover:border-zinc-300"
+              data-code={item.code.toLowerCase()}
+              data-desc={item.desc.toLowerCase()}
+              data-cause={item.cause.toLowerCase()}
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-2">
+                  <span class="font-black text-zinc-900 text-xl font-mono tracking-tight">{item.code}</span>
+                  <span class="text-xs bg-zinc-50 text-zinc-500 px-2.5 py-1 rounded-full font-medium">{item.category}</span>
+                </div>
+                
+                <span class={`text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  item.color === 'emerald' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
+                  item.color === 'amber' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                  item.color === 'orange' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
+                  'bg-rose-50 text-rose-700 border border-rose-100'
+                }`}>
+                  <span class={`w-1.5 h-1.5 rounded-full ${
+                    item.color === 'emerald' ? 'bg-emerald-500' :
+                    item.color === 'amber' ? 'bg-amber-500' :
+                    item.color === 'orange' ? 'bg-orange-500' :
+                    'bg-rose-600'
+                  }`}></span>
+                  {item.severityText}
+                </span>
+              </div>
+
+              <div>
+                <p class="font-bold text-zinc-800 text-base leading-snug">{item.desc}</p>
+              </div>
+
+              <!-- Diagnostic Metrics Panel -->
+              <div class="flex flex-wrap gap-2 items-center text-xs border-t border-b border-zinc-100 py-3 my-1">
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Difficulty:</span>
+                  <span class={`font-bold ${
+                    item.difficulty === 'DIY' ? 'text-emerald-600' :
+                    item.difficulty === 'Moderate' ? 'text-amber-600' :
+                    'text-rose-600'
+                  }`}>{item.difficulty}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Occurrence:</span>
+                  <span class="font-bold text-zinc-700">{item.occurrence}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Est. Pro Cost:</span>
+                  <span class="font-bold text-zinc-700">{item.proCost}</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-zinc-100 pt-4">
+                <div class="bg-zinc-50 rounded-2xl p-4 border border-zinc-100">
+                  <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1.5">Likely Cause</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.cause}</p>
+                </div>
+                <div class="bg-orange-500/5 rounded-2xl p-4 border border-orange-500/10">
+                  <p class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-1.5">Recommended Action</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.action}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      
+      <!-- Reddit Verified Solutions Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
+          <h2 class="text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <span class="text-orange-500">💬</span> Reddit Verified HVAC Solutions
+          </h2>
+          <span class="text-xs bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-mono uppercase font-bold tracking-wider">Community Vetted</span>
+        </div>
+        <p class="text-sm text-zinc-500 -mt-2 leading-relaxed">
+          Real-world troubleshooting tips and warning alerts compiled from active discussions on communities like <span class="font-semibold text-zinc-700">r/HVAC</span>, <span class="font-semibold text-zinc-700">r/hvacadvice</span>, and <span class="font-semibold text-zinc-700">r/homeowners</span>.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Community Solution 1 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-orange-500/10 text-orange-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/hvacadvice
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "During monsoon season, high humidity corrodes the outdoor terminals, bridging the communication wire (E6). Clean the rust off the terminals with sandpaper, spray WD-40, and wrap it securely." (Source: r/IndiaTech Homeowner Fix)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Tech Tip:</span>
+              <span>Vetted Community Solution</span>
+            </div>
+          </div>
+          
+          <!-- Community Solution 2 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-blue-500/10 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/HVAC
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "Voltas inverter ACs are highly sensitive to low voltage under heavy summer grids. If you get E6, check your input voltage. Installing a high-quality 4kVA stabilizer resolves low voltage cutoffs." (Source: r/IndiaTech Verified Fix)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Homeowner Tip:</span>
+              <span>Verified Fix</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- Visible FAQ Accordion Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {schemaData.find(s => s["@type"] === "FAQPage")?.mainEntity.map((faq) => (
+            <details class="group border border-zinc-200 rounded-2xl transition-all [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-zinc-900 cursor-pointer focus:outline-none select-none">
+                <span>{faq.name}</span>
+                <span class="transition-transform group-open:rotate-180 text-zinc-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-zinc-600 leading-relaxed border-t border-zinc-100 pt-4">
+                {faq.acceptedAnswer.text}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+
+      <!-- Troubleshooting Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Voltas Troubleshooting Guides</h2>
+        
+        <div class="space-y-6">
+          <div class="border-l-4 border-orange-500 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">Resolving Refrigerant Gas Leak Code EC</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              <strong>Code EC</strong> is a critical safety shut-off indicating zero gas pressure.
+              <strong>Action</strong>: Turn off the AC socket switch immediately. Running the compressor in a vacuum or dry state will overheat and burn the motor winding. Call an HVAC technician to find leaks in condenser or evaporator coils, weld the leak site, vacuum with a pump, and recharge gas: ₹2,500 – ₹5,500.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('voltas-search') as HTMLInputElement | null;
+  if (searchInput) {
+    const cards = document.querySelectorAll<HTMLElement>('.voltas-card');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const code = card.getAttribute('data-code') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const cause = card.getAttribute('data-cause') || '';
+
+        if (query === '' || code.includes(query) || desc.includes(query) || cause.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+</script>

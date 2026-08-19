@@ -1,0 +1,64 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import SEO from '../../../components/SEO.astro';
+
+const articles = [
+  { title: "AC Running But Not Cooling? 5 Causes", href: "/guides/ac-not-cooling", excerpt: "Is your central air conditioner running but blowing warm air? Learn the top 5 common culprits and how to fix them." },
+  { title: "How to Set Your Thermostat During a Heatwave", href: "/guides/how-to/heatwave-thermostat", excerpt: "Keep your house cool without burning out your compressor or getting a $500 electric bill." },
+  { title: "How to Clean AC Condenser Coils", href: "/guides/how-to/ac-maintenance", excerpt: "A step-by-step DIY guide to cleaning the outside unit to restore lost efficiency." },
+  { title: "How to Fix an AC Dripping Water Through Ceiling", href: "/guides/how-to/ac-leaking-water", excerpt: "Emergency steps to stop the leak, clear the drain line, and prevent mold." },
+  { title: "How to Unfreeze an Evaporator Coil", href: "/guides/how-to/coil-freezing", excerpt: "What to do immediately when you see ice on your AC lines, and how to fix the root cause." }
+];
+---
+
+<Layout title="Step-by-Step Repair Guides">
+  <SEO 
+    slot="head"
+    title="Step-by-Step HVAC Repair Guides | Cooling Support" 
+    description="Actionable, step-by-step instructions to fix common HVAC problems and perform DIY maintenance."
+  />
+
+  <div class="bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+      <!-- Breadcrumbs -->
+      <nav class="flex mb-8 text-sm font-medium text-slate-500">
+        <ol class="inline-flex items-center space-x-2">
+          <li><a href="/" class="hover:text-blue-600 transition-colors">Home</a></li>
+          <li><svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></li>
+          <li><a href="/guides" class="hover:text-blue-600 transition-colors">Knowledge Base</a></li>
+          <li><svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></li>
+          <li class="text-slate-900">Repair Guides</li>
+        </ol>
+      </nav>
+
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 font-mono tracking-tight mb-4">
+          HowTo
+        </span>
+        <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight sm:text-5xl mb-4">
+          Step-by-Step Repair Guides
+        </h1>
+        <p class="text-lg text-slate-600 leading-relaxed max-w-2xl">
+          Actionable instructions to fix common HVAC problems.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-slate-50 min-h-screen py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {articles.map((article) => (
+          <a href={article.href} class="bg-white rounded-xl shadow-sm ring-1 ring-slate-900/5 hover:shadow-md hover:ring-blue-500/30 transition-all duration-300 p-8 group flex flex-col">
+            <h2 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">{article.title}</h2>
+            <p class="text-slate-500 text-sm leading-relaxed mb-6 flex-grow">{article.excerpt}</p>
+            <div class="text-blue-600 font-semibold text-sm flex items-center mt-auto">
+              Read Guide
+              <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>

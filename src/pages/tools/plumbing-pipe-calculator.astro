@@ -1,0 +1,254 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Plumbing Pipe Sizer | Friction Loss & WSFU Calculator";
+const description = "Size residential plumbing lines using Water Supply Fixture Units (WSFU). Calculates GPM and ensures water velocity stays under 8 feet per second to prevent pipe damage.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Plumbing Pipe Size Calculator",
+    "description": "Calculates required water pipe diameters for PEX and Copper based on WSFU (Water Supply Fixture Units) and maximum velocity limits to prevent water hammer and friction loss.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "WebBrowser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-gray-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-500/20 text-blue-400 font-bold text-xs uppercase tracking-widest mb-6 border border-blue-500/30">
+        Contractor Business Suite
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        Plumbing Pipe <span class="text-blue-400">Size Calculator</span>
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8 font-light">
+        Calculate Water Supply Fixture Units (WSFU), convert to GPM, and size your Copper or PEX lines to keep water velocity safely under 8 ft/sec.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Calculator App -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10">
+    <div class="max-w-6xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-slate-800 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-4 border-blue-500">
+        <div class="flex items-center gap-3">
+          <span class="text-blue-400 text-xl"></span>
+          <h2 class="text-white font-bold text-lg">Velocity & Sizing Engine</h2>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <!-- Controls (Left: 7 cols) -->
+          <div class="lg:col-span-7 space-y-8">
+            
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded-sm mb-2">
+              <p class="text-blue-800 text-sm"><strong>How it works:</strong> Enter your total WSFU. The engine converts this to Gallons Per Minute (GPM), calculates fluid velocity based on internal diameters of PEX vs Copper L, and recommends the smallest pipe that won't exceed 8 ft/sec.</p>
+            </div>
+
+            <!-- Inputs -->
+            <div class="grid grid-cols-1 gap-6">
+              
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Total Fixture Units (WSFU)</label>
+                <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-blue-500 overflow-hidden">
+                  <input type="number" id="wsfu" value="10" step="1" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                  <span class="px-4 bg-gray-100 border-l border-gray-300 flex items-center font-bold text-gray-500">Units</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1 font-medium">Examples: Bathroom Sink = 1, Shower = 2, Toilet = 2.5</p>
+              </div>
+
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Pipe Material</label>
+                <select id="material" class="w-full rounded-sm shadow-sm border-2 border-gray-300 focus:border-blue-500 focus:ring-0 text-gray-900 text-lg font-bold p-3 appearance-none bg-white">
+                  <option value="pex">PEX (A/B/C) - Smaller ID</option>
+                  <option value="copper">Type L Copper - Larger ID</option>
+                </select>
+              </div>
+
+            </div>
+
+            <!-- Action Button -->
+            <button id="btnCalculate" class="w-full mt-8 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xl py-5 rounded-sm shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-3">
+              Size My Pipe <span class="text-2xl"></span>
+            </button>
+
+          </div>
+
+          <!-- Output Panel (Right: 5 cols) -->
+          <div class="lg:col-span-5 bg-slate-900 rounded-sm p-6 lg:p-8 text-white flex flex-col relative overflow-hidden shadow-md">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-md mix-blend-overlay filter blur-3xl opacity-10 transform translate-x-1/2 -translate-y-1/2"></div>
+            
+            <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-6 border-b border-slate-700 pb-4">Flow Analysis</h3>
+            
+            <div class="space-y-6 flex-grow">
+              
+              <!-- Result Box -->
+              <div class="flex flex-col gap-2 bg-blue-900/30 p-6 rounded-sm border-2 border-blue-500 transition-colors text-center">
+                <span class="text-blue-400 font-bold uppercase tracking-widest text-xs">Required Pipe Size</span>
+                <span class="text-5xl font-black text-white leading-none" id="outSize">--</span>
+                <span class="text-blue-300 text-sm font-medium mt-2" id="outVerdict">Calculated for < 8 ft/s velocity</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div class="bg-slate-800 p-4 rounded-sm border border-slate-700">
+                  <span class="text-slate-400 font-bold uppercase tracking-widest text-[10px] block mb-1">Demand Flow</span>
+                  <span class="text-xl font-black text-white" id="outGPM">--</span>
+                  <span class="text-xs text-slate-500 font-medium">GPM</span>
+                </div>
+                <div class="bg-slate-800 p-4 rounded-sm border border-slate-700">
+                  <span class="text-slate-400 font-bold uppercase tracking-widest text-[10px] block mb-1">Water Velocity</span>
+                  <span class="text-xl font-black text-blue-400" id="outVelocity">--</span>
+                  <span class="text-xs text-blue-500/70 font-medium">ft/sec</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The Danger of Undersized PEX
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          When transitioning from Copper to PEX, many plumbers make the mistake of using the exact same nominal pipe size. For example, replacing a 1/2" Copper line with a 1/2" PEX line.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          <strong>This causes massive friction loss.</strong> PEX has a significantly smaller Internal Diameter (ID) than Type L Copper because PEX walls are thicker. A 1/2" Copper pipe has an ID of ~0.545 inches, while 1/2" PEX has an ID of only ~0.485 inches. Furthermore, PEX-B uses insert fittings that choke the internal diameter down even further.
+        </p>
+        <div class="bg-slate-900 text-white p-6 rounded-sm shadow-md mb-6">
+          <p class="font-bold text-blue-400 mb-2 uppercase tracking-wider text-sm">Velocity and Water Hammer</p>
+          <p class="text-gray-300 leading-relaxed">
+            Plumbing code states that water velocity in a pipe should not exceed 8 feet per second (ft/s). If water moves faster than this, closing a faucet quickly will cause a violent shockwave known as "Water Hammer", which can blow fittings apart. Because PEX has a smaller ID, water must travel <em>much faster</em> through it to deliver the same GPM. The calculator above automatically accounts for these ID differences.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Script -->
+  <script>
+    // WSFU to GPM Hunter's Curve Approximation Table
+    // [WSFU, GPM]
+    const wsfuChart = [
+        [1, 3],
+        [2, 5],
+        [4, 8],
+        [6, 11],
+        [8, 13.5],
+        [10, 16],
+        [15, 19],
+        [20, 22],
+        [30, 26],
+        [40, 29],
+        [50, 32],
+        [60, 34],
+        [100, 45]
+    ];
+
+    function getGPM(wsfu: number) {
+        if (wsfu <= wsfuChart[0][0]) return wsfuChart[0][1];
+        if (wsfu >= wsfuChart[wsfuChart.length - 1][0]) return wsfuChart[wsfuChart.length - 1][1];
+        
+        for (let i = 0; i < wsfuChart.length - 1; i++) {
+            const p1 = wsfuChart[i][0];
+            const t1 = wsfuChart[i][1];
+            const p2 = wsfuChart[i+1][0];
+            const t2 = wsfuChart[i+1][1];
+            
+            if (wsfu >= p1 && wsfu <= p2) {
+                const ratio = (wsfu - p1) / (p2 - p1);
+                return t1 + ratio * (t2 - t1);
+            }
+        }
+        return 0;
+    }
+
+    // Pipe Internal Diameters (Inches)
+    // [Nominal Size, PEX ID, Copper L ID]
+    const pipeSpecs = [
+        { name: '1/2"', pex: 0.485, copper: 0.545 },
+        { name: '3/4"', pex: 0.681, copper: 0.785 },
+        { name: '1"', pex: 0.875, copper: 1.025 },
+        { name: '1-1/4"', pex: 1.069, copper: 1.265 },
+        { name: '1-1/2"', pex: 1.253, copper: 1.505 },
+        { name: '2"', pex: 1.629, copper: 1.985 }
+    ];
+
+    const btnCalculate = document.getElementById('btnCalculate')!;
+    const inWsfu = document.getElementById('wsfu') as HTMLInputElement;
+    const inMaterial = document.getElementById('material') as HTMLSelectElement;
+
+    const outSize = document.getElementById('outSize')!;
+    const outVerdict = document.getElementById('outVerdict')!;
+    const outGPM = document.getElementById('outGPM')!;
+    const outVelocity = document.getElementById('outVelocity')!;
+
+    btnCalculate.addEventListener('click', () => {
+        const wsfu = parseFloat(inWsfu.value) || 0;
+        const material = inMaterial.value; // 'pex' or 'copper'
+        
+        const gpm = getGPM(wsfu);
+        
+        // Find smallest pipe where velocity < 8 ft/sec
+        // V = (0.4085 * GPM) / (ID^2)
+        
+        let recommendedPipe = pipeSpecs[pipeSpecs.length - 1]; // Default to largest
+        let actualVelocity = 0;
+
+        for (const pipe of pipeSpecs) {
+            const id = material === 'pex' ? pipe.pex : pipe.copper;
+            const velocity = (0.4085 * gpm) / (Math.pow(id, 2));
+            
+            if (velocity <= 8) {
+                recommendedPipe = pipe;
+                actualVelocity = velocity;
+                break;
+            }
+        }
+
+        // If even the largest pipe fails (unlikely for residential, but possible for >100 WSFU)
+        if (actualVelocity === 0) {
+            const largestPipe = pipeSpecs[pipeSpecs.length - 1];
+            const id = material === 'pex' ? largestPipe.pex : largestPipe.copper;
+            actualVelocity = (0.4085 * gpm) / (Math.pow(id, 2));
+        }
+
+        outSize.innerText = recommendedPipe.name;
+        outGPM.innerText = gpm.toFixed(1);
+        outVelocity.innerText = actualVelocity.toFixed(1);
+
+        if (actualVelocity > 8) {
+            outVerdict.innerText = "WARNING: Velocity exceeds 8 ft/s safe limit!";
+            outVerdict.className = "text-red-400 text-sm font-bold mt-2";
+        } else {
+            outVerdict.innerText = `Calculated for safe flow (< 8 ft/s)`;
+            outVerdict.className = "text-blue-300 text-sm font-medium mt-2";
+        }
+    });
+  </script>
+</Layout>

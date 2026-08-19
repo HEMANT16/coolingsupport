@@ -1,0 +1,140 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SEO from '../components/SEO.astro';
+
+const categories = [
+  {
+    title: "Ultimate HVAC Buying Guides & Articles",
+    desc: "Authoritative engineering overviews and high-intent system comparisons.",
+    schema: "TechArticle",
+    hubUrl: "/guides/articles",
+    links: [
+      { name: "The Ultimate Home HVAC Buying Guide", href: "/guides/articles/hvac-buying-guide" },
+      { name: "14 SEER2 vs 18 SEER2: Is High-Efficiency Worth It?", href: "/guides/articles/seer2-comparison" },
+      { name: "Single-Stage vs Variable-Speed Compressors", href: "/guides/articles/inverter-vs-single-stage" },
+      { name: "Central AC vs Ductless Mini-Split", href: "/guides/articles/central-vs-mini-split" }
+    ]
+  },
+  {
+    title: "Step-by-Step AC & Furnace Repair Guides",
+    desc: "Actionable DIY troubleshooting steps to resolve system faults.",
+    schema: "HowTo",
+    hubUrl: "/guides/how-to",
+    links: [
+      { name: "AC Running But Not Cooling? 5 Causes", href: "/guides/ac-not-cooling" },
+      { name: "How to Set Your Thermostat During a Heatwave", href: "/guides/how-to/heatwave-thermostat" },
+      { name: "How to Clean AC Condenser Coils", href: "/guides/how-to/ac-maintenance" },
+      { name: "How to Fix an AC Dripping Water Through Ceiling", href: "/guides/how-to/ac-leaking-water" },
+      { name: "How to Unfreeze an Evaporator Coil", href: "/guides/how-to/coil-freezing" }
+    ]
+  },
+  {
+    title: "HVAC Pricing & Energy Cost Datasets",
+    desc: "Massive structured lookup tables, utility rates, and equipment pricing data.",
+    schema: "Dataset",
+    hubUrl: "/guides/data",
+    links: [
+      { name: "USA State-by-State Electricity Tariffs (2026)", href: "/guides/data/state-electricity-rates" },
+      { name: "Fair HVAC Pricing Directory (2026 Replacement Costs)", href: "/guides/data/fair-pricing" },
+      { name: "National R-410A vs R-454B Cost Averages", href: "/guides/data/freon-costs" },
+      { name: "Federal & State Heat Pump Rebates (2026 Guide)", href: "/guides/data/heat-pump-rebates" }
+    ]
+  },
+
+  {
+    title: "AC Noise Diagnostics & Audio Guides",
+    desc: "Listen to failing part recordings to diagnose the problem.",
+    schema: "AudioObject",
+    hubUrl: "/guides/diagnostics",
+    links: [
+      { name: "Common AC Sounds Directory (Audio Guide)", href: "/tools/ac-noise-analyzer" },
+      { name: "Compressor Hard Start Buzzing (Audio Demo)", href: "/tools/ac-noise-analyzer?loc=outside&sound=buzzing" },
+      { name: "Blower Motor Squealing vs Grinding (Audio)", href: "/tools/ac-noise-analyzer?loc=inside&sound=screeching" }
+    ]
+  }
+];
+---
+
+<Layout title="HVAC Troubleshooting & Repair Guides">
+  <SEO 
+    slot="head"
+    title="HVAC Troubleshooting &amp; Repair Guides | Cooling Support" 
+    description="Explore our database of HVAC buying guides, DIY air conditioner & furnace repair manuals, electricity tariffs, and cost datasets."
+  />
+
+  <!-- Ultra-Modern High-Tech Hero -->
+  <div class="relative bg-zinc-950 pt-32 pb-24 overflow-hidden border-b border-zinc-800">
+    <!-- Subtle Background Glow -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] opacity-20 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-blue-500 to-transparent blur-[100px] rounded-full"></div>
+    </div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-300 mb-8 backdrop-blur-sm">
+        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+        Master Directory
+      </div>
+      <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tighter mb-6">
+        HVAC <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Troubleshooting &amp; Repair Guides</span>
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+        The definitive collection of DIY troubleshooting manuals, high-efficiency buying comparisons, and local energy rates.
+      </p>
+    </div>
+  </div>
+
+  <!-- Premium Bento Grid Section -->
+  <div class="bg-zinc-50 min-h-screen py-24 relative">
+    <!-- Subtle Grid Background -->
+    <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 32px 32px;"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {categories.map((cat, index) => (
+          <div class="bg-white rounded-3xl p-1 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-zinc-200/60 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-blue-200 transition-all duration-500 flex flex-col group relative overflow-hidden">
+            
+            <!-- Category Header -->
+            <div class="p-8 pb-5 bg-gradient-to-b from-zinc-50/50 to-white rounded-t-[1.35rem]">
+              <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center justify-center w-12 h-12 rounded-2xl bg-zinc-100 text-zinc-900 font-bold text-lg group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm border border-zinc-200/50 group-hover:border-blue-500 group-hover:shadow-blue-500/20">
+                  0{index + 1}
+                </div>
+                <div class="px-3 py-1.5 rounded-lg bg-zinc-100/80 border border-zinc-200/50 text-xs font-mono font-medium text-zinc-500 group-hover:text-blue-600 transition-colors">
+                  {cat.schema}
+                </div>
+              </div>
+              <h2 class="text-2xl font-extrabold text-zinc-900 tracking-tight mb-3">{cat.title}</h2>
+              <p class="text-zinc-500 text-sm leading-relaxed">{cat.desc}</p>
+            </div>
+            
+            <!-- Links Section -->
+            <div class="px-8 pb-8 flex-grow bg-white">
+              <ul class="space-y-4 mt-2">
+                {cat.links.map((link) => (
+                  <li class="relative">
+                    <a href={link.href} class="group/link flex items-start p-3 -mx-3 rounded-xl hover:bg-zinc-50 transition-colors duration-200">
+                      <div class="mt-0.5 w-6 h-6 rounded-full bg-zinc-100 flex items-center justify-center mr-3 group-hover/link:bg-blue-100 group-hover/link:text-blue-600 transition-colors flex-shrink-0">
+                         <svg class="w-3.5 h-3.5 text-zinc-400 group-hover/link:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                      </div>
+                      <span class="font-semibold text-zinc-700 group-hover/link:text-zinc-900 leading-snug">{link.name}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <!-- Call to Action Footer -->
+            <div class="mt-auto p-4 bg-white rounded-b-[1.35rem]">
+               <a href={cat.hubUrl} class="flex items-center justify-center w-full py-3.5 rounded-xl bg-zinc-50 text-zinc-900 font-bold text-sm hover:bg-zinc-900 hover:text-white transition-all duration-300">
+                 Explore Directory
+                 <svg class="w-4 h-4 ml-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+               </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </div>
+</Layout>

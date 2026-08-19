@@ -1,0 +1,118 @@
+---
+---
+<canvas id="cool-air-canvas" class="absolute inset-0 w-full h-full z-0 pointer-events-none"></canvas>
+
+<script>
+  const canvas = document.getElementById('cool-air-canvas') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d');
+  
+  let particlesArray: Particle[] = [];
+  const numberOfParticles = 400; // High count for dense cool air
+
+  class Particle {
+    x: number;
+    y: number;
+    z: number;
+    baseSize: number;
+    speedZ: number;
+    speedY: number;
+    speedX: number;
+
+    constructor() {
+      this.reset(true);
+    }
+
+    reset(initial = false) {
+      // Spread them wide
+      this.x = (Math.random() - 0.5) * 3000;
+      this.y = (Math.random() - 0.5) * 2000;
+      // If initial, spread Z from 0 to 1000. Else start far away at Z=1000
+      this.z = initial ? Math.random() * 1000 : 1000; 
+      
+      this.baseSize = Math.random() * 8 + 2;
+      
+      // Speed coming towards the screen (blowing cool air)
+      this.speedZ = Math.random() * 3 + 2;
+      // Slight upward drift (cold air actually falls, but visual blowing effect looks better rising/spreading)
+      this.speedY = (Math.random() - 0.5) * 1;
+      this.speedX = (Math.random() - 0.5) * 1;
+    }
+
+    update() {
+      this.z -= this.speedZ;
+      this.y += this.speedY;
+      this.x += this.speedX;
+      
+      // If it passes the camera (Z <= 0), reset it to the back
+      if (this.z <= 0) {
+        this.reset(false);
+      }
+    }
+
+    draw() {
+      if (!ctx) return;
+      
+      // 3D Projection math
+      const fov = 350; // Field of view
+      const scale = fov / (fov + this.z);
+      
+      // Project 3D coordinates to 2D screen coordinates
+      const x2d = (this.x * scale) + (canvas.width / 2);
+      const y2d = (this.y * scale) + (canvas.height / 2);
+      
+      // Don't draw if heavily off screen
+      if (x2d < -50 || x2d > canvas.width + 50 || y2d < -50 || y2d > canvas.height + 50) return;
+
+      const currentSize = this.baseSize * scale;
+      if (currentSize < 0.1) return;
+      
+      // Opacity drops off as it gets further away (Z approaches 1000)
+      // Also drops off if it gets too close to camera to avoid harsh popping
+      let opacity = 1 - (this.z / 1000);
+      if (this.z < 50) opacity = this.z / 50; 
+      
+      ctx.beginPath();
+      // Draw a soft glowing orb (cold air particle)
+      const gradient = ctx.createRadialGradient(x2d, y2d, 0, x2d, y2d, currentSize);
+      gradient.addColorStop(0, `rgba(200, 245, 255, ${opacity})`); // bright center
+      gradient.addColorStop(1, `rgba(100, 200, 255, 0)`); // fades out
+      
+      ctx.fillStyle = gradient;
+      ctx.arc(x2d, y2d, currentSize, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function init() {
+    particlesArray = [];
+    for (let i = 0; i < numberOfParticles; i++) {
+      particlesArray.push(new Particle());
+    }
+  }
+
+  function animate() {
+    if (!ctx) return;
+    // Slight trail effect by not fully clearing the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    for (let i = 0; i < particlesArray.length; i++) {
+      particlesArray[i].update();
+      particlesArray[i].draw();
+    }
+    requestAnimationFrame(animate);
+  }
+
+  function resize() {
+    canvas.width = canvas.parentElement?.clientWidth || window.innerWidth;
+    canvas.height = canvas.parentElement?.clientHeight || window.innerHeight;
+  }
+
+  window.addEventListener('resize', resize);
+  
+  // Kickoff
+  setTimeout(() => {
+    resize();
+    init();
+    animate();
+  }, 50);
+</script>

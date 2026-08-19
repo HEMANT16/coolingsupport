@@ -1,0 +1,158 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SEO from '../components/SEO.astro';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact Cooling Support",
+    "description": "Contact the Cooling Support team for inquiries, bug reports, and suggestions.",
+    "url": "https://coolingsupport.com/contact"
+  }
+];
+---
+
+<Layout title="Contact Us">
+  <SEO 
+    slot="head"
+    title="Contact Us | Cooling Support"
+    description="Get in touch with the Cooling Support team. Have a question about our HVAC calculators or want to report a bug? We'd love to hear from you."
+    schema={schema}
+  />
+  <div class="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h1 class="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight sm:text-5xl">
+        Contact Us
+      </h1>
+      <p class="mt-4 text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+        Have a question, feature request, or found a bug in one of our calculators? Let us know!
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+      
+      <!-- Contact Info -->
+      <div class="bg-slate-50 dark:bg-slate-900 p-8 md:p-12">
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Get in Touch</h2>
+        <p class="text-slate-600 dark:text-slate-400 mb-8">
+          We try to respond to all inquiries within 24-48 business hours. If you are reporting a bug with a calculator, please include the specific inputs you used so we can replicate the issue.
+        </p>
+        
+        <div class="space-y-6">
+          <div class="flex items-start">
+            <span class="text-2xl mr-4">📧</span>
+            <div>
+              <h3 class="font-bold text-slate-900 dark:text-white">Email Support</h3>
+              <p class="text-slate-600 dark:text-slate-400">support@coolingsupport.com</p>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="p-8 md:p-12">
+        <form id="contact-form" action="https://formspree.io/f/mdavbwao" method="POST" class="space-y-6">
+          <div>
+            <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Full Name</label>
+            <input type="text" name="name" id="name" required class="mt-1 block w-full rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2 px-3 border">
+          </div>
+          
+          <div>
+            <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Email Address</label>
+            <input type="email" name="email" id="email" required class="mt-1 block w-full rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2 px-3 border">
+          </div>
+          
+          <div>
+            <label for="subject" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Subject</label>
+            <select id="subject" name="subject" class="mt-1 block w-full rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2 px-3 border">
+              <option>General Question</option>
+              <option>Calculator Bug Report</option>
+              <option>Feature Request</option>
+              <option>Business Inquiry</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Message</label>
+            <textarea id="message" name="message" rows="4" required class="mt-1 block w-full rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2 px-3 border"></textarea>
+          </div>
+          
+          <div>
+            <button id="submit-btn" type="submit" class="w-full flex justify-center items-center gap-2 py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors cursor-pointer">
+              <span id="btn-text">Send Message</span>
+              <svg id="btn-spinner" class="hidden h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+            </button>
+          </div>
+        </form>
+
+        <!-- Success Message (hidden by default) -->
+        <div id="form-success" class="hidden text-center py-12">
+          <span class="text-5xl mb-4 block">✅</span>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Message Sent!</h3>
+          <p class="text-slate-600 dark:text-slate-400">Thanks for reaching out. We'll get back to you within 24–48 hours.</p>
+          <button onclick="document.getElementById('form-success').classList.add('hidden'); document.getElementById('contact-form').classList.remove('hidden'); document.getElementById('contact-form').reset();" class="mt-6 text-blue-600 hover:text-blue-700 font-medium text-sm cursor-pointer">Send another message →</button>
+        </div>
+
+        <!-- Error Message (hidden by default) -->
+        <div id="form-error" class="hidden text-center py-6">
+          <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+            <span class="text-2xl mb-2 block">⚠️</span>
+            <p class="text-red-700 dark:text-red-400 text-sm font-medium">Something went wrong. Please try again or email us directly at support@coolingsupport.com</p>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <script is:inline>
+    (function() {
+      var form = document.getElementById('contact-form');
+      if (!form) return;
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var btn = document.getElementById('submit-btn');
+        var btnText = document.getElementById('btn-text');
+        var spinner = document.getElementById('btn-spinner');
+        var successDiv = document.getElementById('form-success');
+        var errorDiv = document.getElementById('form-error');
+
+        // Show loading state
+        btn.disabled = true;
+        btnText.textContent = 'Sending…';
+        spinner.classList.remove('hidden');
+        errorDiv.classList.add('hidden');
+
+        var data = new FormData(form);
+
+        fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        })
+        .then(function(response) {
+          if (response.ok) {
+            form.classList.add('hidden');
+            successDiv.classList.remove('hidden');
+            form.reset();
+          } else {
+            throw new Error('Form submission failed');
+          }
+        })
+        .catch(function() {
+          errorDiv.classList.remove('hidden');
+        })
+        .finally(function() {
+          btn.disabled = false;
+          btnText.textContent = 'Send Message';
+          spinner.classList.add('hidden');
+        });
+      });
+    })();
+  </script>
+</Layout>

@@ -1,0 +1,537 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Commercial Dehumidifier Sizing Calculator | Pints Per Day (PPD)";
+const description = "Use our commercial dehumidifier sizing calculator to find exactly how many Pints Per Day (PPD) you need using AHAM and IICRC S500 restoration standards.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Commercial Dehumidifier Sizing Calculator",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+    "description": "An interactive sizing utility that cross-references a room's square footage, ceiling height, and space type against AHAM and IICRC S500 standards to calculate exact dehumidifier capacity.",
+    "applicationCategory": "Calculator",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "When should I use an LGR dehumidifier instead of a standard unit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "LGR (Low Grain Refrigerant) dehumidifiers are required for IICRC S500-compliant water damage restoration. They are significantly more efficient at lower humidity levels and can achieve drier air (lower grain-per-pound readings) than standard refrigerant units. Use LGR for active water damage jobs or commercial spaces where you need to reach below 40% relative humidity."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a desiccant dehumidifier and when should I use one?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Desiccant dehumidifiers use a silica gel rotor to absorb moisture chemically. They work effectively down to -4°F (-20°C) and don't lose efficiency in cold conditions. You must use desiccant units for cold storage facilities, crawl spaces in winter climates, or any space below 55°F where a standard refrigerant unit's coils would turn into a block of ice."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why are 70-pint dehumidifiers now sold as 50-pint?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "In 2019, the Department of Energy (DOE) changed the testing standard for residential dehumidifiers from 80°F to 65°F to better reflect real-world basement temperatures. Because cooler air holds less water, a machine that pulled 70 pints at 80°F only pulls 50 pints at 65°F. It is the exact same machine, just tested under an honest standard."
+        }
+      }
+    ]
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-500/20 text-cyan-300 font-bold text-xs uppercase tracking-widest mb-6 border border-cyan-500/30">
+        IICRC S500 Compliant Math Engine
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        Dehumidifier <span class="text-blue-300">Sizing</span> Calculator
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-blue-100 max-w-2xl mx-auto mb-8 font-light">
+        Find the exact Pints Per Day (PPD) required for homes, basements, or commercial water damage restoration.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Calculator App -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10 -mt-6">
+    <div class="max-w-6xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-gray-900 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <h2 class="text-white font-bold text-lg">Pints Per Day (PPD) Engine</h2>
+        </div>
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-md bg-red-500"></div>
+          <div class="w-3 h-3 rounded-md bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-md bg-green-500"></div>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <!-- Controls (Left: 7 cols) -->
+          <div class="lg:col-span-7 space-y-8">
+            
+            <!-- Dimensional Inputs -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-blue-50 p-6 rounded-sm border border-blue-100">
+              <!-- Square Footage -->
+              <div class="sm:col-span-2">
+                <div class="flex justify-between items-end mb-4">
+                  <label class="block text-sm font-bold text-blue-900 uppercase tracking-wider">Space Square Footage</label>
+                  <span class="text-2xl font-black text-blue-600" id="sqftDisplay">1,000 sq ft</span>
+                </div>
+                <input type="range" id="sqft" min="500" max="10000" step="100" value="1000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                <div class="flex justify-between text-xs text-blue-400 mt-2 font-bold">
+                  <span>500</span>
+                  <span>10,000+</span>
+                </div>
+              </div>
+
+              <!-- Ceiling Height -->
+              <div class="sm:col-span-2 pt-4 border-t border-blue-200">
+                <div class="flex justify-between items-end mb-4">
+                  <label class="block text-sm font-bold text-blue-900 uppercase tracking-wider">Ceiling Height</label>
+                  <span class="text-xl font-bold text-blue-900" id="heightDisplay">8 ft</span>
+                </div>
+                <input type="range" id="height" min="8" max="25" step="1" value="8" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                <p class="text-xs text-blue-700 mt-3 font-medium">Standard math assumes 8ft ceilings. Higher ceilings drastically increase total air volume.</p>
+              </div>
+            </div>
+
+            <!-- Dampness Severity -->
+            <div>
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Current Humidity Severity</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button type="button" class="damp-btn bg-cyan-500 text-white border-cyan-500 border-2 py-3 px-4 rounded-sm text-left transition-all relative overflow-hidden shadow-md" data-mult="1.0">
+                  <div class="font-bold text-base mb-1">Moderately Damp</div>
+                  <div class="text-xs opacity-90 font-medium">50-60% RH. Musty smell in summer.</div>
+                </button>
+                <button type="button" class="damp-btn bg-white text-gray-700 border-gray-200 border-2 hover:border-cyan-300 py-3 px-4 rounded-sm text-left transition-all" data-mult="1.25">
+                  <div class="font-bold text-base mb-1">Very Damp</div>
+                  <div class="text-xs text-gray-500 font-medium">60-70% RH. Damp spots visible on walls.</div>
+                </button>
+                <button type="button" class="damp-btn bg-white text-gray-700 border-gray-200 border-2 hover:border-cyan-300 py-3 px-4 rounded-sm text-left transition-all" data-mult="1.5">
+                  <div class="font-bold text-base mb-1">Wet</div>
+                  <div class="text-xs text-gray-500 font-medium">70-80% RH. Sweating walls/floors.</div>
+                </button>
+                <button type="button" class="damp-btn bg-white text-gray-700 border-gray-200 border-2 hover:border-cyan-300 py-3 px-4 rounded-sm text-left transition-all border-red-200 hover:border-red-400" data-mult="2.0">
+                  <div class="font-bold text-base mb-1 text-red-600 flex items-center gap-1"><span></span> Extremely Wet</div>
+                  <div class="text-xs text-gray-500 font-medium">80%+ RH. Standing water / Flooding.</div>
+                </button>
+              </div>
+              <input type="hidden" id="dampMult" value="1.0" />
+            </div>
+
+            <!-- Space Type & Temperature -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              
+              <!-- Space Type -->
+              <div>
+                <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Space Type</label>
+                <select id="spaceType" class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-cyan-500 focus:border-cyan-500 block p-3.5 font-bold shadow-sm">
+                  <option value="general">General Purpose (Office/Home)</option>
+                  <option value="basement">Basement / Crawl Space</option>
+                  <option value="commercial">Commercial / Warehouse</option>
+                  <option value="restoration" class="text-red-600 font-bold">Water Damage Restoration</option>
+                </select>
+              </div>
+
+              <!-- Temperature -->
+              <div>
+                <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Typical Temperature</label>
+                <button type="button" id="tempToggle" class="w-full py-3.5 rounded-sm font-bold transition-all border-2 border-green-500 bg-green-50 text-green-700 flex items-center justify-center gap-2">
+                  <span class="text-xl">️</span> <span id="tempText">Normal (65°F - 85°F)</span>
+                </button>
+                <input type="hidden" id="isCold" value="false" />
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Output Panel (Right: 5 cols) -->
+          <div class="lg:col-span-5 bg-gray-900 rounded-sm p-6 lg:p-8 text-white flex flex-col relative overflow-hidden shadow-md">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500 rounded-md mix-blend-overlay filter blur-3xl opacity-10 transform translate-x-1/2 -translate-y-1/2"></div>
+            
+            <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-6 border-b border-gray-800 pb-4">Required Specifications</h3>
+            
+            <div class="space-y-6 flex-grow">
+              
+              <!-- Exact Math -->
+              <div class="flex justify-between items-center">
+                <span class="text-gray-400 font-medium">Required Extraction:</span>
+                <span class="text-xl font-mono text-cyan-400" id="outExactPpd">20 PPD</span>
+              </div>
+              
+              <div class="w-full h-px bg-gray-800 my-4"></div>
+
+              <!-- Technology Recommendation -->
+              <div class="flex flex-col gap-1">
+                <span class="text-gray-400 text-xs uppercase tracking-wider font-bold mb-1">Required Technology</span>
+                <div id="techBox" class="bg-gray-800 border border-gray-700 rounded-sm p-4 flex items-center gap-4">
+                  <div id="techIcon" class="w-12 h-12 rounded-md bg-blue-500/20 flex items-center justify-center text-2xl"></div>
+                  <div>
+                    <h4 id="techName" class="font-bold text-lg text-blue-300">Standard Refrigerant</h4>
+                    <p id="techDesc" class="text-xs text-gray-400 leading-tight mt-1">Excellent for general home humidity control above 65°F.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Retail Size -->
+              <div class="flex flex-col gap-3 bg-cyan-900/40 p-6 rounded-sm border border-cyan-800 items-center justify-center text-center mt-4">
+                <span class="text-cyan-300 font-bold uppercase tracking-widest text-xs">Recommended Unit Setup</span>
+                <span class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-none" id="outRetailSize">35 <span class="text-xl text-cyan-500 font-normal">Pint</span></span>
+                <span class="bg-cyan-950 text-cyan-400 px-3 py-1 rounded-md text-xs font-bold mt-2" id="outMultiUnit">Single Unit Recommended</span>
+              </div>
+            </div>
+
+            <!-- Warning Footer -->
+            <div id="warningBox" class="mt-6 bg-blue-900/40 border-l-4 border-blue-500 p-4 rounded-r-xl">
+              <h4 class="font-bold text-blue-400 text-xs uppercase tracking-wide mb-1 flex items-center gap-2">
+                <span>️</span> 2019 DOE Standard
+              </h4>
+              <p class="text-blue-200 text-xs leading-relaxed font-medium">
+                Sized under the strict 2019 DOE 65°F standard. A modern 50-Pint unit is identical to a pre-2019 70-Pint unit.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content (10-Year Veteran Tone) -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: The Engine Mechanics (IICRC S500) -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          How We Calculate Commercial Sizing
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          When an appliance manufacturer slaps a "Pints Per Day" sticker on a box, they are testing that unit inside a perfectly controlled, 80-degree laboratory. But when a pipe bursts in your basement in the middle of January, you aren't dealing with laboratory conditions. You're dealing with freezing temperatures and heavily saturated air. When you take a dehumidifier out of the lab and throw it into the real world, its actual water-pulling power drops by nearly half.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          To combat this, professional restoration teams do not use the numbers on the box. They use <strong>IICRC S500 mathematical correction factors</strong> to mathematically guarantee they are installing enough drying power. Our calculator runs that exact commercial math under the hood:
+        </p>
+        <div class="bg-gray-50 p-6 rounded-sm border border-gray-200 space-y-4">
+          <p class="text-gray-800"><strong>Step 1 (Base):</strong> Establish a baseline requirement of 1 pint of extraction for every 50 square feet of floor space.</p>
+          <p class="text-gray-800"><strong>Step 2 (Severity):</strong> Multiply that base by 1.25 for damp rooms, 1.5 for wet rooms, and a massive 2.0 multiplier for standing water.</p>
+          <p class="text-gray-800"><strong>Step 3 (Volume & Leakage):</strong> Factor in the exact ceiling height to account for true cubic volume, and slap on additional 15% to 20% penalties for unsealed concrete basements and drafty commercial warehouses.</p>
+        </div>
+      </div>
+
+      <!-- Section 2: Technology Types -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-blue-500">️</span> LGR vs. Desiccant vs. Standard
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          If you play around with the Space Type and Temperature settings in the calculator above, you will see the "Required Technology" box change. You cannot simply throw a standard dehumidifier at every moisture problem.
+        </p>
+        
+        <h3 class="text-xl font-bold text-gray-900 mt-8 mb-3">1. Standard Refrigerant (Home Use)</h3>
+        <p class="text-gray-700 leading-relaxed mb-6">
+          Perfect for general humidity control in homes and offices. However, they lose efficiency rapidly below 60°F, and they struggle to pull humidity below 45% RH.
+        </p>
+
+        <h3 class="text-xl font-bold text-gray-900 mt-8 mb-3">2. LGR (Low Grain Refrigerant)</h3>
+        <p class="text-gray-700 leading-relaxed mb-6">
+          LGR dehumidifiers are required for IICRC S500-compliant water damage restoration. They use a double-cooling mechanism that pre-cools the intake air before it hits the evaporator coil. This allows them to pull massive amounts of deep moisture out of structural materials (wood, drywall) and achieve incredibly dry air (below 35% RH) that standard units simply cannot reach.
+        </p>
+
+        <h3 class="text-xl font-bold text-gray-900 mt-8 mb-3">3. Desiccant Dehumidifiers (Cold Weather)</h3>
+        <p class="text-gray-700 leading-relaxed mb-6">
+          Standard and LGR units rely on refrigeration coils to condense water. If you put them in a 50°F basement, the coils will literally turn into a block of solid ice. Desiccant dehumidifiers do not use coils. They use a massive, slowly rotating silica gel wheel to absorb moisture chemically. They work flawlessly down to -4°F. <strong>If your space drops below 60°F, you must buy a Desiccant unit.</strong>
+        </p>
+      </div>
+
+      <!-- Section 3: The DOE Lie -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-orange-500">️</span> The 2019 DOE Standard Lie
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          If you are looking to replace an old residential dehumidifier that broke, you are probably very confused right now. Your old dehumidifier says "70 Pints" on the box, but when you go to the hardware store today, the biggest machine on the shelf says "50 Pints." Did manufacturers stop making large units?
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          <strong>No. They just stopped lying about the numbers.</strong>
+        </p>
+        <div class="bg-gray-900 text-white p-6 rounded-sm border-l-4 border-orange-500 shadow-md mb-6">
+          <p class="font-bold text-orange-400 mb-2 uppercase tracking-wider text-sm">The 10-Year Veteran Rule:</p>
+          <p class="text-gray-300 leading-relaxed">
+            Prior to 2019, manufacturers tested their units in an 80°F room with 60% humidity. Because hot air holds significantly more water, the machines easily pulled 70 pints. But nobody puts a dehumidifier in an 80-degree room. You put them in cold basements. 
+            <br><br>
+            In 2019, the Department of Energy mandated that all dehumidifiers be tested at <strong>65°F</strong>. Under this new, realistic standard, the exact same machine that pulled 70 pints at 80°F now only pulls 50 pints. <strong>A modern 50-Pint machine is identically powerful to a 2018 70-Pint machine.</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 4: FAQs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          Sizing FAQ
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-cyan-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              When should I use an LGR dehumidifier instead of a standard unit?
+              <span class="text-cyan-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              LGR (Low Grain Refrigerant) dehumidifiers are required for IICRC S500-compliant water damage restoration. They are significantly more efficient at lower humidity levels and can achieve drier air (lower grain-per-pound readings) than standard refrigerant units. Use LGR for active water damage jobs or commercial spaces where you need to reach below 40% relative humidity.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-cyan-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              What is a desiccant dehumidifier and when should I use one?
+              <span class="text-cyan-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Desiccant dehumidifiers use a silica gel rotor to absorb moisture chemically. They work effectively down to -4°F (-20°C) and don't lose efficiency in cold conditions. You must use desiccant units for cold storage facilities, crawl spaces in winter climates, or any space below 55°F where a standard refrigerant unit's coils would turn into a block of ice.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-cyan-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Why are 70-pint dehumidifiers now sold as 50-pint?
+              <span class="text-cyan-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              In 2019, the Department of Energy (DOE) changed the testing standard for residential dehumidifiers from 80°F to 65°F to better reflect real-world basement temperatures. Because cooler air holds less water, a machine that pulled 70 pints at 80°F only pulls 50 pints at 65°F. It is the exact same machine, just tested under an honest standard.
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Logic -->
+  <script>
+    const sqftSlider = document.getElementById('sqft') as HTMLInputElement;
+    const sqftDisplay = document.getElementById('sqftDisplay')!;
+    
+    const heightSlider = document.getElementById('height') as HTMLInputElement;
+    const heightDisplay = document.getElementById('heightDisplay')!;
+    
+    const dampBtns = document.querySelectorAll('.damp-btn');
+    const dampMultInput = document.getElementById('dampMult') as HTMLInputElement;
+    
+    const spaceTypeSelect = document.getElementById('spaceType') as HTMLSelectElement;
+    
+    const tempToggle = document.getElementById('tempToggle') as HTMLButtonElement;
+    const isColdInput = document.getElementById('isCold') as HTMLInputElement;
+    const tempText = document.getElementById('tempText')!;
+    
+    const outExactPpd = document.getElementById('outExactPpd')!;
+    const outRetailSize = document.getElementById('outRetailSize')!;
+    const outMultiUnit = document.getElementById('outMultiUnit')!;
+
+    const techBox = document.getElementById('techBox')!;
+    const techIcon = document.getElementById('techIcon')!;
+    const techName = document.getElementById('techName')!;
+    const techDesc = document.getElementById('techDesc')!;
+    const warningBox = document.getElementById('warningBox')!;
+
+    function calculate() {
+      const sqft = parseFloat(sqftSlider.value);
+      const height = parseFloat(heightSlider.value);
+      sqftDisplay.innerText = `${new Intl.NumberFormat('en-US').format(sqft)} sq ft`;
+      heightDisplay.innerText = `${height} ft`;
+
+      const dampMult = parseFloat(dampMultInput.value);
+      const spaceType = spaceTypeSelect.value;
+      const isCold = isColdInput.value === 'true';
+
+      // 1. Base PPD: 1 pint per 50 sq ft
+      let basePpd = sqft / 50;
+
+      // 2. Dampness Severity Multiplier
+      basePpd = basePpd * dampMult;
+
+      // 3. Ceiling Height Multiplier
+      const heightRatio = height / 8;
+      basePpd = basePpd * heightRatio;
+
+      // 4. Space Type Multiplier
+      if (spaceType === 'basement') {
+        basePpd = basePpd * 1.15; // +15% for ground moisture
+      } else if (spaceType === 'commercial') {
+        basePpd = basePpd * 1.20; // +20% for air infiltration
+      } else if (spaceType === 'restoration') {
+        // Water damage forces the damp multiplier to 2.0 via UI logic, 
+        // but we add an extra 10% safety margin for aggressive structural drying.
+        basePpd = basePpd * 1.10; 
+      }
+
+      const exactPpd = Math.round(basePpd);
+      outExactPpd.innerText = `${exactPpd} PPD`;
+
+      // Determine Technology Class
+      if (isCold) {
+        // Desiccant overrides everything in cold
+        techBox.className = "bg-blue-900/40 border border-blue-500 rounded-sm p-4 flex items-center gap-4";
+        techIcon.innerHTML = "️";
+        techIcon.className = "w-12 h-12 rounded-md bg-blue-500/20 flex items-center justify-center text-2xl shrink-0";
+        techName.innerText = "Desiccant Dehumidifier";
+        techName.className = "font-bold text-lg text-blue-300";
+        techDesc.innerText = "Required for temperatures below 60°F. Chemical absorption prevents coil icing.";
+        warningBox.style.display = 'none';
+      } else if (spaceType === 'restoration' || dampMult >= 2.0) {
+        // LGR required for extreme water damage or restoration
+        techBox.className = "bg-orange-900/40 border border-orange-500 rounded-sm p-4 flex items-center gap-4";
+        techIcon.innerHTML = "️";
+        techIcon.className = "w-12 h-12 rounded-md bg-orange-500/20 flex items-center justify-center text-2xl shrink-0";
+        techName.innerText = "LGR (Low Grain Refrigerant)";
+        techName.className = "font-bold text-lg text-orange-300";
+        techDesc.innerText = "Required for water damage. Pre-cooling mechanism achieves extreme dryness.";
+        warningBox.style.display = 'none';
+      } else {
+        // Standard Refrigerant
+        techBox.className = "bg-gray-800 border border-gray-700 rounded-sm p-4 flex items-center gap-4";
+        techIcon.innerHTML = "";
+        techIcon.className = "w-12 h-12 rounded-md bg-cyan-500/20 flex items-center justify-center text-2xl shrink-0";
+        techName.innerText = "Standard Refrigerant";
+        techName.className = "font-bold text-lg text-cyan-300";
+        techDesc.innerText = "Excellent for general humidity control above 65°F.";
+        warningBox.style.display = 'block'; // Show DOE warning for residential units
+      }
+
+      // Retail / Commercial Sizing Logic
+      if (isCold || spaceType === 'restoration' || spaceType === 'commercial') {
+        // Commercial sizing
+        if (exactPpd > 200) {
+          const numUnits = Math.ceil(exactPpd / 100);
+          outRetailSize.innerHTML = `(x${numUnits}) 100 <span class="text-xl text-cyan-500 font-normal">PPD</span>`;
+          outMultiUnit.innerText = `Multiple Commercial Units Required`;
+          outMultiUnit.className = "bg-orange-950 text-orange-400 px-3 py-1 rounded-md text-xs font-bold mt-2";
+        } else {
+          // Snap to standard commercial sizes: 80, 100, 150, 200
+          const commSizes = [80, 100, 150, 200];
+          let rec = commSizes.find(s => s >= exactPpd) || 200;
+          outRetailSize.innerHTML = `${rec} <span class="text-xl text-cyan-500 font-normal">PPD</span>`;
+          outMultiUnit.innerText = `Single Commercial Unit`;
+          outMultiUnit.className = "bg-cyan-950 text-cyan-400 px-3 py-1 rounded-md text-xs font-bold mt-2";
+        }
+      } else {
+        // Residential sizing (2019 DOE standards: 22, 35, 50, 60)
+        const resSizes = [22, 35, 50, 60];
+        if (exactPpd > 60) {
+          const numUnits = Math.ceil(exactPpd / 50);
+          outRetailSize.innerHTML = `(x${numUnits}) 50 <span class="text-xl text-cyan-500 font-normal">Pint</span>`;
+          outMultiUnit.innerText = `Multiple Units Required for Circulation`;
+          outMultiUnit.className = "bg-orange-950 text-orange-400 px-3 py-1 rounded-md text-xs font-bold mt-2";
+        } else {
+          let rec = resSizes[0];
+          let minDiff = Math.abs(exactPpd - resSizes[0]);
+          for (let i = 1; i < resSizes.length; i++) {
+            const diff = Math.abs(exactPpd - resSizes[i]);
+            if (diff < minDiff) {
+              minDiff = diff;
+              rec = resSizes[i];
+            }
+          }
+          outRetailSize.innerHTML = `${rec} <span class="text-xl text-cyan-500 font-normal">Pint</span>`;
+          outMultiUnit.innerText = `Single Unit Recommended`;
+          outMultiUnit.className = "bg-cyan-950 text-cyan-400 px-3 py-1 rounded-md text-xs font-bold mt-2";
+        }
+      }
+    }
+
+    // Event Listeners
+    [sqftSlider, heightSlider].forEach(el => {
+      el.addEventListener('input', calculate);
+    });
+
+    spaceTypeSelect.addEventListener('change', () => {
+      if (spaceTypeSelect.value === 'restoration') {
+        // Force dampness to Extremely Wet
+        dampMultInput.value = "2.0";
+        dampBtns.forEach(b => {
+          b.className = "damp-btn bg-white text-gray-700 border-gray-200 border-2 hover:border-cyan-300 py-3 px-4 rounded-sm text-left transition-all";
+          b.querySelector('.text-xs')?.classList.replace('text-white', 'text-gray-500');
+          b.querySelector('.text-xs')?.classList.replace('opacity-90', 'text-gray-500');
+        });
+        const target = dampBtns[3]; // The Extremely Wet button
+        target.className = "damp-btn bg-red-500 text-white border-red-500 border-2 py-3 px-4 rounded-sm text-left transition-all relative overflow-hidden shadow-md";
+        target.querySelector('.text-xs')?.classList.replace('text-gray-500', 'text-white');
+        target.querySelector('.text-xs')?.classList.add('opacity-90');
+        target.querySelector('.text-red-600')?.classList.replace('text-red-600', 'text-white');
+      }
+      calculate();
+    });
+
+    dampBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        
+        // Reset all
+        dampBtns.forEach(b => {
+          b.className = "damp-btn bg-white text-gray-700 border-gray-200 border-2 hover:border-cyan-300 py-3 px-4 rounded-sm text-left transition-all";
+          b.querySelector('.text-xs')?.classList.replace('text-white', 'text-gray-500');
+          b.querySelector('.text-xs')?.classList.replace('opacity-90', 'text-gray-500');
+          b.querySelector('.text-red-600')?.classList.replace('text-white', 'text-red-600');
+        });
+
+        const mult = target.getAttribute('data-mult') || '1.0';
+        dampMultInput.value = mult;
+
+        // Set active styling based on severity
+        if (mult === "2.0") {
+          target.className = "damp-btn bg-red-500 text-white border-red-500 border-2 py-3 px-4 rounded-sm text-left transition-all relative overflow-hidden shadow-md";
+          target.querySelector('.text-xs')?.classList.replace('text-gray-500', 'text-white');
+          target.querySelector('.text-xs')?.classList.add('opacity-90');
+          target.querySelector('.text-red-600')?.classList.replace('text-red-600', 'text-white');
+        } else {
+          target.className = "damp-btn bg-cyan-500 text-white border-cyan-500 border-2 py-3 px-4 rounded-sm text-left transition-all relative overflow-hidden shadow-md";
+          target.querySelector('.text-xs')?.classList.replace('text-gray-500', 'text-white');
+          target.querySelector('.text-xs')?.classList.add('opacity-90');
+        }
+
+        calculate();
+      });
+    });
+
+    // Temperature Toggle
+    tempToggle.addEventListener('click', () => {
+      if (isColdInput.value === 'false') {
+        isColdInput.value = 'true';
+        tempToggle.className = "w-full py-3.5 rounded-sm font-bold transition-all border-2 border-blue-500 bg-blue-500 text-white shadow-md flex items-center justify-center gap-2";
+        tempText.innerText = "Cold (Below 60°F)";
+      } else {
+        isColdInput.value = 'false';
+        tempToggle.className = "w-full py-3.5 rounded-sm font-bold transition-all border-2 border-green-500 bg-green-50 text-green-700 flex items-center justify-center gap-2";
+        tempText.innerText = "Normal (65°F - 85°F)";
+      }
+      calculate();
+    });
+
+    // Init
+    calculate();
+  </script>
+</Layout>

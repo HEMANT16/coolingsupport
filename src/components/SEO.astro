@@ -1,0 +1,32 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  type?: "website" | "article" | "WebApplication";
+  schema?: any[];
+}
+
+const { title, description, canonical, type = "website", schema = [] } = Astro.props;
+const siteUrl = "https://coolingsupport.com";
+let canonicalUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
+if (!canonicalUrl.endsWith('/')) {
+  canonicalUrl += '/';
+}
+---
+
+<!-- SEO Meta Tags -->
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Open Graph -->
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:site_name" content="Cooling Support" />
+
+<!-- JSON-LD Schema -->
+{schema.length > 0 && (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+)}

@@ -1,0 +1,326 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+const carrierCodes = [
+  { code: "Code 11", severity: "diy", severityText: "Normal / Info", color: "emerald", category: "System Status", desc: "No previous diagnostic codes stored", cause: "System is operating normally; no fault history is active in the board memory.", action: "No action required. If the furnace is not heating, check thermostat settings.", difficulty: "DIY", occurrence: "Moderate", proCost: "N/A" },
+  { code: "Code 12", severity: "diy", severityText: "Normal / Info", color: "emerald", category: "System Status", desc: "Blower motor on after power-up", cause: "Power was restored while thermostat was calling for heat; blower runs for 90 seconds for safety.", action: "Normal behavior. Wait 90 seconds for the blower cycle to complete and system will reset.", difficulty: "DIY", occurrence: "Common", proCost: "N/A" },
+  { code: "Code 13", severity: "danger", severityText: "Stop AC — Lockout", color: "red", category: "Limit Circuit", desc: "Limit switch lockout (Auto-reset after 3 hours)", cause: "Furnace high-limit switch has opened multiple times due to severe overheating.", action: "Replace clogged air filter. Ensure all vents and registers are open. Turn furnace off for 10 minutes to reset.", difficulty: "Professional Only", occurrence: "Common", proCost: "$250 – $600" },
+  { code: "Code 14", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Ignition", desc: "Ignition lockout (Auto-reset after 3 hours)", cause: "Furnace failed to light a flame 3 times in a row; ignition retry limit exceeded.", action: "Clean the flame sensor with steel wool. Check that main gas supply valve is open: $45 – $80 / ₹800 – ₹1,500.", difficulty: "Moderate", occurrence: "Moderate", proCost: "$45 – $80 / ₹800 – ₹1,500" },
+  { code: "Code 21", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Gas Valve", desc: "Gas heating lockout", cause: "Gas valve circuit failure or defective control board relay.", action: "Verify gas pressure. Call technician to inspect control board gas valve output: $180 – $350.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "$180 – $350" },
+  { code: "Code 22", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Flame Sensor", desc: "Flame proving signal abnormal", cause: "Flame sensed when gas valve is closed; could be a shorted burner assembly.", action: "Turn off gas supply. Inspect burner for residual flame. Replace control board if shorted: $250 – $500.", difficulty: "Professional Only", occurrence: "Common", proCost: "$250 – $500" },
+  { code: "Code 23", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Pressure Switch", desc: "Pressure switch did not open", cause: "Pressure switch contacts are stuck closed when draft inducer is off.", action: "Inspect pressure switch wiring. Replace pressure switch assembly: $80 – $150.", difficulty: "Moderate", occurrence: "Moderate", proCost: "$80 – $150" },
+  { code: "Code 24", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Limit Circuit", desc: "Secondary limit switch open", cause: "Overheating near blower compartment; blocked filter or dead blower motor.", action: "Replace dirty air filter. Check blower capacitor and motor windings: $120 – $300.", difficulty: "Moderate", occurrence: "Common", proCost: "$120 – $300" },
+  { code: "Code 31", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Pressure Switch", desc: "Pressure switch did not close or opened", cause: "Exhaust flue pipe blocked, clogged condensate drain line, or failed inducer blower.", action: "Check exhaust pipe for blockage. Clear furnace condensate trap and hose: DIY Safe. Replace draft motor if dead: $180 – $350.", difficulty: "Moderate", occurrence: "Common", proCost: "$180 – $350" },
+  { code: "Code 33", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Limit Circuit", desc: "Limit switch open (Overheat warning)", cause: "Furnace temperature has exceeded safe limit due to restricted airflow.", action: "Replace air filter. Check for duct blockages. Verify indoor blower motor runs at correct speed.", difficulty: "Moderate", occurrence: "Common", proCost: "$100 – $250" },
+  { code: "Code 34", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Flame Sensor", desc: "Ignition proving failure", cause: "Flame sensor is dirty or gas supply pressure is too low.", action: "Remove flame sensor probe and clean oxidation off with steel wool. Reset power switch: DIY Safe.", difficulty: "Moderate", occurrence: "Common", proCost: "$100 – $250" },
+  { code: "Code 45", severity: "danger", severityText: "Call Technician", color: "red", category: "PCB Board", desc: "Control board circuitry failure", cause: "Internal board self-test failed; chip memory corrupted or relay fused.", action: "Replace main furnace control board assembly: $250 – $550 / ₹3,500 – ₹8,000.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "$250 – $550 / ₹3,500 – ₹8,000" },
+];
+
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Carrier & Bryant Furnace Blink Codes | Diagnostic Guide",
+    "description": "Step-by-step diagnostic lookup for decoding flashing LED light fault codes on Carrier and Bryant furnace control boards.",
+    "category": "HVAC Troubleshooting",
+    "author": {
+      "@type": "Person",
+      "name": "Mike Reynolds",
+      "jobTitle": "Master HVAC Technician"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I read Carrier furnace flash codes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Carrier furnace codes are read by observing the single red diagnostic LED through the blower door site glass. Short flashes represent the tens digit, and long flashes represent the ones digit. E.g., 3 short followed by 1 long flash is Code 31."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I clear a Carrier furnace lockout code?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "To clear a lockout code (such as Code 13 or 33), switch the power toggle switch on the side of the furnace unit to OFF, turn your thermostat to OFF, wait 60 seconds, turn the power back ON, and restart the thermostat."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout title="Carrier & Bryant Furnace Blink Codes | Diagnostic Guide">
+  <SEO
+    slot="head"
+    title="Carrier & Bryant Furnace Blink Codes | Diagnostic Guide | Cooling Support"
+    description="Decode Carrier & Bryant furnace status LED flash codes (Codes 11 to 45) instantly. Get diagnostic causes, DIY resets, and HVAC repair costs."
+    type="article"
+    schema={schemaData}
+  />
+
+  <!-- Hero Section -->
+  <section class="relative bg-zinc-950 pt-24 pb-20 border-b border-zinc-800 overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] opacity-10 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-red-500 to-transparent blur-[120px] rounded-full"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/25 text-red-400 text-xs font-semibold px-5 py-2 rounded-full mb-6 font-mono">
+        🚨 Carrier & Bryant Furnace Codes
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
+        Carrier &amp; Bryant Blink Codes <br />
+        <span class="text-red-400"> furnace LED Diagnostics</span>
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-8">
+        Learn how to access your furnace control board LED, decode the status flashes, and perform simple DIY troubleshooting.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Search and Guide -->
+  <div class="bg-zinc-50 min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center space-x-2 text-sm font-semibold text-zinc-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-red-500 transition-colors">Home</a>
+        <span class="text-zinc-300">/</span>
+        <a href="/ac-error-codes" class="hover:text-red-500 transition-colors">AC Error Codes</a>
+        <span class="text-zinc-300">/</span>
+        <span class="text-zinc-800 font-bold">Carrier &amp; Bryant</span>
+      </nav>
+
+      <!-- Tech Tip: How to read codes -->
+      <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-4">
+        <h2 class="text-xl font-bold text-zinc-900 flex items-center gap-2">
+          <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          How to Read Carrier Blink Codes
+        </h2>
+        <div class="text-sm text-zinc-600 space-y-3 leading-relaxed">
+          <p>
+            Carrier furnace control boards report faults using a single red LED visible through a round plastic sight glass on the furnace's lower door. Codes are represented by two digits:
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>First Digit (Short Flashes)</strong>: Represents the tens digit. The LED will flash rapidly.</li>
+            <li><strong>Second Digit (Long Flashes)</strong>: Represents the ones digit. The LED will flash slowly.</li>
+          </ul>
+          <p class="bg-zinc-50 p-4 rounded-xl font-mono text-xs border border-zinc-100">
+            Example: Three short flashes followed by one long flash = <strong>Code 31</strong> (Pressure Switch Fault).
+          </p>
+        </div>
+      </div>
+
+      <!-- Search Engine -->
+      <section class="space-y-6">
+        <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+          <h2 class="text-2xl font-bold text-zinc-900">Carrier Code Lookup</h2>
+          
+          <div style="position: relative; width: 100%;">
+            <div style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; pointer-events: none; color: #a1a1aa; z-index: 10;">
+              <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input
+              type="text"
+              id="carrier-search"
+              placeholder="Search by code (e.g. 13, 31, 33, 34)..."
+              class="w-full pl-14 pr-5 py-4 text-lg bg-zinc-50 border-2 border-zinc-200 rounded-2xl focus:outline-none focus:border-red-500 transition-colors text-zinc-800 placeholder-zinc-400 shadow-inner"
+            />
+          </div>
+        </div>
+
+        <!-- Cards Container -->
+        <div class="space-y-4" id="carrier-cards-container">
+          {carrierCodes.map((item) => (
+            <div
+              class="carrier-card bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 flex flex-col gap-4 transition-all hover:border-zinc-300"
+              data-code={item.code.toLowerCase()}
+              data-desc={item.desc.toLowerCase()}
+              data-cause={item.cause.toLowerCase()}
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-2">
+                  <span class="font-black text-zinc-900 text-xl font-mono tracking-tight">{item.code}</span>
+                  <span class="text-xs bg-zinc-50 text-zinc-500 px-2.5 py-1 rounded-full font-medium">{item.category}</span>
+                </div>
+                
+                <span class={`text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  item.color === 'emerald' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
+                  item.color === 'amber' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                  'bg-rose-50 text-rose-700 border border-rose-100'
+                }`}>
+                  <span class={`w-1.5 h-1.5 rounded-full ${
+                    item.color === 'emerald' ? 'bg-emerald-500' :
+                    item.color === 'amber' ? 'bg-amber-500' :
+                    'bg-rose-600'
+                  }`}></span>
+                  {item.severityText}
+                </span>
+              </div>
+
+              <div>
+                <p class="font-bold text-zinc-800 text-base leading-snug">{item.desc}</p>
+              </div>
+
+              <!-- Diagnostic Metrics Panel -->
+              <div class="flex flex-wrap gap-2 items-center text-xs border-t border-b border-zinc-100 py-3 my-1">
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Difficulty:</span>
+                  <span class={`font-bold ${
+                    item.difficulty === 'DIY' ? 'text-emerald-600' :
+                    item.difficulty === 'Moderate' ? 'text-amber-600' :
+                    'text-rose-600'
+                  }`}>{item.difficulty}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Occurrence:</span>
+                  <span class="font-bold text-zinc-700">{item.occurrence}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Est. Pro Cost:</span>
+                  <span class="font-bold text-zinc-700">{item.proCost}</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-zinc-100 pt-4">
+                <div class="bg-zinc-50 rounded-2xl p-4 border border-zinc-100">
+                  <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1.5">Likely Cause</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.cause}</p>
+                </div>
+                <div class="bg-red-500/5 rounded-2xl p-4 border border-red-500/10">
+                  <p class="text-xs font-bold text-red-600 uppercase tracking-wider mb-1.5">Recommended Action</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.action}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      
+      <!-- Reddit Verified Solutions Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
+          <h2 class="text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <span class="text-orange-500">💬</span> Reddit Verified HVAC Solutions
+          </h2>
+          <span class="text-xs bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-mono uppercase font-bold tracking-wider">Community Vetted</span>
+        </div>
+        <p class="text-sm text-zinc-500 -mt-2 leading-relaxed">
+          Real-world troubleshooting tips and warning alerts compiled from active discussions on communities like <span class="font-semibold text-zinc-700">r/HVAC</span>, <span class="font-semibold text-zinc-700">r/hvacadvice</span>, and <span class="font-semibold text-zinc-700">r/homeowners</span>.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Community Solution 1 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-orange-500/10 text-orange-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/hvacadvice
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "Drill out the plastic nipple port on the inducer housing slightly with a small drill bit if condensation keeps clogging it and triggering Code 31." (Source: r/hvacadvice Tech Tip)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Tech Tip:</span>
+              <span>Vetted Community Solution</span>
+            </div>
+          </div>
+          
+          <!-- Community Solution 2 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-blue-500/10 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/HVAC
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "Pull the plastic condensate drain trap at the bottom of the furnace and flush out the black sludge. 90% of Code 31 pressure switch issues are just clogged drains backing up water into the inducer housing." (Source: r/HVAC Homeowner Fix)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Homeowner Tip:</span>
+              <span>Verified Fix</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- Visible FAQ Accordion Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {schemaData.find(s => s["@type"] === "FAQPage")?.mainEntity.map((faq) => (
+            <details class="group border border-zinc-200 rounded-2xl transition-all [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-zinc-900 cursor-pointer focus:outline-none select-none">
+                <span>{faq.name}</span>
+                <span class="transition-transform group-open:rotate-180 text-zinc-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-zinc-600 leading-relaxed border-t border-zinc-100 pt-4">
+                {faq.acceptedAnswer.text}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+
+      <!-- Detailed Troubleshooting Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Technician Troubleshooting Guides</h2>
+        
+        <div class="space-y-6">
+          <div class="border-l-4 border-amber-500 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">Resolving Carrier Code 33 (High-Limit Switch Open)</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              When a furnace gets too hot, the high-limit safety switch opens to shut off the gas burners. 
+              <strong>Step 1</strong>: Check your furnace filter. A clogged filter is the culprit 90% of the time.
+              <strong>Step 2</strong>: Make sure at least 80% of your supply air registers and all return air grilles are completely open.
+              <strong>Step 3</strong>: Inspect the blower wheel for dust accumulation. If caked, clean it to restore static pressure.
+            </p>
+          </div>
+
+          <div class="border-l-4 border-amber-500 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">Resolving Carrier Code 31 (Draft Inducer Switch Open)</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              A pressure switch verifies that the draft inducer fan is safely exhausting combustion gases. 
+              <strong>Step 1</strong>: Check the clear plastic tubing connected to the pressure switch and inducer port. Clean any condensation inside the tube.
+              <strong>Step 2</strong>: If the furnace is a high-efficiency model, check the condensate drain lines. A clogged line causes water to back up in the inducer housing, blocking airflow.
+              <strong>Step 3</strong>: Check the exhaust vent on the exterior of the house for bird nests, ice, or leaf blocks.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('carrier-search') as HTMLInputElement | null;
+  if (searchInput) {
+    const cards = document.querySelectorAll<HTMLElement>('.carrier-card');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const code = card.getAttribute('data-code') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const cause = card.getAttribute('data-cause') || '';
+
+        if (query === '' || code.includes(query) || desc.includes(query) || cause.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+</script>

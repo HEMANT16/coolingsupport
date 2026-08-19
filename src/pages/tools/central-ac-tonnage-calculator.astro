@@ -1,0 +1,393 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Central AC Tonnage Calculator | What Size AC Do I Need?";
+const description = "Use our free central AC tonnage calculator to instantly find exactly what size AC you need based on your home's square footage and climate zone.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Central AC Tonnage Calculator",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+    "description": "An interactive sizing utility that cross-references a home's square footage against the 5 U.S. climate zones to calculate the required baseline air conditioning BTUs and Tonnage.",
+    "applicationCategory": "Calculator",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How many square feet does a 3 ton AC cool?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It depends entirely on your climate zone. In a hot Southern climate like Florida (Zone 1), a 3-ton AC will cool about 1,200 square feet. In a cooler Northern climate like Michigan (Zone 5), that exact same 3-ton unit can cool up to 2,000 square feet."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I just install a bigger AC to cool my house faster?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely not. Installing an oversized AC is the worst mistake you can make. An oversized AC will quickly blast the temperature down and shut off before it has time to remove the humidity from the air. This results in the 'swamp effect'—your house will feel like a cold, wet cave, and the constant starting and stopping will burn out the compressor."
+        }
+      }
+    ]
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        Central AC <span class="text-blue-300">Tonnage</span> Calculator
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-blue-100 max-w-2xl mx-auto mb-8 font-light">
+        Find out exactly what size AC you need based on your home's square footage and local climate zone. No guesswork.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Calculator App -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10 -mt-6">
+    <div class="max-w-4xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-gray-900 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <h2 class="text-white font-bold text-lg">Tonnage Sizing Engine</h2>
+        </div>
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-md bg-red-500"></div>
+          <div class="w-3 h-3 rounded-md bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-md bg-green-500"></div>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          
+          <!-- Controls -->
+          <div class="space-y-8">
+            
+            <!-- Square Footage Slider -->
+            <div class="bg-blue-50 rounded-sm p-5 border border-blue-100">
+              <div class="flex justify-between items-end mb-2">
+                <label class="block text-sm font-bold text-blue-900 uppercase tracking-wider">Home Square Footage</label>
+                <span class="text-2xl font-black text-blue-600" id="sqftDisplay">2,000 sq ft</span>
+              </div>
+              <p class="text-xs text-blue-800 mb-4 font-medium">Do not include unconditioned spaces like garages or unfinished basements.</p>
+              <input type="range" id="sqft" min="500" max="5000" step="100" value="2000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+              <div class="flex justify-between text-xs text-blue-400 mt-2 font-bold">
+                <span>500</span>
+                <span>5000+</span>
+              </div>
+            </div>
+
+            <!-- Insulation Quality -->
+            <div>
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Insulation Grade</label>
+              <div class="grid grid-cols-3 gap-2">
+                <button type="button" class="insulation-btn border border-gray-200 text-gray-600 hover:border-cyan-500 hover:text-cyan-600 py-2 px-2 rounded-lg font-bold transition-all text-sm flex flex-col items-center gap-1" data-val="1.15">
+                  <span class="text-xl">️</span>
+                  <span>Poor (Pre-1980)</span>
+                </button>
+                <button type="button" class="insulation-btn bg-cyan-500 text-white border-cyan-500 py-2 px-2 rounded-lg font-bold transition-all text-sm flex flex-col items-center gap-1 shadow-sm" data-val="1.0">
+                  <span class="text-xl"></span>
+                  <span>Average (Standard)</span>
+                </button>
+                <button type="button" class="insulation-btn border border-gray-200 text-gray-600 hover:border-cyan-500 hover:text-cyan-600 py-2 px-2 rounded-lg font-bold transition-all text-sm flex flex-col items-center gap-1" data-val="0.85">
+                  <span class="text-xl"></span>
+                  <span>Excellent (New)</span>
+                </button>
+              </div>
+              <input type="hidden" id="insulationVal" value="1.0" />
+            </div>
+
+            <!-- Climate Zone -->
+            <div>
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Select Your Climate Zone</label>
+              <div class="grid grid-cols-1 gap-2">
+                <button type="button" class="zone-btn active border-2 border-red-500 bg-red-50 text-red-900 py-3 px-4 rounded-sm font-bold transition-all shadow-sm text-left flex justify-between items-center" data-val="1">
+                  <span>Zone 1: Deep South (FL, TX, AZ)</span>
+                  <span class="text-xs font-mono bg-red-200 text-red-800 px-2 py-1 rounded">30 BTU/sqft</span>
+                </button>
+                <button type="button" class="zone-btn border border-gray-200 text-gray-600 hover:border-orange-500 hover:text-orange-600 py-3 px-4 rounded-sm font-bold transition-all text-left flex justify-between items-center" data-val="2">
+                  <span>Zone 2: South (GA, LA, NM)</span>
+                  <span class="text-xs font-mono bg-gray-100 text-gray-500 px-2 py-1 rounded">25 BTU/sqft</span>
+                </button>
+                <button type="button" class="zone-btn border border-gray-200 text-gray-600 hover:border-yellow-500 hover:text-yellow-600 py-3 px-4 rounded-sm font-bold transition-all text-left flex justify-between items-center" data-val="3">
+                  <span>Zone 3: Middle (NC, TN, OK)</span>
+                  <span class="text-xs font-mono bg-gray-100 text-gray-500 px-2 py-1 rounded">22 BTU/sqft</span>
+                </button>
+                <button type="button" class="zone-btn border border-gray-200 text-gray-600 hover:border-green-500 hover:text-green-600 py-3 px-4 rounded-sm font-bold transition-all text-left flex justify-between items-center" data-val="4">
+                  <span>Zone 4: Mid-North (OH, PA, IL)</span>
+                  <span class="text-xs font-mono bg-gray-100 text-gray-500 px-2 py-1 rounded">20 BTU/sqft</span>
+                </button>
+                <button type="button" class="zone-btn border border-gray-200 text-gray-600 hover:border-blue-500 hover:text-blue-600 py-3 px-4 rounded-sm font-bold transition-all text-left flex justify-between items-center" data-val="5">
+                  <span>Zone 5: Deep North (ME, MI, ND)</span>
+                  <span class="text-xs font-mono bg-gray-100 text-gray-500 px-2 py-1 rounded">18 BTU/sqft</span>
+                </button>
+              </div>
+              <input type="hidden" id="zoneVal" value="1" />
+            </div>
+
+          </div>
+
+          <!-- Output Panel -->
+          <div class="bg-gray-900 rounded-sm p-6 lg:p-8 text-white flex flex-col relative overflow-hidden shadow-md">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500 rounded-md mix-blend-overlay filter blur-3xl opacity-10 transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+            
+            <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-6 border-b border-gray-800 pb-4">Baseline Load Calculation</h3>
+            
+            <div class="space-y-6 flex-grow">
+              <!-- Raw BTUs -->
+              <div class="flex justify-between items-center">
+                <span class="text-gray-400 font-medium">Thermal Load Required:</span>
+                <span class="text-xl font-mono text-cyan-400" id="outBtus">60,000 BTUs</span>
+              </div>
+              
+              <div class="w-full h-px bg-gray-800 my-4"></div>
+
+              <!-- Recommended Tonnage -->
+              <div class="flex flex-col gap-2 bg-gray-800/80 p-6 rounded-sm border border-gray-700 items-center justify-center text-center">
+                <span class="text-gray-300 font-bold uppercase tracking-widest text-sm">Recommended System Size</span>
+                <span class="text-5xl font-black text-white" id="outTonnage">5.0 <span class="text-2xl text-gray-400 font-normal">Tons</span></span>
+              </div>
+            </div>
+
+            <!-- Master Tech Warning -->
+            <div class="mt-8 bg-orange-900/40 border-l-4 border-orange-500 p-4 rounded-r-xl">
+              <h4 class="font-bold text-orange-400 text-sm uppercase tracking-wide mb-1 flex items-center gap-2">
+                <span>️</span> The Rule of Thumb Warning
+              </h4>
+              <p class="text-orange-200 text-sm leading-relaxed font-medium">
+                This gives you a highly accurate baseline. However, do not let a contractor install equipment based <i>only</i> on square footage. They must run a proper Manual J calculation to account for your specific windows, ductwork, and insulation.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content (10-Year Veteran Tone) -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: The Physics -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-blue-500">️</span> How Central AC Tonnage Math Actually Works
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          "Tonnage" has absolutely nothing to do with how much the metal box outside weighs. It is a measurement of thermal heat extraction. 
+        </p>
+        <div class="bg-gray-50 border border-gray-200 p-6 rounded-sm mb-6">
+          <p class="font-bold text-gray-900 text-lg mb-2">1 Ton = 12,000 BTUs of Heat Removal</p>
+          <p class="text-gray-700 text-sm">
+            A 1-ton air conditioner can remove 12,000 British Thermal Units of heat from your house every hour. Therefore, a 3-ton system pulls 36,000 BTUs per hour, and a 5-ton system pulls 60,000 BTUs per hour.
+          </p>
+        </div>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          The calculator above uses the standard US Climate Zone multiplier. If you live in Miami (Zone 1), the sun is brutally punishing your roof and windows, so you need about 30 BTUs of cooling power for every square foot of floor space. If you live in Maine (Zone 5), you only need about 18 BTUs per square foot.
+        </p>
+
+        <!-- The Formula -->
+        <h3 class="text-2xl font-bold text-gray-900 mb-4">The Exact Mathematical Formula</h3>
+        <p class="text-lg text-gray-700 leading-relaxed mb-4">Here is the exact formula the calculator uses under the hood to find your baseline requirement:</p>
+        
+        <div class="bg-blue-900 p-6 rounded-sm overflow-x-auto shadow-inner border border-blue-800 mb-4">
+          <pre class="text-sm font-mono text-cyan-300 leading-loose"><code>Step 1: (Square Footage × Climate Multiplier) = Base BTUs
+Step 2: Base BTUs × Insulation Factor = Required BTUs
+Step 3: Required BTUs ÷ 12,000 = Recommended Tonnage</code></pre>
+        </div>
+        
+        <p class="text-md text-gray-700 leading-relaxed bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl">
+          <strong>The Insulation Factor:</strong> If you live in an old, drafty house built before 1980 with poor insulation, we multiply the base BTUs by <strong>1.15</strong> (adding 15% more capacity to handle the heat leaking in). If you live in a brand new, spray-foam insulated home, we multiply by <strong>0.85</strong> (reducing the required capacity by 15% because the house holds its cold air perfectly).
+        </p>
+      </div>
+
+      <!-- Section 2: The Bigger is Better Lie -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The "Bigger is Better" Lie (The Swamp Effect)
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          A common mistake homeowners make is thinking: <i>"My 3-ton AC struggles on 100-degree days, so I'm going to rip it out and install a massive 5-ton AC to cool the house down faster."</i>
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6 font-bold text-red-700">
+          If you do this, you will completely ruin the comfort of your home.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          An air conditioner has two jobs: lower the temperature (sensible heat) and wring the water out of the air (latent heat). Dropping the temperature is fast. Wringing the humidity out of the air takes time—usually at least 15 to 20 minutes of continuous running.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed">
+          If you install an oversized 5-ton unit on a house that only needs 3 tons, it will blast the temperature down to 70 degrees in just 8 minutes and shut off. It never ran long enough to pull the humidity out of the air. Your house will now feel like a cold, damp, clammy cave (The Swamp Effect). Furthermore, the constant 8-minute short-cycling will cause massive locked-rotor-amp stress on your compressor, killing it years early.
+        </p>
+      </div>
+
+      <!-- Section 3: FAQs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          Sizing FAQ
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-cyan-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Why do contractors insist on a Manual J calculation?
+              <span class="text-cyan-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Square footage is just a 2D measurement of your floor. It doesn't tell the AC unit anything about how hot the house gets. A proper Manual J calculation takes into account 3D variables: Are your ceilings 8 feet or 12 feet high? Do you have single-pane or double-pane windows? Do your massive bay windows face the brutal afternoon west sun? What is the R-value of the insulation in your attic? A Manual J mathematically answers all of these to give you the perfect size.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-cyan-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              What size do central ACs come in?
+              <span class="text-cyan-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Residential central air conditioners are manufactured in half-ton increments, starting at 1.5 Tons (18,000 BTUs) up to a maximum of 5.0 Tons (60,000 BTUs). If your house is a massive mansion requiring 7.0 Tons of cooling, you will have to install two separate systems (e.g., a 4-ton unit and a 3-ton unit).
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Logic -->
+  <script>
+    const sqftSlider = document.getElementById('sqft') as HTMLInputElement;
+    const sqftDisplay = document.getElementById('sqftDisplay')!;
+    
+    const zoneBtns = document.querySelectorAll('.zone-btn');
+    const zoneVal = document.getElementById('zoneVal') as HTMLInputElement;
+
+    const insulationBtns = document.querySelectorAll('.insulation-btn');
+    const insulationVal = document.getElementById('insulationVal') as HTMLInputElement;
+    
+    const outBtus = document.getElementById('outBtus')!;
+    const outTonnage = document.getElementById('outTonnage')!;
+
+    // Multipliers based on US Climate Zones
+    const multipliers: Record<string, number> = {
+      "1": 30, // Deep South
+      "2": 25, // South
+      "3": 22, // Middle
+      "4": 20, // Mid-North
+      "5": 18  // Deep North
+    };
+
+    function calculate() {
+      const sqft = parseFloat(sqftSlider.value);
+      const zone = zoneVal.value;
+      const multiplier = multipliers[zone] || 20;
+      const insulFactor = parseFloat(insulationVal.value);
+
+      // Format displays
+      sqftDisplay.innerText = new Intl.NumberFormat('en-US').format(sqft) + ' sq ft';
+
+      // Math
+      const baseBtus = sqft * multiplier;
+      const totalBtus = baseBtus * insulFactor;
+      let rawTons = totalBtus / 12000;
+
+      // Round to nearest 0.5 ton
+      // Real units come in 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0
+      let recommendedTons = Math.round(rawTons * 2) / 2;
+
+      // Clamp to residential sizes
+      if (recommendedTons < 1.5) recommendedTons = 1.5;
+      
+      outBtus.innerText = new Intl.NumberFormat('en-US').format(totalBtus) + ' BTUs';
+      
+      if (recommendedTons > 5.0) {
+        outTonnage.innerHTML = `5.0+ <span class="text-xl text-red-400 font-normal leading-tight block mt-2">Requires Multiple Units</span>`;
+      } else {
+        outTonnage.innerHTML = `${recommendedTons.toFixed(1)} <span class="text-2xl text-gray-400 font-normal">Tons</span>`;
+      }
+    }
+
+    // Event Listeners
+    sqftSlider.addEventListener('input', calculate);
+
+    zoneBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const val = target.getAttribute('data-val') || '1';
+        zoneVal.value = val;
+
+        // Reset all buttons
+        zoneBtns.forEach(b => {
+          // Remove active styles based on their data-val color
+          const bVal = b.getAttribute('data-val');
+          if (bVal === '1') b.className = b.className.replace('active border-2 border-red-500 bg-red-50 text-red-900 shadow-sm', 'border border-gray-200 text-gray-600 hover:border-orange-500 hover:text-orange-600');
+          if (bVal === '2') b.className = b.className.replace('active border-2 border-orange-500 bg-orange-50 text-orange-900 shadow-sm', 'border border-gray-200 text-gray-600 hover:border-orange-500 hover:text-orange-600');
+          if (bVal === '3') b.className = b.className.replace('active border-2 border-yellow-500 bg-yellow-50 text-yellow-900 shadow-sm', 'border border-gray-200 text-gray-600 hover:border-yellow-500 hover:text-yellow-600');
+          if (bVal === '4') b.className = b.className.replace('active border-2 border-green-500 bg-green-50 text-green-900 shadow-sm', 'border border-gray-200 text-gray-600 hover:border-green-500 hover:text-green-600');
+          if (bVal === '5') b.className = b.className.replace('active border-2 border-blue-500 bg-blue-50 text-blue-900 shadow-sm', 'border border-gray-200 text-gray-600 hover:border-blue-500 hover:text-blue-600');
+          
+          // Reset child badges to gray
+          const badge = b.querySelector('span:last-child');
+          if (badge) {
+            badge.className = "text-xs font-mono bg-gray-100 text-gray-500 px-2 py-1 rounded";
+          }
+        });
+
+        // Set active target styles
+        target.classList.remove('border', 'border-gray-200', 'text-gray-600');
+        // strip hovers
+        target.className = target.className.replace(/hover:border-[a-z]+-500/g, '').replace(/hover:text-[a-z]+-600/g, '');
+
+        let activeColorClass = "";
+        let activeBadgeClass = "";
+        if (val === '1') { activeColorClass = "active border-2 border-red-500 bg-red-50 text-red-900 shadow-sm"; activeBadgeClass = "bg-red-200 text-red-800"; }
+        if (val === '2') { activeColorClass = "active border-2 border-orange-500 bg-orange-50 text-orange-900 shadow-sm"; activeBadgeClass = "bg-orange-200 text-orange-800"; }
+        if (val === '3') { activeColorClass = "active border-2 border-yellow-500 bg-yellow-50 text-yellow-900 shadow-sm"; activeBadgeClass = "bg-yellow-200 text-yellow-800"; }
+        if (val === '4') { activeColorClass = "active border-2 border-green-500 bg-green-50 text-green-900 shadow-sm"; activeBadgeClass = "bg-green-200 text-green-800"; }
+        if (val === '5') { activeColorClass = "active border-2 border-blue-500 bg-blue-50 text-blue-900 shadow-sm"; activeBadgeClass = "bg-blue-200 text-blue-800"; }
+
+        target.className += ` ${activeColorClass}`;
+        const targetBadge = target.querySelector('span:last-child');
+        if (targetBadge) {
+          targetBadge.className = `text-xs font-mono ${activeBadgeClass} px-2 py-1 rounded`;
+        }
+
+        calculate();
+      });
+    });
+
+    insulationBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const val = target.getAttribute('data-val') || '1.0';
+        insulationVal.value = val;
+
+        insulationBtns.forEach(b => {
+          b.className = "insulation-btn border border-gray-200 text-gray-600 hover:border-cyan-500 hover:text-cyan-600 py-2 px-2 rounded-lg font-bold transition-all text-sm flex flex-col items-center gap-1";
+        });
+        target.className = "insulation-btn bg-cyan-500 text-white border-cyan-500 py-2 px-2 rounded-lg font-bold transition-all text-sm flex flex-col items-center gap-1 shadow-sm";
+        calculate();
+      });
+    });
+
+    // Init
+    calculate();
+  </script>
+</Layout>

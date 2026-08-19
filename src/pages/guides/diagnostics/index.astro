@@ -1,0 +1,62 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import SEO from '../../../components/SEO.astro';
+
+const articles = [
+  { title: "Common AC Sounds Directory (Audio Guide)", href: "/tools/ac-noise-analyzer", excerpt: "A master list of every common HVAC sound, what it means, and how urgent the repair is." },
+  { title: "Compressor Hard Start Buzzing (Audio Demo)", href: "/tools/ac-noise-analyzer?loc=outside&sound=buzzing", excerpt: "Listen to the exact sound a failing compressor makes when it struggles to start." },
+  { title: "Blower Motor Squealing vs Grinding (Audio)", href: "/tools/ac-noise-analyzer?loc=inside&sound=screeching", excerpt: "Learn to differentiate between a bad bearing, a loose belt, and debris in the squirrel cage." }
+];
+---
+
+<Layout title="Audio Diagnostic Guides">
+  <SEO 
+    slot="head"
+    title="HVAC Audio Diagnostics & Sound Identification | Cooling Support" 
+    description="Listen to failing HVAC parts to diagnose buzzing, squealing, and banging noises before calling a pro."
+  />
+
+  <div class="bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+      <!-- Breadcrumbs -->
+      <nav class="flex mb-8 text-sm font-medium text-slate-500">
+        <ol class="inline-flex items-center space-x-2">
+          <li><a href="/" class="hover:text-blue-600 transition-colors">Home</a></li>
+          <li><svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></li>
+          <li><a href="/guides" class="hover:text-blue-600 transition-colors">Knowledge Base</a></li>
+          <li><svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></li>
+          <li class="text-slate-900">Audio Diagnostics</li>
+        </ol>
+      </nav>
+
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 font-mono tracking-tight mb-4">
+          AudioObject
+        </span>
+        <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight sm:text-5xl mb-4">
+          Audio Diagnostic Guides
+        </h1>
+        <p class="text-lg text-slate-600 leading-relaxed max-w-2xl">
+          Listen to failing parts to diagnose the problem.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-slate-50 min-h-screen py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {articles.map((article) => (
+          <a href={article.href} class="bg-white rounded-xl shadow-sm ring-1 ring-slate-900/5 hover:shadow-md hover:ring-blue-500/30 transition-all duration-300 p-8 group flex flex-col">
+            <h2 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">{article.title}</h2>
+            <p class="text-slate-500 text-sm leading-relaxed mb-6 flex-grow">{article.excerpt}</p>
+            <div class="text-blue-600 font-semibold text-sm flex items-center mt-auto">
+              Listen & Diagnose
+              <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>

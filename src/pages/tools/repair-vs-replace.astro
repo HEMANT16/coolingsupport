@@ -1,0 +1,351 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "HVAC Repair vs Replace Calculator | The $5,000 Rule";
+const description = "Use the $5,000 rule to calculate whether you should repair your broken air conditioner or replace it entirely. Find out if your AC is worth fixing.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "HVAC Repair vs. Replace Analyzer",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+    "description": "An interactive calculator that uses the $5,000 rule of thumb to help homeowners decide whether to repair an aging HVAC system or replace it.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the $5,000 rule for HVAC?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The $5,000 rule is an HVAC industry formula. You multiply the age of your equipment by the cost of the repair. If the total is greater than 5,000, you should replace the unit. If it is less than 5,000, you should repair it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is it worth fixing a 15 year old AC unit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Generally, no. Air conditioners are designed to last 12 to 15 years. Any repair on a 15-year-old system is a sunk cost because the compressor or coils are highly likely to fail shortly after."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I repair an AC that uses R-22 Freon?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The EPA banned the production and import of R-22 refrigerant in 2020. Because supplies are strictly limited, recharging an R-22 system is astronomically expensive. You should replace the system with modern R-410A or R-454B equipment."
+        }
+      }
+    ]
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-500/20 text-red-300 font-bold text-xs uppercase tracking-widest mb-6 border border-red-500/30">
+        Stop Guessing
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        HVAC Repair vs Replace <span class="text-red-400">Analyzer</span>
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-blue-100 max-w-2xl mx-auto mb-8 font-light">
+        Are you about to throw $1,500 down the drain? Use the industry-standard $5,000 rule to find out if your AC is actually worth fixing.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Calculator App -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10">
+    <div class="max-w-6xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-gray-900 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <h2 class="text-white font-bold text-lg">The $5,000 Rule Engine</h2>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <!-- Controls (Left: 7 cols) -->
+          <div class="lg:col-span-7 space-y-8">
+            
+            <div class="grid grid-cols-1 gap-6">
+              
+              <!-- System Age -->
+              <div class="bg-gray-50 p-6 rounded-sm border border-gray-200">
+                <div class="flex justify-between items-end mb-4">
+                  <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider">Age of System (Years)</label>
+                  <span class="text-2xl font-black text-gray-900" id="ageDisplay">10 Years</span>
+                </div>
+                <input type="range" id="age" min="1" max="25" step="1" value="10" class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                <div class="flex justify-between text-xs text-gray-500 mt-2 font-bold">
+                  <span>Brand New (1 yr)</span>
+                  <span>Ancient (25 yrs)</span>
+                </div>
+              </div>
+
+              <!-- Repair Cost -->
+              <div>
+                <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">Quoted Repair Cost ($)</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <span class="text-gray-500 font-bold text-lg">$</span>
+                  </div>
+                  <input type="number" id="repairCost" value="800" step="50" min="50" class="w-full bg-white border-2 border-gray-300 text-gray-900 text-2xl rounded-sm focus:ring-blue-500 focus:border-blue-500 block pl-8 p-4 font-bold shadow-sm transition-all" />
+                </div>
+                <p class="text-xs text-gray-500 mt-2 font-medium">Enter the exact amount the technician quoted you.</p>
+              </div>
+
+              <!-- Refrigerant Type -->
+              <div>
+                <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">Refrigerant Type</label>
+                <select id="refrigerant" class="w-full bg-white border-2 border-gray-300 text-gray-900 text-lg rounded-sm focus:ring-blue-500 focus:border-blue-500 block p-4 shadow-sm font-semibold transition-all">
+                  <option value="modern" selected>Modern (R-410A or R-454B)</option>
+                  <option value="legacy">Legacy Freon (R-22)</option>
+                  <option value="unknown">I don't know</option>
+                </select>
+                <p class="text-xs text-gray-500 mt-2 font-medium">Check the data sticker on your outdoor unit if you aren't sure.</p>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Output Panel (Right: 5 cols) -->
+          <div class="lg:col-span-5 bg-gray-900 rounded-sm p-6 lg:p-8 text-white flex flex-col relative overflow-hidden shadow-md transition-colors duration-500" id="outputPanel">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white rounded-md mix-blend-overlay filter blur-3xl opacity-10 transform translate-x-1/2 -translate-y-1/2"></div>
+            
+            <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-6 border-b border-gray-800 pb-4">Calculated Verdict</h3>
+            
+            <div class="space-y-6 flex-grow flex flex-col items-center justify-center text-center">
+              
+              <!-- The Score -->
+              <div class="mb-4">
+                <span class="text-gray-400 font-bold uppercase tracking-widest text-xs block mb-1">Your $5,000 Rule Score:</span>
+                <span class="text-4xl font-mono font-black tracking-tight" id="scoreDisplay">8,000</span>
+              </div>
+              
+              <!-- The Verdict Box -->
+              <div class="w-full py-6 rounded-sm border-4 transition-all duration-300 transform scale-105 shadow-md" id="verdictBox">
+                <span class="text-4xl lg:text-5xl font-black uppercase tracking-widest block mb-2" id="verdictText">REPLACE IT</span>
+                <span class="text-sm font-bold opacity-90 px-4 block" id="verdictSubtext">This repair is a sunk cost. Do not fix this.</span>
+              </div>
+              
+            </div>
+
+            <!-- Engineering Spec -->
+            <div class="mt-8 bg-gray-950 border border-gray-800 p-5 rounded-sm text-left">
+              <h4 class="font-bold text-gray-400 text-xs uppercase tracking-wide mb-2 flex items-center gap-2">
+                <span></span> Why this verdict?
+              </h4>
+              <p class="text-gray-300 text-sm leading-relaxed" id="explanationText">
+                Multiplying a 10-year age by a $800 repair yields 8,000. Because this is over the 5,000 threshold, you are throwing money into a dying system.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content (10-Year Veteran Tone) -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: The Math -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          How the $5,000 Rule Works
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          The $5,000 rule is the gold standard formula used by honest HVAC technicians to tell homeowners whether a repair is worth it, or whether they are just throwing good money after bad.
+        </p>
+        <div class="bg-gray-50 border-l-4 border-blue-500 p-6 rounded-r-xl mb-6 shadow-sm">
+          <p class="font-bold text-xl text-gray-900 font-mono mb-2">Age of Unit × Cost of Repair = The Score</p>
+          <ul class="text-gray-700 space-y-2 mt-4 list-disc pl-5">
+            <li>If the score is <strong>Less than 5,000</strong>: It makes financial sense to repair the unit.</li>
+            <li>If the score is <strong>More than 5,000</strong>: The system is dying. Replace it.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 2: The Sunk Cost Fallacy -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The "Sunk Cost" Fallacy
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          Many homeowners panic when they see a $6,000 quote for a new AC, and instead opt to pay $1,200 to replace a blown blower motor on their 14-year-old system. They think they just saved $4,800. <strong>They are wrong.</strong>
+        </p>
+        <div class="bg-gray-900 text-white p-6 rounded-sm shadow-md mb-6">
+          <p class="font-bold text-red-400 mb-2 uppercase tracking-wider text-sm">The 10-Year Veteran Reality:</p>
+          <p class="text-gray-300 leading-relaxed">
+            Air conditioners are designed to last 12 to 15 years. Putting a brand new $1,200 motor into a 14-year-old machine does not reset the clock. Next summer, the rusted evaporator coil is going to leak, or the aged compressor is going to ground out. You didn't save $4,800. You just wasted $1,200 that could have been a downpayment on a brand new, high-efficiency system with a 10-year warranty.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 3: The R-22 Death Sentence -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-yellow-500">️</span> The R-22 Freon Death Sentence
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          If your air conditioner uses R-22 Freon, the $5,000 rule goes out the window. <strong>You must replace it.</strong>
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          The EPA banned the production and import of R-22 refrigerant in 2020 due to ozone depletion. Because the supply is strictly limited to reclaimed stock, it is astronomically expensive. If a technician tells you they need to "top off" your R-22 system because of a leak, you might be looking at $100 to $200 <em>per pound</em> of refrigerant.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed">
+          Worse, if there is a leak, the system is fundamentally broken. Topping it off means that expensive liquid gold is just going to slowly leak out into the atmosphere again. Never repair a leaking R-22 system. Replace it with a modern R-410A or R-454B unit.
+        </p>
+      </div>
+
+      <!-- Section 4: FAQs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          Replacement FAQ
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              What is the $5,000 rule for HVAC?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              The $5,000 rule is an HVAC industry formula. You multiply the age of your equipment by the cost of the repair. If the total is greater than 5,000, you should replace the unit. If it is less than 5,000, you should repair it.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Is it worth fixing a 15 year old AC unit?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Generally, no. Air conditioners are designed to last 12 to 15 years. Any repair on a 15-year-old system is a sunk cost because the compressor or coils are highly likely to fail shortly after.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Should I repair an AC that uses R-22 Freon?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              No. The EPA banned the production and import of R-22 refrigerant in 2020. Because supplies are strictly limited, recharging an R-22 system is astronomically expensive. You should replace the system with modern R-410A or R-454B equipment.
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Logic -->
+  <script>
+    const ageSlider = document.getElementById('age') as HTMLInputElement;
+    const repairCostInput = document.getElementById('repairCost') as HTMLInputElement;
+    const refSelect = document.getElementById('refrigerant') as HTMLSelectElement;
+
+    const ageDisplay = document.getElementById('ageDisplay')!;
+    const scoreDisplay = document.getElementById('scoreDisplay')!;
+    
+    const outputPanel = document.getElementById('outputPanel')!;
+    const verdictBox = document.getElementById('verdictBox')!;
+    const verdictText = document.getElementById('verdictText')!;
+    const verdictSubtext = document.getElementById('verdictSubtext')!;
+    const explanationText = document.getElementById('explanationText')!;
+
+    function formatNumber(num: number) {
+      return new Intl.NumberFormat('en-US').format(num);
+    }
+
+    function formatMoney(amount: number) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
+    }
+
+    function calculate() {
+      const age = parseInt(ageSlider.value);
+      const cost = parseFloat(repairCostInput.value) || 0;
+      const refrigerant = refSelect.value;
+
+      ageDisplay.innerText = `${age} Year${age > 1 ? 's' : ''}`;
+      
+      const score = age * cost;
+      scoreDisplay.innerText = formatNumber(score);
+
+      // Reset Styles
+      outputPanel.classList.remove('bg-gray-900', 'bg-red-900', 'bg-green-900');
+      verdictBox.classList.remove('border-red-500', 'bg-red-500/20', 'text-red-100', 'border-green-500', 'bg-green-500/20', 'text-green-100');
+
+      // Logic
+      let verdict = '';
+      let subtext = '';
+      let explanation = '';
+      let isReplace = false;
+
+      if (refrigerant === 'legacy') {
+        // Instant Replace override
+        isReplace = true;
+        verdict = "REPLACE IT";
+        subtext = "R-22 is legally banned and dead. Do not fix this.";
+        explanation = `Even though your score is ${formatNumber(score)}, your system uses legacy R-22 Freon. R-22 is banned by the EPA and costs a fortune to recharge. Any repair on an R-22 system is throwing money away. Upgrade to a modern unit.`;
+      } else {
+        // Standard $5,000 Rule
+        if (score >= 5000) {
+          isReplace = true;
+          verdict = "REPLACE IT";
+          subtext = "This repair is a sunk cost. Cut your losses.";
+          explanation = `Multiplying a ${age}-year age by a ${formatMoney(cost)} repair yields a score of ${formatNumber(score)}. Because this is over the 5,000 threshold, the math says this system is dying and you are better off investing that money into a new unit.`;
+        } else {
+          isReplace = false;
+          verdict = "REPAIR IT";
+          subtext = "The math supports fixing the unit.";
+          explanation = `Multiplying a ${age}-year age by a ${formatMoney(cost)} repair yields a score of ${formatNumber(score)}. Because this is strictly under the 5,000 threshold, it is financially smarter to fix the unit rather than replace the whole system right now.`;
+        }
+      }
+
+      // Apply UI State
+      verdictText.innerText = verdict;
+      verdictSubtext.innerText = subtext;
+      explanationText.innerText = explanation;
+
+      if (isReplace) {
+        outputPanel.classList.add('bg-red-900');
+        verdictBox.classList.add('border-red-500', 'bg-red-500/20', 'text-red-100');
+      } else {
+        outputPanel.classList.add('bg-green-900');
+        verdictBox.classList.add('border-green-500', 'bg-green-500/20', 'text-green-100');
+      }
+    }
+
+    // Event Listeners
+    ageSlider.addEventListener('input', calculate);
+    repairCostInput.addEventListener('input', calculate);
+    refSelect.addEventListener('change', calculate);
+
+    // Init
+    calculate();
+  </script>
+</Layout>

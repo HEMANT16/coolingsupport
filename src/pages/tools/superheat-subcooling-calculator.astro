@@ -1,0 +1,659 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Superheat & Subcooling Calculator";
+const description = "Instantly calculate your target superheat and subcooling for R410A and R22. Determine exactly if you need to add or remove freon for a perfect AC charge.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Superheat & Subcooling Calculator",
+    "description": "An interactive diagnostic calculator tool to determine the exact target superheat for fixed orifice HVAC systems and the target subcooling for TXV systems. Includes a built-in R-410A and R-22 PT chart conversion.",
+    "applicationCategory": "CalculatorApplication",
+    "operatingSystem": "WebBrowser",
+    "featureList": "Target Superheat Calculation, Subcooling Calculation, R410A/R22 PT Chart Interpolation, Charge Status Verdict",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What should superheat be on 410A?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "There is no fixed superheat target for a system with a piston or fixed orifice. The target superheat must be calculated using the current Indoor Wet Bulb temperature and Outdoor Dry Bulb temperature. It constantly changes based on the weather, ranging anywhere from 5 to 25 degrees."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a good subcooling for 410A?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For a system equipped with a TXV (Thermostatic Expansion Valve), the manufacturer dictates the target subcooling. You can usually find this number stamped on the outdoor unit's data plate. It typically ranges between 8 and 14 degrees Fahrenheit."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you charge a TXV by superheat or subcooling?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You must always charge a TXV system by subcooling. The TXV automatically adjusts the flow of refrigerant to maintain a constant superheat. If you try to add freon to lower the superheat on a TXV system, you will massively overcharge the unit and risk slugging the compressor with liquid."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What causes high subcooling and normal superheat?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "High subcooling combined with normal superheat on a TXV system is the classic symptom of a severe refrigerant overcharge. The extra liquid backs up into the condenser coil, raising the subcooling, while the TXV throttles down to maintain the normal superheat target."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a normal suction pressure for R410A?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Normal suction pressure for R410A typically ranges from 110 to 140 psig, which corresponds to a saturation temperature between 36°F and 50°F depending on the indoor heat load."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if superheat is too high?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "High superheat indicates the evaporator coil is starved of refrigerant. This is usually caused by a low refrigerant charge (a leak) or a restricted liquid line, resulting in warm air blowing from the vents."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a dirty filter cause low superheat?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. A dirty air filter reduces airflow across the indoor coil, preventing the liquid refrigerant from boiling off completely. This causes the superheat to drop dangerously low, potentially slugging the compressor with liquid."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I know if I have a TXV or Piston?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Look at the indoor evaporator coil where the liquid line connects. A TXV is a brass valve with a sensing bulb strapped to the suction line. A piston is hidden inside a brass nut connecting the liquid line directly to the coil distributor."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the rule of thumb for R410A subcooling?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "While there is no strict rule of thumb, most modern high-efficiency R410A systems call for a target subcooling between 10°F and 12°F. However, you must always verify the exact target printed on the outdoor unit's data plate."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I charge by weight or by superheat?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "If a system is completely empty, you should always weigh in the factory charge using a digital scale. Superheat and subcooling should only be used to fine-tune the charge after the factory weight has been added, compensating for line set length."
+        }
+      }
+    ]
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-gray-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-500/20 text-blue-400 font-bold text-xs uppercase tracking-widest mb-6 border border-blue-500/30">
+        Diagnostic Charging Engine
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        Superheat & Subcooling Calculator
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8 font-light">
+        Stop guessing with the "beer can cold" method. Dial in a perfect refrigerant charge using exact mathematical targets for Piston and TXV systems.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Calculator App -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10">
+    <div class="max-w-6xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header & Mode Toggles -->
+      <div class="bg-gray-800 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="text-blue-400 text-xl">️</span>
+          <h2 class="text-white font-bold text-lg">Refrigerant Target Engine</h2>
+        </div>
+        
+        <!-- Metering Device Toggle -->
+        <div class="flex bg-gray-900 p-1 rounded-sm w-full sm:w-auto">
+          <button id="btnPiston" class="flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all bg-blue-600 text-white shadow-sm border border-blue-500">
+            Piston / Fixed Orifice
+          </button>
+          <button id="btnTxv" class="flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all text-gray-400 hover:text-white">
+            TXV (Subcooling)
+          </button>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <!-- Controls (Left: 7 cols) -->
+          <div class="lg:col-span-7 space-y-8">
+            
+            <!-- Global Refrigerant Select -->
+            <div class="flex gap-4 mb-6 pb-6 border-b border-gray-100">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="refrigerant" value="r410a" checked class="w-5 h-5 text-blue-600 focus:ring-blue-500 border-gray-300">
+                <span class="font-bold text-gray-900">R-410A</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="refrigerant" value="r22" class="w-5 h-5 text-blue-600 focus:ring-blue-500 border-gray-300">
+                <span class="font-bold text-gray-900">R-22</span>
+              </label>
+            </div>
+
+            <!-- MODE 1: PISTON (SUPERHEAT) -->
+            <div id="modePiston" class="space-y-6">
+              
+              <div class="bg-blue-50 border border-blue-200 p-4 rounded-sm mb-6">
+                <p class="text-blue-800 text-sm"><strong>Superheat Charging:</strong> Used for systems with a fixed piston. We must calculate the moving target based on the current weather.</p>
+              </div>
+
+              <!-- Target Inputs -->
+              <h3 class="text-gray-900 font-bold uppercase tracking-wider text-xs border-b border-gray-200 pb-2">1. Find The Target</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Indoor Wet Bulb Temp</label>
+                  <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-blue-500 overflow-hidden">
+                    <input type="number" id="inWb" value="62" step="1" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                    <span class="px-4 bg-gray-100 border-l border-gray-300 flex items-center font-bold text-gray-500">°F</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Outdoor Dry Bulb Temp</label>
+                  <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-blue-500 overflow-hidden">
+                    <input type="number" id="outDb" value="85" step="1" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                    <span class="px-4 bg-gray-100 border-l border-gray-300 flex items-center font-bold text-gray-500">°F</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Actual Readings -->
+              <h3 class="text-gray-900 font-bold uppercase tracking-wider text-xs border-b border-gray-200 pb-2 pt-4">2. Enter Gauge Readings</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Suction Pressure (Low Side)</label>
+                  <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-blue-500 overflow-hidden">
+                    <input type="number" id="sucPress" value="120" step="1" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                    <span class="px-4 bg-gray-100 border-l border-gray-300 flex items-center font-bold text-gray-500">psig</span>
+                  </div>
+                  <p class="text-xs text-blue-600 mt-1 font-bold">PT Saturation: <span id="sucSatDisplay">--</span>°F</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Vapor Line Temp (Thermocouple)</label>
+                  <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-blue-500 overflow-hidden">
+                    <input type="number" id="vapTemp" value="55" step="1" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                    <span class="px-4 bg-gray-100 border-l border-gray-300 flex items-center font-bold text-gray-500">°F</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- MODE 2: TXV (SUBCOOLING) -->
+            <div id="modeTxv" class="space-y-6 hidden">
+              
+              <div class="bg-gray-100 border border-gray-200 p-4 rounded-sm mb-6">
+                <p class="text-gray-800 text-sm"><strong>Subcooling Charging:</strong> Used for TXV systems. The Target is fixed by the manufacturer (check the data plate on the outdoor unit).</p>
+              </div>
+
+              <!-- Target Inputs -->
+              <h3 class="text-gray-900 font-bold uppercase tracking-wider text-xs border-b border-gray-200 pb-2">1. Find The Target</h3>
+              <div class="grid grid-cols-1 gap-6">
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Manufacturer Target Subcooling</label>
+                  <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-blue-500 overflow-hidden">
+                    <input type="number" id="targetSc" value="10" step="1" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                    <span class="px-4 bg-gray-100 border-l border-gray-300 flex items-center font-bold text-gray-500">°F</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Actual Readings -->
+              <h3 class="text-gray-900 font-bold uppercase tracking-wider text-xs border-b border-gray-200 pb-2 pt-4">2. Enter Gauge Readings</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Liquid Pressure (High Side)</label>
+                  <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-blue-500 overflow-hidden">
+                    <input type="number" id="liqPress" value="315" step="1" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                    <span class="px-4 bg-gray-100 border-l border-gray-300 flex items-center font-bold text-gray-500">psig</span>
+                  </div>
+                  <p class="text-xs text-blue-600 mt-1 font-bold">PT Saturation: <span id="liqSatDisplay">--</span>°F</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-2">Liquid Line Temp (Thermocouple)</label>
+                  <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-blue-500 overflow-hidden">
+                    <input type="number" id="liqTemp" value="94" step="1" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                    <span class="px-4 bg-gray-100 border-l border-gray-300 flex items-center font-bold text-gray-500">°F</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Action Button -->
+            <button id="btnCalculate" class="w-full mt-8 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xl py-5 rounded-sm shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-3">
+              Calculate Charge Target <span class="text-2xl"></span>
+            </button>
+
+          </div>
+
+          <!-- Output Panel (Right: 5 cols) -->
+          <div class="lg:col-span-5 bg-gray-900 rounded-sm p-6 lg:p-8 text-white flex flex-col relative overflow-hidden shadow-md">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-md mix-blend-overlay filter blur-3xl opacity-10 transform translate-x-1/2 -translate-y-1/2"></div>
+            
+            <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-6 border-b border-gray-800 pb-4">Charge Analysis</h3>
+            
+            <div class="space-y-6 flex-grow">
+              
+              <div class="grid grid-cols-2 gap-4">
+                <div class="bg-gray-800/80 p-4 rounded-sm border border-gray-700">
+                  <span class="text-gray-400 font-bold uppercase tracking-widest text-xs block mb-1" id="lblTarget">Target SH</span>
+                  <span class="text-3xl font-black text-blue-400" id="outTarget">--</span>
+                </div>
+                <div class="bg-gray-800/80 p-4 rounded-sm border border-gray-700">
+                  <span class="text-gray-400 font-bold uppercase tracking-widest text-xs block mb-1" id="lblActual">Actual SH</span>
+                  <span class="text-3xl font-black text-white" id="outActual">--</span>
+                </div>
+              </div>
+
+              <!-- Verdict Box -->
+              <div id="verdictBox" class="flex flex-col gap-2 bg-gray-800/80 p-6 rounded-sm border-2 border-gray-700 transition-colors">
+                <span class="text-gray-400 font-bold uppercase tracking-widest text-xs">Verdict</span>
+                <span class="text-3xl font-black text-gray-500 leading-none" id="outVerdict">Waiting for calculation...</span>
+                <span class="text-gray-400 text-sm font-medium mt-2" id="outReason">Enter your gauge readings and press the button below to diagnose the charge.</span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to Use the Calculator Section -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-100">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">How to Use the Superheat & Subcooling Calculator</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Step 1 -->
+        <div class="bg-white p-8 rounded-sm shadow-sm border border-gray-200">
+          <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-md flex items-center justify-center font-bold text-xl mb-6">1</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Select Your Metering Device</h3>
+          <p class="text-gray-600 leading-relaxed">
+            Determine if your indoor evaporator coil uses a fixed orifice (piston) or a TXV. Select the corresponding mode at the top of the calculator. Piston systems are charged by Superheat, while TXV systems are charged by Subcooling.
+          </p>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="bg-white p-8 rounded-sm shadow-sm border border-gray-200">
+          <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-md flex items-center justify-center font-bold text-xl mb-6">2</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Determine Your Target</h3>
+          <p class="text-gray-600 leading-relaxed">
+            If using a piston, enter the current indoor wet bulb and outdoor dry bulb temperatures to calculate the moving target. If using a TXV, enter the manufacturer's target subcooling stamped on the outdoor unit's data plate.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-white p-8 rounded-sm shadow-sm border border-gray-200">
+          <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-md flex items-center justify-center font-bold text-xl mb-6">3</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Enter Gauge Readings</h3>
+          <p class="text-gray-600 leading-relaxed">
+            Select R-410A or R-22. Enter your gauge pressure and your line temperature from a pipe thermocouple. The calculator's built-in PT chart will automatically convert your pressure to saturation and deliver a precise charging verdict.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content (10-Year Veteran Tone) -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: Beer Can Cold -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The "Beer Can Cold" Myth
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          Thirty years ago, old-timers would charge an AC by grabbing the large copper suction line with their bare hand and dumping Freon into the system until the pipe felt "beer can cold." 
+        </p>
+        <div class="bg-gray-900 text-white p-6 rounded-sm shadow-md mb-6">
+          <p class="font-bold text-blue-400 mb-2 uppercase tracking-wider text-sm">The 10-Year Veteran Reality:</p>
+          <p class="text-gray-300 leading-relaxed">
+            If you try that "hack" on a modern 16 SEER high-efficiency compressor, you will destroy it. Compressors pump vapor, not liquid. If you overcharge the system trying to make the pipe colder, liquid refrigerant will wash past the evaporator and slam into the compressor valves. This is called "slugging," and it will snap the mechanical internals instantly.
+          </p>
+        </div>
+        <p class="text-lg text-gray-700 leading-relaxed">
+          The only way to guarantee you aren't slugging the compressor is to calculate the exact superheat. Superheat is the mathematical proof that all the liquid refrigerant has boiled completely into a vapor before it reaches the outdoor unit.
+        </p>
+      </div>
+
+      <!-- Section 2: TXV vs Piston -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-gray-800">️</span> Why You Can't Superheat a TXV
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          A TXV (Thermostatic Expansion Valve) is an intelligent, mechanical valve located at the indoor coil. Its entire job is to open and close dynamically to maintain a constant superheat (usually around 10 to 15 degrees) regardless of how much refrigerant is in the system.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed">
+          If you hook up your gauges to a TXV system, see a superheat of 12 degrees, and decide you want to lower it to 8 degrees by adding Freon, <strong>the TXV will fight you</strong>. As you add Freon, the TXV pinches closed to maintain that 12 degrees. You will keep dumping Freon in, the superheat won't drop, and you will completely overcharge the system until the high-pressure switch trips or the compressor dies. You <em>must</em> charge a TXV by Subcooling.
+        </p>
+      </div>
+
+      <!-- Section 3: FAQs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          Superheat & Subcooling FAQs
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              What should superheat be on 410A?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              There is no fixed superheat target for a system with a piston or fixed orifice. The target superheat must be calculated using the current Indoor Wet Bulb temperature and Outdoor Dry Bulb temperature. It constantly changes based on the weather, ranging anywhere from 5 to 25 degrees.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              What is a good subcooling for 410A?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              For a system equipped with a TXV (Thermostatic Expansion Valve), the manufacturer dictates the target subcooling. You can usually find this number stamped on the outdoor unit's data plate. It typically ranges between 8 and 14 degrees Fahrenheit.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Do you charge a TXV by superheat or subcooling?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              You must always charge a TXV system by subcooling. The TXV automatically adjusts the flow of refrigerant to maintain a constant superheat. If you try to add freon to lower the superheat on a TXV system, you will massively overcharge the unit and risk slugging the compressor with liquid.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              What causes high subcooling and normal superheat?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              High subcooling combined with normal superheat on a TXV system is the classic symptom of a severe refrigerant overcharge. The extra liquid backs up into the condenser coil, raising the subcooling, while the TXV throttles down to maintain the normal superheat target.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              What is a normal suction pressure for R410A?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Normal suction pressure for R410A typically ranges from 110 to 140 psig, which corresponds to a saturation temperature between 36°F and 50°F depending on the indoor heat load.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              What happens if superheat is too high?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              High superheat indicates the evaporator coil is starved of refrigerant. This is usually caused by a low refrigerant charge (a leak) or a restricted liquid line, resulting in warm air blowing from the vents.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Can a dirty filter cause low superheat?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Yes. A dirty air filter reduces airflow across the indoor coil, preventing the liquid refrigerant from boiling off completely. This causes the superheat to drop dangerously low, potentially slugging the compressor with liquid.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              How do I know if I have a TXV or Piston?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Look at the indoor evaporator coil where the liquid line connects. A TXV is a brass valve with a sensing bulb strapped to the suction line. A piston is hidden inside a brass nut connecting the liquid line directly to the coil distributor.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              What is the rule of thumb for R410A subcooling?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              While there is no strict rule of thumb, most modern high-efficiency R410A systems call for a target subcooling between 10°F and 12°F. However, you must always verify the exact target printed on the outdoor unit's data plate.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-blue-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Should I charge by weight or by superheat?
+              <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              If a system is completely empty, you should always weigh in the factory charge using a digital scale. Superheat and subcooling should only be used to fine-tune the charge after the factory weight has been added, compensating for line set length.
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Logic & PT Charts -->
+  <script>
+    // R-410A Saturation Temp Approximation
+    function getR410ASatTemp(psig: number) {
+        const pt = [
+            [50, 1], [60, 8], [70, 15], [80, 21], [90, 26], [100, 31],
+            [110, 36], [118, 40], [120, 41], [130, 45], [140, 49], [150, 53],
+            [200, 70], [250, 84], [275, 90], [300, 96], [315, 99], [325, 101],
+            [350, 107], [375, 112], [400, 117], [450, 126], [500, 134]
+        ];
+        return interpolatePT(psig, pt);
+    }
+
+    // R-22 Saturation Temp Approximation
+    function getR22SatTemp(psig: number) {
+        const pt = [
+            [30, 6], [40, 17], [50, 26], [60, 34], [68, 40], [70, 41],
+            [80, 48], [90, 54], [100, 59], [150, 83], [200, 101], [225, 110],
+            [250, 117], [275, 124], [300, 131]
+        ];
+        return interpolatePT(psig, pt);
+    }
+
+    function interpolatePT(psig: number, ptArray: number[][]) {
+        if (psig <= ptArray[0][0]) return ptArray[0][1];
+        if (psig >= ptArray[ptArray.length-1][0]) return ptArray[ptArray.length-1][1];
+        
+        for (let i = 0; i < ptArray.length - 1; i++) {
+            const p1 = ptArray[i][0];
+            const t1 = ptArray[i][1];
+            const p2 = ptArray[i+1][0];
+            const t2 = ptArray[i+1][1];
+            
+            if (psig >= p1 && psig <= p2) {
+                const ratio = (psig - p1) / (p2 - p1);
+                return Math.round(t1 + ratio * (t2 - t1));
+            }
+        }
+        return 0;
+    }
+
+    // Elements
+    const btnPiston = document.getElementById('btnPiston')!;
+    const btnTxv = document.getElementById('btnTxv')!;
+    const modePiston = document.getElementById('modePiston')!;
+    const modeTxv = document.getElementById('modeTxv')!;
+    const btnCalculate = document.getElementById('btnCalculate')!;
+
+    // Inputs Piston
+    const inWb = document.getElementById('inWb') as HTMLInputElement;
+    const outDb = document.getElementById('outDb') as HTMLInputElement;
+    const sucPress = document.getElementById('sucPress') as HTMLInputElement;
+    const vapTemp = document.getElementById('vapTemp') as HTMLInputElement;
+    const sucSatDisplay = document.getElementById('sucSatDisplay')!;
+
+    // Inputs TXV
+    const targetSc = document.getElementById('targetSc') as HTMLInputElement;
+    const liqPress = document.getElementById('liqPress') as HTMLInputElement;
+    const liqTemp = document.getElementById('liqTemp') as HTMLInputElement;
+    const liqSatDisplay = document.getElementById('liqSatDisplay')!;
+
+    // Outputs
+    const lblTarget = document.getElementById('lblTarget')!;
+    const outTarget = document.getElementById('outTarget')!;
+    const lblActual = document.getElementById('lblActual')!;
+    const outActual = document.getElementById('outActual')!;
+    const verdictBox = document.getElementById('verdictBox')!;
+    const outVerdict = document.getElementById('outVerdict')!;
+    const outReason = document.getElementById('outReason')!;
+
+    let currentMode = 'piston';
+
+    // Toggles
+    function setMode(mode: 'piston' | 'txv') {
+      currentMode = mode;
+      
+      // Reset UI state
+      lblTarget.innerText = mode === 'piston' ? "Target SH" : "Target SC";
+      lblActual.innerText = mode === 'piston' ? "Actual SH" : "Actual SC";
+      outTarget.innerText = "--";
+      outActual.innerText = "--";
+      verdictBox.className = "flex flex-col gap-2 bg-gray-800/80 p-6 rounded-sm border-2 border-gray-700 transition-colors";
+      outVerdict.innerText = "Waiting for calculation...";
+      outVerdict.className = "text-3xl font-black text-gray-500 leading-none";
+      outReason.innerText = "Enter your gauge readings and press the button below to diagnose the charge.";
+      sucSatDisplay.innerText = "--";
+      liqSatDisplay.innerText = "--";
+
+      if (mode === 'piston') {
+        btnPiston.className = "flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all bg-blue-600 text-white shadow-sm border border-blue-500";
+        btnTxv.className = "flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all text-gray-400 hover:text-white";
+        modePiston.classList.remove('hidden');
+        modeTxv.classList.add('hidden');
+      } else {
+        btnTxv.className = "flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all bg-blue-600 text-white shadow-sm border border-blue-500";
+        btnPiston.className = "flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all text-gray-400 hover:text-white";
+        modeTxv.classList.remove('hidden');
+        modePiston.classList.add('hidden');
+      }
+    }
+
+    btnPiston.addEventListener('click', () => setMode('piston'));
+    btnTxv.addEventListener('click', () => setMode('txv'));
+    btnCalculate.addEventListener('click', calculate);
+
+    function setVerdict(type: 'perfect' | 'add' | 'remove', reason: string) {
+        if (type === 'perfect') {
+            verdictBox.className = "flex flex-col gap-2 bg-green-900/30 p-6 rounded-sm border-2 border-green-500 transition-colors";
+            outVerdict.innerText = "Charge is Perfect";
+            outVerdict.className = "text-4xl font-black text-green-400 leading-none";
+        } else if (type === 'add') {
+            verdictBox.className = "flex flex-col gap-2 bg-blue-900/30 p-6 rounded-sm border-2 border-blue-500 transition-colors";
+            outVerdict.innerText = "Add Freon";
+            outVerdict.className = "text-4xl font-black text-blue-400 leading-none";
+        } else {
+            verdictBox.className = "flex flex-col gap-2 bg-red-900/30 p-6 rounded-sm border-2 border-red-500 transition-colors";
+            outVerdict.innerText = "Remove Freon";
+            outVerdict.className = "text-4xl font-black text-red-400 leading-none";
+        }
+        outReason.innerText = reason;
+    }
+
+    function calculate() {
+        const refElement = document.querySelector('input[name="refrigerant"]:checked') as HTMLInputElement;
+        const is410A = refElement.value === 'r410a';
+
+        if (currentMode === 'piston') {
+            const wb = parseFloat(inWb.value) || 0;
+            const db = parseFloat(outDb.value) || 0;
+            const sp = parseFloat(sucPress.value) || 0;
+            const vt = parseFloat(vapTemp.value) || 0;
+
+            let targetSH = Math.round(((3 * wb) - 80 - db) / 2);
+            if (targetSH < 5) targetSH = 5; 
+            if (targetSH > 30) targetSH = 30; 
+
+            const satTemp = is410A ? getR410ASatTemp(sp) : getR22SatTemp(sp);
+            sucSatDisplay.innerText = satTemp.toString();
+
+            const actualSH = Math.round(vt - satTemp);
+
+            outTarget.innerText = `${targetSH}°`;
+            outActual.innerText = `${actualSH}°`;
+
+            const diff = actualSH - targetSH;
+            if (Math.abs(diff) <= 2) {
+                setVerdict('perfect', `Your actual superheat is within 2 degrees of the target. Do not adjust the charge.`);
+            } else if (actualSH > targetSH) {
+                setVerdict('add', `Actual superheat is too high. The evaporator is starved of refrigerant. Add freon slowly.`);
+            } else {
+                setVerdict('remove', `Actual superheat is too low. Liquid is close to slugging the compressor. Recover freon.`);
+            }
+
+        } else {
+            const target = parseFloat(targetSc.value) || 10;
+            const lp = parseFloat(liqPress.value) || 0;
+            const lt = parseFloat(liqTemp.value) || 0;
+
+            const satTemp = is410A ? getR410ASatTemp(lp) : getR22SatTemp(lp);
+            liqSatDisplay.innerText = satTemp.toString();
+
+            const actualSC = Math.round(satTemp - lt);
+
+            outTarget.innerText = `${target}°`;
+            outActual.innerText = `${actualSC}°`;
+
+            const diff = actualSC - target;
+            if (Math.abs(diff) <= 2) {
+                setVerdict('perfect', `Your actual subcooling is within 2 degrees of the manufacturer's target. The condenser has a perfect liquid seal.`);
+            } else if (actualSC < target) {
+                setVerdict('add', `Actual subcooling is too low. The condenser lacks a solid liquid seal. Add freon slowly.`);
+            } else {
+                setVerdict('remove', `Actual subcooling is too high. Refrigerant is stacking up in the condenser. Recover freon.`);
+            }
+        }
+    }
+  </script>
+</Layout>

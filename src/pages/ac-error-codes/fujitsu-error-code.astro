@@ -1,0 +1,315 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+const fujitsuCodes = [
+  { code: "Code 11", severity: "technician", severityText: "Call Technician", color: "orange", category: "Communication", desc: "Serial communication error (Indoor/Outdoor)", cause: "Terminal block wire S1, S2, or S3 is loose, broken, or miswired.", action: "Check terminal wire continuity. Replace interconnecting cable if damaged. Swap outdoor board if communication chip is dead.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "$250 – $600" },
+  { code: "Code 32", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Sensor", desc: "Indoor room temperature thermistor fault", cause: "Room ambient NTC thermistor is open or short-circuited.", action: "Test sensor resistance with a multimeter. Replace room thermistor: ₹400 – ₹800 / $30 – $55.", difficulty: "Professional Only", occurrence: "Common", proCost: "₹400 – ₹800 / $30 – $55" },
+  { code: "Code 97", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Motor", desc: "Outdoor unit fan motor error", cause: "Condenser fan blade locked by dirt/leaves, motor windings open, or PCB driver failed.", action: "Remove debris blocking fan blades. Measure fan motor winding resistance. Replace fan motor: ₹2,000 – ₹4,500 / $120 – $220.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "₹2,000 – ₹4,500 / $120 – $220" },
+  { code: "Code A1", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Sensor", desc: "Discharge pipe thermistor fault", cause: "Compressor discharge pipe temperature sensor has failed out of tolerance.", action: "Measure discharge sensor resistance. Replace discharge thermistor probe: ₹600 – ₹1,200 / $45 – $75.", difficulty: "Professional Only", occurrence: "Common", proCost: "₹600 – ₹1,200 / $45 – $75" },
+  { code: "Code E1", severity: "danger", severityText: "Stop AC — Danger", color: "red", category: "PCB Board", desc: "Outdoor unit main circuit board system fault", cause: "Microprocessor memory crash, electrical surge damage, or shorted onboard relays.", action: "Power cycle unit for 5 minutes. If code returns, replace outdoor main PCB assembly: ₹5,000 – ₹10,000 / $300 – $600.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "₹5,000 – ₹10,000 / $300 – $600" },
+  { code: "Code 73", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Sensor", desc: "Indoor heat exchanger thermistor fault", cause: "Evaporator coil middle pipe sensor failed open or shorted.", action: "Replace indoor heat exchanger NTC coil sensor: ₹400 – ₹800 / $30 – $50.", difficulty: "Moderate", occurrence: "Common", proCost: "₹400 – ₹800 / $30 – $50" },
+];
+
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Fujitsu Halcyon AC Error Codes | Diagnostic Lookup Guide",
+    "description": "Step-by-step diagnostic lookup for decoding fault codes (11, 32, 97, A1, E1) on Fujitsu Halcyon mini-split and VRF air conditioners.",
+    "category": "Air Conditioner Troubleshooting",
+    "author": {
+      "@type": "Person",
+      "name": "Mike Reynolds",
+      "jobTitle": "Master HVAC Technician"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I read Fujitsu Halcyon error code light blinks?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Count the flashing sequences of the OPERATION (Red), TIMER (Green), and FILTER (Amber) lights. Red LED blinks represent the tens digit, and Green LED blinks represent the ones digit. E.g., 3 Red flashes followed by 2 Green flashes indicates Code 32."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does Code 11 mean on a Fujitsu AC?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Code 11 represents a serial communication transmission error between the indoor controller card and outdoor main board. Check terminals S1, S2, and S3 inside both terminal boxes for clean, tight joints."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout title="Fujitsu Halcyon AC Error Codes | Diagnostic Lookup Guide">
+  <SEO
+    slot="head"
+    title="Fujitsu Halcyon AC Error Codes | Diagnostic Lookup Guide | Cooling Support"
+    description="Decode Fujitsu Halcyon split AC error codes (11, 32, 97, A1, E1) instantly. Learn remote controller guides and troubleshooting steps."
+    type="article"
+    schema={schemaData}
+  />
+
+  <!-- Hero Section -->
+  <section class="relative bg-zinc-950 pt-24 pb-20 border-b border-zinc-800 overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] opacity-10 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-teal-600 to-transparent blur-[120px] rounded-full"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 bg-teal-600/10 border border-teal-500/25 text-teal-400 text-xs font-semibold px-5 py-2 rounded-full mb-6 font-mono">
+        ❄️ Fujitsu Halcyon Diagnostics
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
+        Fujitsu AC Error Codes <br />
+        <span class="text-teal-500">Halcyon Mini-Split Diagnostics</span>
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-8">
+        Decode error codes (11, 32, 97, E1) on your Fujitsu remote controller or wall panel instantly.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Search and Guide -->
+  <div class="bg-zinc-50 min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center space-x-2 text-sm font-semibold text-zinc-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-teal-500 transition-colors">Home</a>
+        <span class="text-zinc-300">/</span>
+        <a href="/ac-error-codes" class="hover:text-teal-500 transition-colors">AC Error Codes</a>
+        <span class="text-zinc-300">/</span>
+        <span class="text-zinc-800 font-bold">Fujitsu</span>
+      </nav>
+
+      <!-- How to Read Fujitsu Codes -->
+      <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-4">
+        <h2 class="text-xl font-bold text-zinc-900 flex items-center gap-2">
+          <svg class="w-6 h-6 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          How to Read Fujitsu Error Codes
+        </h2>
+        <div class="text-sm text-zinc-600 space-y-3 leading-relaxed">
+          <p>
+            Fujitsu ductless units show codes on a wired controller or flashing lights on the indoor panel:
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Wired Remotes</strong>: The code appears directly as a two-digit hexadecimal or numerical code (e.g. <strong>11</strong> or <strong>EE</strong>).</li>
+            <li><strong>LED Blinking (No Screen)</strong>: Count the blinking sequence of the <strong>OPERATION</strong> (Red), <strong>TIMER</strong> (Green), and <strong>FILTER</strong> (Amber) lights:
+              <ul class="list-circle pl-5 mt-1 space-y-1">
+                <li><strong>Red LED (Operation)</strong>: Represents the tens digit (e.g., 3 flashes = Code 30-39).</li>
+                <li><strong>Green LED (Timer)</strong>: Represents the ones digit (e.g., 2 flashes = Code X2).</li>
+                <li>Example: 3 flashes of Red followed by 2 flashes of Green = <strong>Code 32</strong>.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Search Engine -->
+      <section class="space-y-6">
+        <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+          <h2 class="text-2xl font-bold text-zinc-900">Fujitsu Code Lookup</h2>
+          
+          <div style="position: relative; width: 100%;">
+            <div style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; pointer-events: none; color: #a1a1aa; z-index: 10;">
+              <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input
+              type="text"
+              id="fujitsu-search"
+              placeholder="Search by code (e.g. 11, 32, 97, A1)..."
+              class="w-full pl-14 pr-5 py-4 text-lg bg-zinc-50 border-2 border-zinc-200 rounded-2xl focus:outline-none focus:border-teal-500 transition-colors text-zinc-800 placeholder-zinc-400 shadow-inner"
+            />
+          </div>
+        </div>
+
+        <!-- Cards Container -->
+        <div class="space-y-4" id="fujitsu-cards-container">
+          {fujitsuCodes.map((item) => (
+            <div
+              class="fujitsu-card bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 flex flex-col gap-4 transition-all hover:border-zinc-300"
+              data-code={item.code.toLowerCase()}
+              data-desc={item.desc.toLowerCase()}
+              data-cause={item.cause.toLowerCase()}
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-2">
+                  <span class="font-black text-zinc-900 text-xl font-mono tracking-tight">{item.code}</span>
+                  <span class="text-xs bg-zinc-50 text-zinc-500 px-2.5 py-1 rounded-full font-medium">{item.category}</span>
+                </div>
+                
+                <span class={`text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  item.color === 'emerald' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
+                  item.color === 'amber' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                  item.color === 'orange' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
+                  'bg-rose-50 text-rose-700 border border-rose-100'
+                }`}>
+                  <span class={`w-1.5 h-1.5 rounded-full ${
+                    item.color === 'emerald' ? 'bg-emerald-500' :
+                    item.color === 'amber' ? 'bg-amber-500' :
+                    item.color === 'orange' ? 'bg-orange-500' :
+                    'bg-rose-600'
+                  }`}></span>
+                  {item.severityText}
+                </span>
+              </div>
+
+              <div>
+                <p class="font-bold text-zinc-800 text-base leading-snug">{item.desc}</p>
+              </div>
+
+              <!-- Diagnostic Metrics Panel -->
+              <div class="flex flex-wrap gap-2 items-center text-xs border-t border-b border-zinc-100 py-3 my-1">
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Difficulty:</span>
+                  <span class={`font-bold ${
+                    item.difficulty === 'DIY' ? 'text-emerald-600' :
+                    item.difficulty === 'Moderate' ? 'text-amber-600' :
+                    'text-rose-600'
+                  }`}>{item.difficulty}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Occurrence:</span>
+                  <span class="font-bold text-zinc-700">{item.occurrence}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Est. Pro Cost:</span>
+                  <span class="font-bold text-zinc-700">{item.proCost}</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-zinc-100 pt-4">
+                <div class="bg-zinc-50 rounded-2xl p-4 border border-zinc-100">
+                  <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1.5">Likely Cause</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.cause}</p>
+                </div>
+                <div class="bg-teal-500/5 rounded-2xl p-4 border border-teal-500/10">
+                  <p class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-1.5">Recommended Action</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.action}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      
+      <!-- Reddit Verified Solutions Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
+          <h2 class="text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <span class="text-orange-500">💬</span> Reddit Verified HVAC Solutions
+          </h2>
+          <span class="text-xs bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-mono uppercase font-bold tracking-wider">Community Vetted</span>
+        </div>
+        <p class="text-sm text-zinc-500 -mt-2 leading-relaxed">
+          Real-world troubleshooting tips and warning alerts compiled from active discussions on communities like <span class="font-semibold text-zinc-700">r/HVAC</span>, <span class="font-semibold text-zinc-700">r/hvacadvice</span>, and <span class="font-semibold text-zinc-700">r/homeowners</span>.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Community Solution 1 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-orange-500/10 text-orange-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/hvacadvice
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "Fujitsu systems communicate using active DC on line S3. Splicing S3 with wire nuts is a death sentence. Running a single, continuous shielded 14/4 cable directly from indoor to outdoor is the gold standard fix." (Source: r/HVAC Tech Tip)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Tech Tip:</span>
+              <span>Vetted Community Solution</span>
+            </div>
+          </div>
+          
+          <!-- Community Solution 2 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-blue-500/10 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/HVAC
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "If you get E:01, try the short jumper test: run a temporary 10-foot wire between the indoor and outdoor units. If the error clears, the wire run inside your walls is shorted or damaged." (Source: r/hvacadvice diagnostic guide)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Homeowner Tip:</span>
+              <span>Verified Fix</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- Visible FAQ Accordion Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {schemaData.find(s => s["@type"] === "FAQPage")?.mainEntity.map((faq) => (
+            <details class="group border border-zinc-200 rounded-2xl transition-all [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-zinc-900 cursor-pointer focus:outline-none select-none">
+                <span>{faq.name}</span>
+                <span class="transition-transform group-open:rotate-180 text-zinc-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-zinc-600 leading-relaxed border-t border-zinc-100 pt-4">
+                {faq.acceptedAnswer.text}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+
+      <!-- Troubleshooting Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Fujitsu Troubleshooting Guides</h2>
+        
+        <div class="space-y-6">
+          <div class="border-l-4 border-teal-500 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">Resolving Communication Error 11</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              <strong>Code 11</strong> represents an indoor-outdoor serial transmission sync failure.
+              <strong>Step 1</strong>: Power cycle the system completely using the outdoor breaker for 5 minutes.
+              <strong>Step 2</strong>: Check terminals S1, S2, and S3 inside the wiring blocks. Tighten any loose screws.
+              <strong>Step 3</strong>: Check the signal line voltage pulse using a multimeter. It should range dynamically. If flat, replace the communication cable or the main control board.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('fujitsu-search') as HTMLInputElement | null;
+  if (searchInput) {
+    const cards = document.querySelectorAll<HTMLElement>('.fujitsu-card');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const code = card.getAttribute('data-code') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const cause = card.getAttribute('data-cause') || '';
+
+        if (query === '' || code.includes(query) || desc.includes(query) || cause.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+</script>

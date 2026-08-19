@@ -1,0 +1,310 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Window Slider Kit — Cut or Extend Calculator",
+    "description": "Find out if your portable AC factory window slider kit fits your window, needs cutting, or needs an extension panel. Covers horizontal sliders, vertical hung windows, and sliding glass doors.",
+    "applicationCategory": "UtilitiesApplication",
+    "browserRequirements": "Requires JavaScript",
+    "softwareVersion": "1.0",
+    "operatingSystem": "All"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can you cut a portable AC window slider kit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Most factory window kits are made from thin ABS or PVC plastic that can be easily cut with a hacksaw, dremel, or even a sharp utility knife scored multiple times. Measure carefully, mark with tape, and cut straight across."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What should I use to fill a gap if my window is too wide for the slider kit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Plexiglass (acrylic sheet) is the most durable and weatherproof option. Foam insulation board works well for temporary setups. Cardboard is a last resort — it offers no insulation and degrades quickly. Always seal edges with weatherstripping tape."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I measure my window for a portable AC slider kit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Measure the inside width (for horizontal sliders) or inside height (for vertical hung windows) of the window opening — not the glass, not the frame exterior. Open the window fully and measure the gap where the slider panel will sit."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout title="Portable Air Conditioner Window Kit — Cut or Extend Calculator">
+  <SEO
+    slot="head"
+    title="Portable Air Conditioner Window Kit — Cut or Extend Calculator | Cooling Support"
+    description="Find out if your portable air conditioner window kit fits your window, needs cutting, or needs an extension panel. Covers horizontal sliders, vertical hung windows, and sliding glass doors."
+    schema={schema}
+  />
+
+  <!-- ===== DARK HERO ===== -->
+  <div class="relative bg-slate-900 pt-16 pb-20 border-b border-slate-800 text-center overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[350px] opacity-20 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-violet-500 via-purple-600 to-transparent blur-[120px] rounded-full"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <nav class="flex justify-center items-center gap-2 text-xs text-slate-400 mb-8 font-medium flex-wrap">
+        <a class="hover:text-blue-400 transition-colors cursor-pointer" href="/">Home</a>
+        <svg class="w-3 h-3 text-slate-650" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a class="hover:text-blue-400 transition-colors cursor-pointer" href="/portable-ac">Portable AC Hub</a>
+        <svg class="w-3 h-3 text-slate-650" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-slate-300">Window Slider Kit</span>
+      </nav>
+
+      <div class="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/25 text-violet-300 text-xs font-bold px-4 py-1.5 rounded-full mb-5 tracking-widest uppercase font-mono">
+        <svg class="w-3.5 h-3.5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Installation Tool
+      </div>
+
+      <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-4 max-w-3xl mx-auto">
+        Portable Air Conditioner Window Kit — Cut&nbsp;or&nbsp;Extend?
+      </h1>
+      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed font-light mb-8">
+        Find out if your factory portable air conditioner window kit fits, needs cutting, or needs an extension panel
+      </p>
+    </div>
+  </div>
+
+  <!-- ===== CALCULATOR CARD ===== -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 -mt-12 relative z-20">
+    <div class="bg-white rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+
+      <!-- Purple gradient header -->
+      <div class="bg-gradient-to-r from-violet-50 to-purple-50 border-b border-violet-100 p-8 text-center">
+        <h2 class="text-2xl font-bold text-slate-900 mb-2">🪟 Window Slider Kit Fit Checker</h2>
+        <p class="text-slate-600">Enter your window measurements and kit details — we'll tell you exactly what to do.</p>
+      </div>
+
+      <div class="p-8 space-y-8">
+
+        <!-- Input 1: Window Opening -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Window Opening Width or Height (inches)</label>
+          <p class="text-xs text-slate-400 mb-2">Measure the <em>inside</em> of the window frame where the slider panel sits.</p>
+          <div class="relative">
+            <input type="number" id="windowSize" value="36" min="1" step="0.5" class="block w-full pl-4 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all outline-none" />
+            <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+              <span class="text-slate-400 font-medium text-sm">in</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input 2: Window Type -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Window Type</label>
+          <select id="windowType" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all outline-none appearance-none">
+            <option value="horizontal">Horizontal Slider</option>
+            <option value="vertical" selected>Vertical Single/Double Hung</option>
+            <option value="sliding-door">Sliding Glass Door</option>
+          </select>
+        </div>
+
+        <!-- Input 3: Factory Kit Length -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Factory Kit Length</label>
+          <p class="text-xs text-slate-400 mb-2">Check the box or manual for the kit's adjustable range.</p>
+          <select id="kitSize" class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all outline-none appearance-none">
+            <option value="48" data-min="18">Small (18–48 inches)</option>
+            <option value="62" data-min="20" selected>Standard (20–62 inches)</option>
+            <option value="84" data-min="26">Large (26–84 inches)</option>
+          </select>
+        </div>
+
+        <!-- Calculate Button -->
+        <button id="checkFitBtn" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-violet-500/30 transition-all transform hover:-translate-y-0.5 cursor-pointer">
+          Check My Fit
+        </button>
+
+        <!-- ===== RESULTS AREA ===== -->
+        <div id="resultsArea" class="hidden mt-8 pt-8 border-t border-slate-100">
+          <div id="resultCard" class="rounded-2xl p-6 md:p-8 text-center"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EDUCATIONAL SECTION ===== -->
+    <div class="mt-16 bg-white rounded-3xl p-8 md:p-12 shadow-lg shadow-slate-200/50 border border-slate-100">
+      <h2 class="text-3xl font-extrabold text-slate-900 mb-6">Window Slider Kit Tips &amp; FAQ</h2>
+
+      <div class="space-y-6">
+
+        <!-- FAQ 1 -->
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+          <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="text-violet-500">1.</span> How to measure your window correctly
+          </h3>
+          <p class="text-slate-600 leading-relaxed">
+            Open the window fully and measure the <strong>inside width</strong> (for horizontal sliders) or <strong>inside height</strong> (for vertical hung windows) of the opening — where the slider panel will actually sit. Do <em>not</em> measure the glass, the exterior frame, or the track. Use a tape measure, not a ruler, and measure twice. If the opening is slightly tapered, use the <strong>narrowest</strong> measurement so the panel fits snugly.
+          </p>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+          <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="text-violet-500">2.</span> Can you cut the factory plastic panel?
+          </h3>
+          <p class="text-slate-600 leading-relaxed">
+            <strong>Yes.</strong> Most factory slider panels are made from thin ABS or PVC plastic. You can cut them with a <strong>hacksaw</strong>, a <strong>dremel</strong> with a cutting disc, or even score deeply with a utility knife and snap along the line. Mark your cut line with painter's tape for a clean, straight edge. Always wear safety glasses — plastic chips fly.
+          </p>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+          <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="text-violet-500">3.</span> Best materials for filling gaps
+          </h3>
+          <p class="text-slate-600 leading-relaxed">
+            If your window is wider than the kit, you need to fill the gap. Here's how the options stack up:
+          </p>
+          <ul class="mt-3 space-y-2 text-slate-600">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold mt-0.5">✓</span>
+              <span><strong>Plexiglass (acrylic sheet)</strong> — Best choice. Rigid, weatherproof, and nearly transparent. Cut to size at a hardware store or with a jigsaw.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 font-bold mt-0.5">~</span>
+              <span><strong>Foam insulation board</strong> — Good for temporary or seasonal setups. Lightweight, insulates well, but can warp in direct sun over time.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-red-500 font-bold mt-0.5">✗</span>
+              <span><strong>Cardboard</strong> — Last resort only. No insulation value, absorbs moisture, degrades quickly. Will sag after a few weeks.</span>
+            </li>
+          </ul>
+          <p class="text-slate-600 leading-relaxed mt-3">
+            Regardless of material, always seal the edges with <strong>weatherstripping tape</strong> or foam tape to prevent hot air infiltration and bugs.
+          </p>
+        </div>
+
+        <!-- FAQ 4 / Cross-link -->
+        <div class="bg-violet-50 rounded-2xl p-6 border border-violet-100">
+          <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="text-violet-500">4.</span> Have a non-standard window?
+          </h3>
+          <p class="text-slate-600 leading-relaxed">
+            Have a crank-out or casement window? The slider kit won't work for those. Use our
+            <a href="/tools/window-venting-builder" class="text-violet-600 font-semibold hover:text-violet-800 underline underline-offset-2 transition-colors">Window Venting Builder</a>
+            for non-standard windows — it walks you through building a custom panel with materials from any hardware store.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      var checkFitBtn = document.getElementById('checkFitBtn');
+
+      if (checkFitBtn) {
+        checkFitBtn.addEventListener('click', function() {
+          var windowSize = parseFloat(document.getElementById('windowSize').value) || 0;
+          var windowType = document.getElementById('windowType').value;
+          var kitSelect = document.getElementById('kitSize');
+          var kitMax = parseFloat(kitSelect.value) || 0;
+          var selectedOption = kitSelect.options[kitSelect.selectedIndex];
+          var kitMin = parseFloat(selectedOption.getAttribute('data-min')) || 0;
+
+          var resultsArea = document.getElementById('resultsArea');
+          var resultCard = document.getElementById('resultCard');
+
+          if (windowSize <= 0) {
+            resultCard.className = 'rounded-2xl p-6 md:p-8 text-center bg-slate-50 border-2 border-slate-200';
+            resultCard.innerHTML = '<div class="text-4xl mb-2">⚠️</div>' +
+              '<h3 class="text-xl font-extrabold text-slate-700 mb-2">Enter a Valid Measurement</h3>' +
+              '<p class="text-slate-500">Please enter a window opening measurement greater than 0.</p>';
+            resultsArea.classList.remove('hidden');
+            return;
+          }
+
+          var gap = windowSize - kitMax;
+          var shortfall = kitMin - windowSize;
+
+          var dimensionLabel = (windowType === 'horizontal' || windowType === 'sliding-door') ? 'wide' : 'tall';
+
+          if (shortfall > 0) {
+            // TOO SMALL — NEEDS CUTTING
+            var cutLength = kitMin - shortfall;
+            resultCard.className = 'rounded-2xl p-6 md:p-8 text-center bg-amber-50 border-2 border-amber-200';
+            resultCard.innerHTML = '<div class="text-4xl mb-3">✂️</div>' +
+              '<div class="inline-flex items-center gap-2 bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mb-3 tracking-widest uppercase font-mono">Too Small — Needs Cutting</div>' +
+              '<h3 class="text-xl font-extrabold text-amber-800 mb-3">Your kit panel needs to be trimmed</h3>' +
+              '<p class="text-amber-700 leading-relaxed">' +
+              'Your window opening of <strong>' + windowSize + '″</strong> is <strong>' + shortfall.toFixed(1) + ' inches shorter</strong> than the minimum kit length of ' + kitMin + '″. ' +
+              'You need to cut <strong>' + shortfall.toFixed(1) + ' inches</strong> off the plastic panel with a hacksaw or dremel. ' +
+              'Mark at <strong>' + windowSize + '″</strong> from one end, tape the line, and cut straight across.' +
+              '</p>' +
+              '<div class="mt-4 bg-amber-100/50 rounded-xl p-4 text-sm text-amber-700 text-left">' +
+              '<strong>💡 Tip:</strong> Cut from the end <em>without</em> the exhaust hose port. Score lightly first, then cut through. Sand the edge smooth so it sits flush in the window track.' +
+              '</div>';
+
+          } else if (gap > 0) {
+            // TOO LARGE — NEEDS EXTENSION
+            var slidingDoorNote = '';
+            if (windowType === 'sliding-door' && gap > 20) {
+              slidingDoorNote = '<div class="mt-4 bg-red-100/50 rounded-xl p-4 text-sm text-red-700 text-left">' +
+                '<strong>🚪 Sliding Door Note:</strong> For sliding doors this large, consider buying a <strong>dedicated sliding door vent kit</strong> ' +
+                '(designed for openings up to 120″) or cutting a full plexiglass panel to fill the gap instead of patching.' +
+                '</div>';
+            }
+
+            resultCard.className = 'rounded-2xl p-6 md:p-8 text-center bg-red-50 border-2 border-red-200';
+            resultCard.innerHTML = '<div class="text-4xl mb-3">📏</div>' +
+              '<div class="inline-flex items-center gap-2 bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full mb-3 tracking-widest uppercase font-mono">Too Large — Needs Extension</div>' +
+              '<h3 class="text-xl font-extrabold text-red-800 mb-3">Your window is wider than the kit</h3>' +
+              '<p class="text-red-700 leading-relaxed">' +
+              'Your window opening of <strong>' + windowSize + '″</strong> is <strong>' + gap.toFixed(1) + ' inches ' + dimensionLabel + 'r</strong> than the kit maximum of ' + kitMax + '″. ' +
+              'You have a <strong>' + gap.toFixed(1) + '-inch gap</strong> to fill.' +
+              '</p>' +
+              '<div class="mt-4 bg-red-100/50 rounded-xl p-4 text-sm text-red-700 text-left">' +
+              '<strong>Your options:</strong>' +
+              '<ul class="mt-2 space-y-1 list-disc list-inside">' +
+              '<li>Buy an extension panel (check your AC brand\'s accessories)</li>' +
+              '<li>Cut a piece of <strong>plexiglass</strong> or <strong>foam board</strong> to <strong>' + gap.toFixed(1) + '″ × the panel height</strong></li>' +
+              '<li>Use <strong>weatherstripping tape</strong> on all seams to seal the gap</li>' +
+              '</ul>' +
+              '</div>' +
+              slidingDoorNote;
+
+          } else {
+            // PERFECT FIT
+            resultCard.className = 'rounded-2xl p-6 md:p-8 text-center bg-emerald-50 border-2 border-emerald-200';
+            resultCard.innerHTML = '<div class="text-4xl mb-3">✅</div>' +
+              '<div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full mb-3 tracking-widest uppercase font-mono">Perfect Fit</div>' +
+              '<h3 class="text-xl font-extrabold text-emerald-800 mb-3">Your kit fits — no modifications needed!</h3>' +
+              '<p class="text-emerald-700 leading-relaxed">' +
+              'Your window opening of <strong>' + windowSize + '″</strong> is within the kit range of ' + kitMin + '″–' + kitMax + '″. ' +
+              'Extend the slider to <strong>' + windowSize + ' inches</strong> and lock it in place. ' +
+              'No cutting or extensions required.' +
+              '</p>' +
+              '<div class="mt-4 bg-emerald-100/50 rounded-xl p-4 text-sm text-emerald-700 text-left">' +
+              '<strong>💡 Tip:</strong> After locking the panel at the correct length, use weatherstripping tape along the top edge and both sides to seal against hot air leaks and insects.' +
+              '</div>';
+          }
+
+          resultsArea.classList.remove('hidden');
+          resultsArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+      }
+
+    });
+  </script>
+</Layout>

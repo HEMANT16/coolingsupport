@@ -1,0 +1,320 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+const mitsubishiCodes = [
+  { code: "E6 / E9", severity: "technician", severityText: "Call Technician", color: "orange", category: "Communication", desc: "Indoor/Outdoor unit communication error (Signal error)", cause: "Loss of serial data sync between indoor controller and outdoor board.", action: "Check terminal board S1, S2, S3 wiring joints. Replace main outdoor board: $300 – $600 / ₹4,500 – ₹10,000.", difficulty: "Professional Only", occurrence: "Common", proCost: "$300 – $600 / ₹4,500 – ₹10,000" },
+  { code: "P1", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Sensor", desc: "Room temperature thermistor error (Intake air)", cause: "Indoor intake air NTC thermistor failed or disconnected.", action: "Replace room air intake thermistor: ₹350 – ₹600 / $25 – $45.", difficulty: "Moderate", occurrence: "Common", proCost: "₹350 – ₹600 / $25 – $45" },
+  { code: "P2", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Sensor", desc: "Liquid pipe thermistor error (Evaporator coil)", cause: "Evaporator coil liquid line temperature sensor failure.", action: "Replace liquid line coil thermistor: ₹350 – ₹600 / $25 – $45.", difficulty: "Moderate", occurrence: "Common", proCost: "₹350 – ₹600 / $25 – $45" },
+  { code: "P8", severity: "danger", severityText: "Stop AC — Danger", color: "red", category: "Refrigerant", desc: "Abnormal pipe temperature (Refrigerant leak)", cause: "Low refrigerant charge or complete block in capillary tube / expansion valve.", action: "Stop AC to prevent compressor lock. Check system pressures. Repair copper leak and recharge: ₹2,500 – ₹5,500.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "₹2,500 – ₹5,500" },
+  { code: "U4", severity: "technician", severityText: "Call Technician", color: "orange", category: "Communication", desc: "Transmission error between units", cause: "Loose signal wire connections or damaged communication board transceiver.", action: "Check inter-unit communication line terminals. Repair frayed wires.", difficulty: "Professional Only", occurrence: "Common", proCost: "$250 – $600" },
+  { code: "F2", severity: "diy", severityText: "DIY Safe", color: "emerald", category: "Condensate", desc: "Condensate drain overflow protection", cause: "Condensate pan float switch has opened due to a completely plugged drain line.", action: "Clear drain line using a wet/dry vac or pour hot water and vinegar down the drain line: DIY Safe.", difficulty: "DIY", occurrence: "Common", proCost: "N/A" },
+  { code: "U2", severity: "danger", severityText: "Stop AC — Danger", color: "red", category: "Compressor", desc: "Abnormal discharge temperature (Overheat)", cause: "Compressor has overheated due to low refrigerant or blocked condenser airflow.", action: "Clean outdoor condenser fins. If clean, check gas pressure for leaks: ₹2,500 – ₹5,500 / $150 – $300.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "₹2,500 – ₹5,500 / $150 – $300" },
+  { code: "Fb", severity: "technician", severityText: "Technician Advised", color: "amber", category: "PCB", desc: "Indoor unit control system error (PCB Board)", cause: "Indoor unit main circuit board memory error or relay fused.", action: "Replace indoor unit control board: ₹1,500 – ₹3,000 / $90 – $180.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "₹1,500 – ₹3,000 / $90 – $180" },
+];
+
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Mitsubishi Mini-Split Error Codes | Diagnostic Lookup Guide",
+    "description": "Comprehensive lookup for decoding error codes and flashing timer lights on Mitsubishi ductless mini-split units.",
+    "category": "HVAC Diagnostics",
+    "author": {
+      "@type": "Person",
+      "name": "Mike Reynolds",
+      "jobTitle": "Master HVAC Technician"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I read Mitsubishi mini-split flashing lights?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "When a fault occurs, the indoor unit's front LED panel will blink the OPERATION (Red/Green) and TIMER (Amber/Green) lights. Count the flashes between pauses. E.g., 2 flashes on the timer indicates an air intake thermistor error."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does E6 mean on a Mitsubishi AC?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "E6 represents an indoor-outdoor unit serial communication error. It signifies a breakdown in signal synchronization between the indoor head controller and the outdoor board. Check terminal blocks S1, S2, S3 for loose connections."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout title="Mitsubishi Mini-Split Error Codes | Diagnostic Lookup Guide">
+  <SEO
+    slot="head"
+    title="Mitsubishi Mini-Split Error Codes | Diagnostic Lookup Guide | Cooling Support"
+    description="Decode Mitsubishi mini-split error codes (E6, P8, F2) and flashing timer lights instantly. Get diagnostic causes and DIY repair steps."
+    type="article"
+    schema={schemaData}
+  />
+
+  <!-- Hero Section -->
+  <section class="relative bg-zinc-950 pt-24 pb-20 border-b border-zinc-800 overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] opacity-10 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-blue-500 to-transparent blur-[120px] rounded-full"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/25 text-blue-400 text-xs font-semibold px-5 py-2 rounded-full mb-6 font-mono">
+        ⚡ Mitsubishi Ductless Mini-Split Codes
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
+        Mitsubishi Mini-Split Codes <br />
+        <span class="text-blue-400">LED blink &amp; Remote diagnostics</span>
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-8">
+        Troubleshoot error codes (E6, P8, F2) and flashing timer lights on your Mitsubishi wall unit or controller.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Search and Guide -->
+  <div class="bg-zinc-50 min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center space-x-2 text-sm font-semibold text-zinc-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-blue-500 transition-colors">Home</a>
+        <span class="text-zinc-300">/</span>
+        <a href="/ac-error-codes" class="hover:text-blue-500 transition-colors">AC Error Codes</a>
+        <span class="text-zinc-300">/</span>
+        <span class="text-zinc-800 font-bold">Mitsubishi Mini-Split</span>
+      </nav>
+
+      <!-- Reading Mitsubishi Flash Codes -->
+      <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-4">
+        <h2 class="text-xl font-bold text-zinc-900 flex items-center gap-2">
+          <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          How to Read Mitsubishi Mini-Split Flashing Lights
+        </h2>
+        <div class="text-sm text-zinc-600 space-y-3 leading-relaxed">
+          <p>
+            When a Mitsubishi mini-split encounters a fault, the indoor unit's front LED panel will blink the <strong>OPERATION</strong> (Red/Green) and <strong>TIMER</strong> (Amber/Green) lights.
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Timer Light Blinks</strong>: Count the number of flashes between pauses. E.g., 2 flashes = thermistor error.</li>
+            <li><strong>Operation Light Blinks</strong>: Typically indicates communication faults or outdoor inverter overcurrents.</li>
+            <li><strong>Wired Controller</strong>: Displays clear alphanumeric codes like E6, P8, or F2 directly.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Search Engine -->
+      <section class="space-y-6">
+        <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+          <h2 class="text-2xl font-bold text-zinc-900">Mitsubishi Code Lookup</h2>
+          
+          <div style="position: relative; width: 100%;">
+            <div style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; pointer-events: none; color: #a1a1aa; z-index: 10;">
+              <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input
+              type="text"
+              id="mitsubishi-search"
+              placeholder="Search by remote code or symptom (e.g. E6, P8, F2)..."
+              class="w-full pl-14 pr-5 py-4 text-lg bg-zinc-50 border-2 border-zinc-200 rounded-2xl focus:outline-none focus:border-blue-500 transition-colors text-zinc-800 placeholder-zinc-400 shadow-inner"
+            />
+          </div>
+        </div>
+
+        <!-- Cards Container -->
+        <div class="space-y-4" id="mitsubishi-cards-container">
+          {mitsubishiCodes.map((item) => (
+            <div
+              class="mitsubishi-card bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 flex flex-col gap-4 transition-all hover:border-zinc-300"
+              data-code={item.code.toLowerCase()}
+              data-desc={item.desc.toLowerCase()}
+              data-cause={item.cause.toLowerCase()}
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-2">
+                  <span class="font-black text-zinc-900 text-xl font-mono tracking-tight">{item.code}</span>
+                  <span class="text-xs bg-zinc-50 text-zinc-500 px-2.5 py-1 rounded-full font-medium">{item.category}</span>
+                </div>
+                
+                <span class={`text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  item.color === 'emerald' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
+                  item.color === 'amber' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                  item.color === 'orange' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
+                  'bg-rose-50 text-rose-700 border border-rose-100'
+                }`}>
+                  <span class={`w-1.5 h-1.5 rounded-full ${
+                    item.color === 'emerald' ? 'bg-emerald-500' :
+                    item.color === 'amber' ? 'bg-amber-500' :
+                    item.color === 'orange' ? 'bg-orange-500' :
+                    'bg-rose-600'
+                  }`}></span>
+                  {item.severityText}
+                </span>
+              </div>
+
+              <div>
+                <p class="font-bold text-zinc-800 text-base leading-snug">{item.desc}</p>
+              </div>
+
+              <!-- Diagnostic Metrics Panel -->
+              <div class="flex flex-wrap gap-2 items-center text-xs border-t border-b border-zinc-100 py-3 my-1">
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Difficulty:</span>
+                  <span class={`font-bold ${
+                    item.difficulty === 'DIY' ? 'text-emerald-600' :
+                    item.difficulty === 'Moderate' ? 'text-amber-600' :
+                    'text-rose-600'
+                  }`}>{item.difficulty}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Occurrence:</span>
+                  <span class="font-bold text-zinc-700">{item.occurrence}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Est. Pro Cost:</span>
+                  <span class="font-bold text-zinc-700">{item.proCost}</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-zinc-100 pt-4">
+                <div class="bg-zinc-50 rounded-2xl p-4 border border-zinc-100">
+                  <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1.5">Likely Cause</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.cause}</p>
+                </div>
+                <div class="bg-blue-500/5 rounded-2xl p-4 border border-blue-500/10">
+                  <p class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1.5">Recommended Action</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.action}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      
+      <!-- Reddit Verified Solutions Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
+          <h2 class="text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <span class="text-orange-500">💬</span> Reddit Verified HVAC Solutions
+          </h2>
+          <span class="text-xs bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-mono uppercase font-bold tracking-wider">Community Vetted</span>
+        </div>
+        <p class="text-sm text-zinc-500 -mt-2 leading-relaxed">
+          Real-world troubleshooting tips and warning alerts compiled from active discussions on communities like <span class="font-semibold text-zinc-700">r/HVAC</span>, <span class="font-semibold text-zinc-700">r/hvacadvice</span>, and <span class="font-semibold text-zinc-700">r/homeowners</span>.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Community Solution 1 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-orange-500/10 text-orange-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/hvacadvice
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "Blinking timer lights are often caused by the horizontal airflow vanes being loose. If they get knocked out of their gear track during cleaning, the positioning switch fails and shuts down the unit. Just pop them back in." (Source: r/hvacadvice Community Fix)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Tech Tip:</span>
+              <span>Vetted Community Solution</span>
+            </div>
+          </div>
+          
+          <!-- Community Solution 2 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-blue-500/10 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/HVAC
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "For persistent communication errors, cut the power at the outdoor disconnect for 30 minutes to discharge the inverter board capacitors completely. This clears transient memory lockouts." (Source: r/HVAC Technician Tip)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Homeowner Tip:</span>
+              <span>Verified Fix</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- Visible FAQ Accordion Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {schemaData.find(s => s["@type"] === "FAQPage")?.mainEntity.map((faq) => (
+            <details class="group border border-zinc-200 rounded-2xl transition-all [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-zinc-900 cursor-pointer focus:outline-none select-none">
+                <span>{faq.name}</span>
+                <span class="transition-transform group-open:rotate-180 text-zinc-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-zinc-600 leading-relaxed border-t border-zinc-100 pt-4">
+                {faq.acceptedAnswer.text}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+
+      <!-- Detailed Troubleshooting Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Mini-Split Troubleshooting Guides</h2>
+        
+        <div class="space-y-6">
+          <div class="border-l-4 border-orange-500 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">Resolving Communication Error E6 / E9</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              Mini-splits rely on a 3-wire signal bus (S1, S2, S3) carrying both high voltage power and serial communication data. 
+              <strong>Step 1</strong>: Turn off MCB power. Open the outdoor electrical cover and check for corroded or loose wire connections on the Terminal Block.
+              <strong>Step 2</strong>: If the wires are solid, verify voltage. With power on, verify S2-S3 fluctuates between 0V and 24V DC. If stuck at a solid 0V or 24V, either the indoor or outdoor PCB transceiver is burned out.
+            </p>
+          </div>
+
+          <div class="border-l-4 border-emerald-500 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">Resolving Condensate Drain Pan Overflow F2</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              If your mini-split stops blowing air and flashes the Timer light, water is likely backing up in the indoor unit drain pan. 
+              <strong>Step 1</strong>: Go outside and find the white PVC drain pipe. Use a wet/dry shop vac to suction the end of the pipe for 30 seconds.
+              <strong>Step 2</strong>: You will see a plug of green algae, mud, and dust come out. This will instantly drain the indoor pan and clear the F2 code.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('mitsubishi-search') as HTMLInputElement | null;
+  if (searchInput) {
+    const cards = document.querySelectorAll<HTMLElement>('.mitsubishi-card');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const code = card.getAttribute('data-code') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const cause = card.getAttribute('data-cause') || '';
+
+        if (query === '' || code.includes(query) || desc.includes(query) || cause.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+</script>

@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-reverse: float-reverse 8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes float-reverse {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(15px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Fix text and background visibility in dark guide calculators */
+.bg-zinc-900 select,
+.bg-zinc-900 input {
+  background-color: #27272a !important;
+  color: #ffffff !important;
+}
+
+.bg-zinc-900 select option {
+  background-color: #27272a !important;
+  color: #ffffff !important;
+}

@@ -1,0 +1,124 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AuthorBadge from '../components/AuthorBadge.astro';
+import SEO from '../components/SEO.astro';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Our Calculation Methodology & Mathematics",
+    "description": "Formulas, standards, and engineering values powering the calculators on Cooling Support.",
+    "url": "https://coolingsupport.com/methodology"
+  }
+];
+---
+
+<Layout title="Our Methodology">
+  <SEO 
+    slot="head"
+    title="Our Methodology & Mathematics | Cooling Support"
+    description="Discover the engineering formulas, EPA regulations, and ACCA standards that power the calculators on Cooling Support."
+    schema={schema}
+  />
+  <div class="bg-slate-900 text-white pt-16 pb-12 border-b-4 border-blue-600">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight sm:text-5xl mb-6">
+        Our Methodology
+      </h1>
+      <p class="text-xl text-slate-300 max-w-2xl leading-relaxed mb-8 border-l-2 border-slate-700 pl-4">
+        How we calculate exact BTUs, labor burdens, and system targets using industry-standard mathematics.
+      </p>
+      
+      <div class="flex justify-start">
+        <AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" />
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-slate-50 dark:bg-slate-900 pt-12 pb-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="max-w-3xl mb-12">
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-wider">No More Rules of Thumb</h2>
+        <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-lg">
+          At Cooling Support, we believe that relying on outdated rules of thumb is dangerous. Whether you are sizing a central air conditioner or calculating your true cost of doing business, bad math leads to bad outcomes. Here is how we build our engines.
+        </p>
+      </div>
+
+      <!-- 2x2 Grid Layout -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+        
+        <!-- Feature 1 -->
+        <div class="bg-white dark:bg-slate-800 p-8 border border-slate-200 dark:border-slate-700 rounded-sm shadow-sm transition-colors hover:border-blue-500">
+          <div class="w-10 h-10 border border-slate-300 dark:border-slate-600 rounded bg-slate-100 dark:bg-slate-700 flex items-center justify-center mb-6">
+            <span class="text-slate-600 dark:text-slate-300 font-bold text-sm">01</span>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Load Calculation Standards</h3>
+          <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
+            Our HVAC Load Calculator does not rely on the outdated "500 square feet per ton" rule. Instead, our backend engines simulate a block load calculation inspired by the <strong>ACCA Manual J</strong> protocol.
+          </p>
+          <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+            <li class="flex items-start gap-2"><span class="text-blue-600 font-bold">»</span> Applies multipliers for extreme Climate Zones.</li>
+            <li class="flex items-start gap-2"><span class="text-blue-600 font-bold">»</span> Applies penalty modifiers for poor R-values.</li>
+            <li class="flex items-start gap-2"><span class="text-blue-600 font-bold">»</span> Adjusts cooling loads for 10+ ft vaulted ceilings.</li>
+          </ul>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="bg-white dark:bg-slate-800 p-8 border border-slate-200 dark:border-slate-700 rounded-sm shadow-sm transition-colors hover:border-blue-500">
+          <div class="w-10 h-10 border border-slate-300 dark:border-slate-600 rounded bg-slate-100 dark:bg-slate-700 flex items-center justify-center mb-6">
+            <span class="text-slate-600 dark:text-slate-300 font-bold text-sm">02</span>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Diagnostics & Thermodynamics</h3>
+          <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
+            Tools like our Superheat & Subcooling Calculator use standard thermodynamic target formulas used by technicians in the field, ensuring exact charging protocols.
+          </p>
+          <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+            <li class="flex items-start gap-2"><span class="text-blue-600 font-bold">»</span> <strong>Target Superheat:</strong> Calculated using the standard formula: <code>((WB × 3) - 80 - DB) / 2</code>.</li>
+            <li class="flex items-start gap-2"><span class="text-blue-600 font-bold">»</span> <strong>Subcooling:</strong> Measured against the manufacturer's datashield.</li>
+          </ul>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="bg-white dark:bg-slate-800 p-8 border border-slate-200 dark:border-slate-700 rounded-sm shadow-sm transition-colors hover:border-blue-500">
+          <div class="w-10 h-10 border border-slate-300 dark:border-slate-600 rounded bg-slate-100 dark:bg-slate-700 flex items-center justify-center mb-6">
+            <span class="text-slate-600 dark:text-slate-300 font-bold text-sm">03</span>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Business & Financial Math</h3>
+          <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
+            For our B2B Contractor Tools, we use strict accounting principles. Our Labor Burden engine breaks down the "Unbillable Hour Trap" so contractors calculate their <em>True Hourly Cost</em> before applying profit margins.
+          </p>
+          <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+            <li class="flex items-start gap-2"><span class="text-blue-600 font-bold">»</span> Separates gross wages from employer taxes.</li>
+            <li class="flex items-start gap-2"><span class="text-blue-600 font-bold">»</span> Factors in unapplied time like windshield time.</li>
+          </ul>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="bg-white dark:bg-slate-800 p-8 border border-slate-200 dark:border-slate-700 rounded-sm shadow-sm transition-colors hover:border-blue-500">
+          <div class="w-10 h-10 border border-slate-300 dark:border-slate-600 rounded bg-slate-100 dark:bg-slate-700 flex items-center justify-center mb-6">
+            <span class="text-slate-600 dark:text-slate-300 font-bold text-sm">04</span>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">EPA Compliance</h3>
+          <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed text-sm">
+            Where applicable, such as in our EPA Refrigerant Log tool, all generated logs and language are designed to comply strictly with <strong>EPA Section 608</strong> of the Clean Air Act.
+          </p>
+          <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+            <li class="flex items-start gap-2"><span class="text-blue-600 font-bold">»</span> Mandatory tracking for technician names.</li>
+            <li class="flex items-start gap-2"><span class="text-blue-600 font-bold">»</span> Automated recovery amounts and disposal logs.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Peer Review Banner -->
+      <div class="bg-slate-900 text-white rounded-sm p-8 border border-slate-800 shadow-md">
+        <h3 class="text-xl font-bold mb-3 uppercase tracking-wider text-blue-400">Rigorous Peer Review Process</h3>
+        <p class="text-slate-300 text-base leading-relaxed mb-0">
+          Every tool deployed on Cooling Support undergoes rigorous peer review by an EPA Certified technician with over 5 years of field experience in the USA. We routinely cross-reference our outputs against industry software to ensure our estimators are strictly reliable.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</Layout>

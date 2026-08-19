@@ -1,0 +1,322 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+const lgCodes = [
+  { code: "CH01", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Sensor", desc: "Indoor room temperature sensor fault", cause: "NTC sensor open circuit or short circuit due to moisture or wire damage.", action: "Replace indoor ambient sensor. Estimated cost: ₹300 – ₹500 / $25 – $45.", difficulty: "Professional Only", occurrence: "Common", proCost: "₹300 – ₹500 / $25 – $45" },
+  { code: "CH02", brand: "LG", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor coil temperature sensor fault", cause: "Evaporator coil NTC thermistor failed, broken, or disconnected.", action: "Replace evaporator coil sensor. Estimated cost: ₹300 – ₹500 / $25 – $45.", difficulty: "Moderate", occurrence: "Common", proCost: "₹300 – ₹500 / $25 – $45" },
+  { code: "CH03", brand: "LG", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Outdoor ambient air temperature sensor fault", cause: "Outdoor condenser air intake thermistor failed or damaged by weather.", action: "Replace outdoor ambient air sensor. Estimated cost: ₹400 – ₹700 / $30 – $55.", difficulty: "Moderate", occurrence: "Common", proCost: "₹400 – ₹700 / $30 – $55" },
+  { code: "CH05", brand: "LG", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Indoor/Outdoor communication error", cause: "Loose inter-unit wiring joints, signal wire short, or outdoor board failure.", action: "Verify 3-core communication line. If wires are fine, outdoor PCB is damaged. PCB swap: ₹2,500 – ₹5,500 / $150 – $300.", difficulty: "Professional Only", occurrence: "Common", proCost: "₹2,500 – ₹5,500 / $150 – $300" },
+  { code: "CH10", brand: "LG", category: "Motor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor blower motor error", cause: "Indoor fan wheel blocked, hall sensor disconnected, or fan motor burned out.", action: "Check for fan blockages. Replace blower motor if winding is open: ₹1,500 – ₹3,500 / $90 – $180.", difficulty: "Moderate", occurrence: "Common", proCost: "₹1,500 – ₹3,500 / $90 – $180" },
+  { code: "CH21", brand: "LG", category: "Electrical", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "IPM DC peak current (Inverter error)", cause: "Compressor locked rotor, IPM power module short circuit, or compressor winding failure.", action: "Turn off MCB. Test compressor terminal resistances. Replace outdoor PCB or compressor: ₹6,000 – ₹12,000 / $350 – $700.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "₹6,000 – ₹12,000 / $350 – $700" },
+  { code: "CH61", brand: "LG", category: "Refrigerant", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "Condenser coil overheat protection", cause: "Outdoor condenser coils completely blocked with dirt, leaves, or pet hair.", action: "Shut off AC. Wash outdoor unit coils thoroughly with a garden hose (low pressure). No professional needed!", difficulty: "DIY", occurrence: "Common", proCost: "N/A" },
+];
+
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "LG AC Error Codes | Inverter Diagnostic Lookup Guide",
+    "description": "Step-by-step diagnostic lookup for decoding fault codes (CH01, CH02, CH03, CH05, CH10, CH21, CH61) on LG split and multi-split air conditioners.",
+    "category": "Air Conditioner Troubleshooting",
+    "author": {
+      "@type": "Person",
+      "name": "Mike Reynolds",
+      "jobTitle": "Master HVAC Technician"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How to read LG inverter AC error codes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "LG inverter ACs display faults on the front panel digital display starting with 'CH' (e.g. CH05). On models without a digital screen, count the blinking LED lights: LED1 (tens digit, usually green) and LED2 (ones digit, usually red) flash in sequence. 2 blinks of LED1 and 1 blink of LED2 indicates CH21."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does CH05 mean on an LG air conditioner?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CH05 represents an indoor/outdoor unit serial communication error. It signifies a breakdown in signal between the indoor controller card and outdoor main board. Commonly caused by loose inter-unit terminals or wire cuts."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout title="LG AC Error Codes | Inverter Diagnostic Lookup Guide">
+  <SEO
+    slot="head"
+    title="LG AC Error Codes | Inverter Diagnostic Lookup Guide | Cooling Support"
+    description="Decode LG split AC error codes (CH01, CH02, CH05, CH21, CH61) instantly. Learn digital screen codes, LED blinks, and DIY resets."
+    type="article"
+    schema={schemaData}
+  />
+
+  <!-- Hero Section -->
+  <section class="relative bg-zinc-950 pt-24 pb-20 border-b border-zinc-800 overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] opacity-10 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-red-600 to-transparent blur-[120px] rounded-full"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 bg-red-600/10 border border-red-500/25 text-red-400 text-xs font-semibold px-5 py-2 rounded-full mb-6 font-mono">
+        ❄️ LG Diagnostics
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
+        LG AC Error Codes <br />
+        <span class="text-red-500">Split &amp; Inverter Fault Diagnostics</span>
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-8">
+        Decode error codes (CH01, CH05, CH21, CH61) on your LG remote controller or indoor display screen instantly.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Search and Guide -->
+  <div class="bg-zinc-50 min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center space-x-2 text-sm font-semibold text-zinc-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-red-500 transition-colors">Home</a>
+        <span class="text-zinc-300">/</span>
+        <a href="/ac-error-codes" class="hover:text-red-500 transition-colors">AC Error Codes</a>
+        <span class="text-zinc-300">/</span>
+        <span class="text-zinc-800 font-bold">LG</span>
+      </nav>
+
+      <!-- Reading LG Remote / Display Codes -->
+      <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-4">
+        <h2 class="text-xl font-bold text-zinc-900 flex items-center gap-2">
+          <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          How to Read LG Error Codes
+        </h2>
+        <div class="text-sm text-zinc-600 space-y-3 leading-relaxed">
+          <p>
+            LG inverter split air conditioners display fault codes either on the indoor digital screen or through flashing LED lights:
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Digital Displays</strong>: The unit displays "CH" followed by the code number (e.g., <strong>CH 05</strong>) on the front panel display.</li>
+            <li><strong>LED Blinking (No Screen)</strong>: Count the blinking light sequences on the indoor unit. LED1 (tens digit, usually green) and LED2 (ones digit, usually red) flash to indicate the code:
+              <ul class="list-circle pl-5 mt-1 space-y-1">
+                <li>Example: 2 blinks of LED1 (tens) and 1 blink of LED2 (ones) = <strong>CH 21</strong>.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Search Engine -->
+      <section class="space-y-6">
+        <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+          <h2 class="text-2xl font-bold text-zinc-900">LG Code Lookup</h2>
+          
+          <div style="position: relative; width: 100%;">
+            <div style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; pointer-events: none; color: #a1a1aa; z-index: 10;">
+              <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input
+              type="text"
+              id="lg-search"
+              placeholder="Search by code (e.g. CH01, CH05, CH21, CH61)..."
+              class="w-full pl-14 pr-5 py-4 text-lg bg-zinc-50 border-2 border-zinc-200 rounded-2xl focus:outline-none focus:border-red-500 transition-colors text-zinc-800 placeholder-zinc-400 shadow-inner"
+            />
+          </div>
+        </div>
+
+        <!-- Cards Container -->
+        <div class="space-y-4" id="lg-cards-container">
+          {lgCodes.map((item) => (
+            <div
+              class="lg-card bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 flex flex-col gap-4 transition-all hover:border-zinc-300"
+              data-code={item.code.toLowerCase()}
+              data-desc={item.desc.toLowerCase()}
+              data-cause={item.cause.toLowerCase()}
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-2">
+                  <span class="font-black text-zinc-900 text-xl font-mono tracking-tight">{item.code}</span>
+                  <span class="text-xs bg-zinc-50 text-zinc-500 px-2.5 py-1 rounded-full font-medium">{item.category}</span>
+                </div>
+                
+                <span class={`text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  item.color === 'emerald' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
+                  item.color === 'amber' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                  item.color === 'orange' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
+                  'bg-rose-50 text-rose-700 border border-rose-100'
+                }`}>
+                  <span class={`w-1.5 h-1.5 rounded-full ${
+                    item.color === 'emerald' ? 'bg-emerald-500' :
+                    item.color === 'amber' ? 'bg-amber-500' :
+                    item.color === 'orange' ? 'bg-orange-500' :
+                    'bg-rose-600'
+                  }`}></span>
+                  {item.severityText}
+                </span>
+              </div>
+
+              <div>
+                <p class="font-bold text-zinc-800 text-base leading-snug">{item.desc}</p>
+              </div>
+
+              <!-- Diagnostic Metrics Panel -->
+              <div class="flex flex-wrap gap-2 items-center text-xs border-t border-b border-zinc-100 py-3 my-1">
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Difficulty:</span>
+                  <span class={`font-bold ${
+                    item.difficulty === 'DIY' ? 'text-emerald-600' :
+                    item.difficulty === 'Moderate' ? 'text-amber-600' :
+                    'text-rose-600'
+                  }`}>{item.difficulty}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Occurrence:</span>
+                  <span class="font-bold text-zinc-700">{item.occurrence}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Est. Pro Cost:</span>
+                  <span class="font-bold text-zinc-700">{item.proCost}</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-zinc-100 pt-4">
+                <div class="bg-zinc-50 rounded-2xl p-4 border border-zinc-100">
+                  <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1.5">Likely Cause</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.cause}</p>
+                </div>
+                <div class="bg-red-500/5 rounded-2xl p-4 border border-red-500/10">
+                  <p class="text-xs font-bold text-red-600 uppercase tracking-wider mb-1.5">Recommended Action</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.action}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      
+      <!-- Reddit Verified Solutions Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
+          <h2 class="text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <span class="text-orange-500">💬</span> Reddit Verified HVAC Solutions
+          </h2>
+          <span class="text-xs bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-mono uppercase font-bold tracking-wider">Community Vetted</span>
+        </div>
+        <p class="text-sm text-zinc-500 -mt-2 leading-relaxed">
+          Real-world troubleshooting tips and warning alerts compiled from active discussions on communities like <span class="font-semibold text-zinc-700">r/HVAC</span>, <span class="font-semibold text-zinc-700">r/hvacadvice</span>, and <span class="font-semibold text-zinc-700">r/homeowners</span>.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Community Solution 1 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-orange-500/10 text-orange-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/hvacadvice
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "90% of CH05 communication errors are due to loose signal wires on Terminal 3 or solid core wiring breaking from condenser vibration. Always use stranded 14/3 communication wire for mini-splits." (Source: r/HVAC Tech Tip)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Tech Tip:</span>
+              <span>Vetted Community Solution</span>
+            </div>
+          </div>
+          
+          <!-- Community Solution 2 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-blue-500/10 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/HVAC
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "For CH05 errors on window units, try unplugging the smart Wi-Fi module on the front panel display. A buggy Wi-Fi chip can freeze the control communication loop." (Source: r/appliances Verified Fix)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Homeowner Tip:</span>
+              <span>Verified Fix</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- Visible FAQ Accordion Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {schemaData.find(s => s["@type"] === "FAQPage")?.mainEntity.map((faq) => (
+            <details class="group border border-zinc-200 rounded-2xl transition-all [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-zinc-900 cursor-pointer focus:outline-none select-none">
+                <span>{faq.name}</span>
+                <span class="transition-transform group-open:rotate-180 text-zinc-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-zinc-600 leading-relaxed border-t border-zinc-100 pt-4">
+                {faq.acceptedAnswer.text}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+
+      <!-- Troubleshooting Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">LG Troubleshooting Guides</h2>
+        
+        <div class="space-y-6">
+          <div class="border-l-4 border-red-500 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">Resolving Communication Error CH05</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              <strong>CH05</strong> is one of the most common issues on LG split AC units and signifies a breakdown in signal between the indoor and outdoor control boards.
+              <strong>Step 1</strong>: Turn off the AC breaker. Unplug and reconnect the main communication wires at both ends, checking for loose terminals.
+              <strong>Step 2</strong>: Look for breaks, splits, or exposure to moisture along the 3-core communication line linking the units.
+              <strong>Step 3</strong>: If connections are secure, the culprit is typically a failed signal optocoupler chip or relay on the outdoor unit main PCB.
+            </p>
+          </div>
+
+          <div class="border-l-4 border-emerald-600 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">Resolving Condenser Overheat Error CH61</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              <strong>CH61</strong> is a preventative shutdown to protect the compressor from cooking itself. It triggers when the condenser coil sensors register dangerous temperatures.
+              <strong>Action</strong>: Turn off the unit immediately. Check the outdoor unit. In most cases, the heat-exchanging fins are clogged with cottonwood, leaves, or pet dander. Use a standard hose pipe (without high-pressure nozzles to avoid bending the delicate aluminum fins) to wash out the coil debris. Let it dry and restart the system.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('lg-search') as HTMLInputElement | null;
+  if (searchInput) {
+    const cards = document.querySelectorAll<HTMLElement>('.lg-card');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const code = card.getAttribute('data-code') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const cause = card.getAttribute('data-cause') || '';
+
+        if (query === '' || code.includes(query) || desc.includes(query) || cause.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+</script>

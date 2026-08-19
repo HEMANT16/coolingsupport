@@ -1,0 +1,378 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "MERV Filter Selector | What MERV Rating Do I Need?";
+const description = "Take our free MERV filter selector quiz to find out exactly what air filter you need for pets, allergies, and asthma without damaging your HVAC system.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "MERV Air Filter Selector Quiz",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+    "description": "An interactive diagnostic quiz that cross-references a user's indoor air quality needs (pets, allergies, smoke) against HVAC system age to recommend a safe MERV rating without causing static pressure damage.",
+    "applicationCategory": "DiagnosticTool",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the difference between MERV 8 and MERV 11?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MERV 8 filters capture basic dust, pollen, and lint. They are the safest choice for older HVAC systems. MERV 11 filters have tighter woven media that captures smaller particles like pet dander and smog, making them ideal for homes with pets or mild allergies."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will a MERV 13 filter damage my AC system?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, if your system is old or has a weak blower motor. MERV 13 filters are highly restrictive. They can cause high static pressure, reducing airflow to the point where your evaporator coils freeze into a block of ice or your blower motor burns out."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are 4-inch thick air filters better than 1-inch filters?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. A 4-inch thick filter has significantly more pleated surface area than a 1-inch filter. This means a 4-inch MERV 11 filter will actually allow more airflow (lower static pressure) through your HVAC system than a 1-inch MERV 8 filter, while capturing much smaller particles."
+        }
+      }
+    ]
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-gray-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-teal-500/20 text-teal-300 font-bold text-xs uppercase tracking-widest mb-6 border border-teal-500/30">
+        Stop Suffocating Your Blower Motor
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        MERV Filter <span class="text-teal-400">Selector</span> Quiz
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8 font-light">
+        Find the exact MERV rating you need for pets and allergies without creating catastrophic static pressure in your HVAC system.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Quiz App -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10 -mt-6">
+    <div class="max-w-6xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-gray-800 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-teal-400">️</span>
+          <h2 class="text-white font-bold text-lg">Airflow Diagnostics</h2>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <!-- Quiz Panel (Left: 7 cols) -->
+          <div class="lg:col-span-7 space-y-8">
+            
+            <!-- Q1: Pets -->
+            <div class="bg-teal-50/50 p-6 rounded-sm border border-teal-100">
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">1. Do you have indoor pets?</label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button type="button" class="quiz-btn q1 bg-teal-600 text-white border-teal-600 border-2 py-3 px-4 rounded-sm font-bold transition-all shadow-md" data-val="no">No</button>
+                <button type="button" class="quiz-btn q1 bg-white text-gray-700 border-gray-200 border-2 hover:border-teal-400 py-3 px-4 rounded-sm font-bold transition-all" data-val="mild">Yes (1-2)</button>
+                <button type="button" class="quiz-btn q1 bg-white text-gray-700 border-gray-200 border-2 hover:border-teal-400 py-3 px-4 rounded-sm font-bold transition-all" data-val="severe">Yes (Zoo)</button>
+              </div>
+              <input type="hidden" id="valPets" value="no" />
+            </div>
+
+            <!-- Q2: Allergies -->
+            <div>
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">2. Does anyone have allergies or asthma?</label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button type="button" class="quiz-btn q2 bg-teal-600 text-white border-teal-600 border-2 py-3 px-4 rounded-sm font-bold transition-all shadow-md" data-val="no">None</button>
+                <button type="button" class="quiz-btn q2 bg-white text-gray-700 border-gray-200 border-2 hover:border-teal-400 py-3 px-4 rounded-sm font-bold transition-all" data-val="mild">Mild Seasonal</button>
+                <button type="button" class="quiz-btn q2 bg-white text-gray-700 border-gray-200 border-2 hover:border-teal-400 py-3 px-4 rounded-sm font-bold transition-all" data-val="severe">Severe Asthma</button>
+              </div>
+              <input type="hidden" id="valAllergy" value="no" />
+            </div>
+
+            <!-- Q3: Smog/Wildfire -->
+            <div>
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">3. Live near heavy smog or frequent wildfires?</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button type="button" class="quiz-btn q3 bg-teal-600 text-white border-teal-600 border-2 py-3 px-4 rounded-sm font-bold transition-all shadow-md" data-val="no">No, clean air</button>
+                <button type="button" class="quiz-btn q3 bg-white text-gray-700 border-gray-200 border-2 hover:border-teal-400 py-3 px-4 rounded-sm font-bold transition-all" data-val="yes">Yes, lots of smoke</button>
+              </div>
+              <input type="hidden" id="valSmog" value="no" />
+            </div>
+
+            <!-- Q4: HVAC Age -->
+            <div class="bg-gray-100 p-6 rounded-sm border border-gray-200">
+              <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 flex justify-between items-center">
+                <span>4. HVAC System Age</span>
+                <span class="text-xs text-gray-500 font-normal bg-white px-2 py-1 rounded">Crucial for Static Pressure</span>
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button type="button" class="quiz-btn q4 bg-teal-600 text-white border-teal-600 border-2 py-3 px-4 rounded-sm font-bold transition-all shadow-md" data-val="new">Under 10 Yrs</button>
+                <button type="button" class="quiz-btn q4 bg-white text-gray-700 border-gray-200 border-2 hover:border-teal-400 py-3 px-4 rounded-sm font-bold transition-all" data-val="old">Over 10 Yrs</button>
+                <button type="button" class="quiz-btn q4 bg-white text-gray-700 border-gray-200 border-2 hover:border-teal-400 py-3 px-4 rounded-sm font-bold transition-all" data-val="old">I Don't Know</button>
+              </div>
+              <input type="hidden" id="valAge" value="new" />
+            </div>
+
+          </div>
+
+          <!-- Output Panel (Right: 5 cols) -->
+          <div class="lg:col-span-5 bg-white rounded-sm border-2 border-teal-500 p-6 lg:p-8 flex flex-col relative overflow-hidden shadow-md">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-teal-500 rounded-md mix-blend-multiply filter blur-3xl opacity-10 transform translate-x-1/2 -translate-y-1/2"></div>
+            
+            <h3 class="text-teal-700 font-bold uppercase tracking-widest text-sm mb-6 border-b border-teal-100 pb-4">Diagnostic Result</h3>
+            
+            <div class="space-y-6 flex-grow">
+              
+              <!-- Recommendation -->
+              <div class="flex flex-col gap-3 bg-teal-900 p-6 rounded-sm items-center justify-center text-center">
+                <span class="text-teal-300 font-bold uppercase tracking-widest text-xs">Required Filter Standard</span>
+                <span class="text-5xl lg:text-6xl font-black text-white leading-none tracking-tight" id="outMerv">MERV 8</span>
+                <span class="bg-teal-800 text-teal-100 px-3 py-1 rounded-md text-xs font-bold mt-2 border border-teal-600" id="outDesc">Standard Pleated</span>
+              </div>
+              
+              <!-- What it Catches -->
+              <div>
+                <h4 class="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Intercepts:</h4>
+                <ul class="space-y-2 text-sm text-gray-600 font-medium" id="outCatches">
+                  <li class="flex items-center gap-2">Dust & Lint</li>
+                  <li class="flex items-center gap-2">Pollen</li>
+                  <li class="flex items-center gap-2">Mold Spores</li>
+                  <li class="flex items-center gap-2 text-gray-400"><span></span> Pet Dander</li>
+                  <li class="flex items-center gap-2 text-gray-400"><span></span> Smoke / Smog</li>
+                  <li class="flex items-center gap-2 text-gray-400"><span></span> Bacteria / Viruses</li>
+                </ul>
+              </div>
+
+            </div>
+
+            <!-- Static Pressure Warning Box (Hidden by Default) -->
+            <div id="warningBox" class="mt-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl hidden">
+              <h4 class="font-bold text-red-700 text-xs uppercase tracking-wide mb-1 flex items-center gap-2">
+                <span></span> Static Pressure Warning
+              </h4>
+              <p class="text-red-900 text-xs leading-relaxed font-medium">
+                You have an older HVAC system but require a dense <strong>MERV 13</strong> filter. This acts like a cardboard box over your vents. <br><br><strong>Fix:</strong> You MUST buy a 4-inch thick filter cabinet, or replace 1-inch filters every 15 days, otherwise your AC coil will freeze solid.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content (10-Year Veteran Tone) -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: Static Pressure -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The "Cardboard Box" Suffocation Effect
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          The biggest mistake homeowners make is walking into a big box hardware store and buying the most expensive, highest-MERV filter they can find, thinking they are doing their family a favor. What they don't realize is that they are actively destroying their HVAC system.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          <strong>Air filters are not designed to clean your air. They are designed to protect your HVAC equipment.</strong>
+        </p>
+        <div class="bg-gray-900 text-white p-6 rounded-sm shadow-md mb-6">
+          <p class="font-bold text-red-400 mb-2 uppercase tracking-wider text-sm">Static Pressure Explained:</p>
+          <p class="text-gray-300 leading-relaxed">
+            The higher the MERV rating, the tighter the weave of the filter media. A MERV 13 filter catches microscopic bacteria, which means the holes in the fabric are tiny. If you put a 1-inch thick MERV 13 filter on an older AC system with a standard blower motor, it is the aerodynamic equivalent of forcing your AC to breathe through a thick piece of cardboard. The system cannot pull enough air, the evaporator coils drop below freezing, turn into a solid block of ice, and eventually, your blower motor burns out.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 2: 1-Inch vs 4-Inch -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The 1-Inch vs. 4-Inch Secret
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          So, how do hospitals use MERV 13 and MERV 16 filters without blowing up their HVAC systems? <strong>Surface area.</strong>
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          If you take a 4-inch thick pleated filter and stretch the fabric out flat, it will stretch across your entire living room. If you stretch out a 1-inch thick filter, it might only cover a small table. Because the 4-inch filter has massively more surface area, the air can pass through it incredibly easily, even if the weave is tight.
+        </p>
+        <div class="bg-teal-50 p-6 rounded-sm border border-teal-100">
+          <p class="text-teal-900 font-bold mb-2">The Golden Rule:</p>
+          <p class="text-teal-800">
+            A 4-inch thick MERV 11 filter will flow air <em>better</em> than a 1-inch thick MERV 8 filter, while catching exponentially more dirt. If you have severe allergies and need a high MERV rating, you must hire an HVAC contractor to cut your return drop and install a 4-inch or 5-inch media cabinet.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 3: The Fiberglass Scam -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <span class="text-gray-500">️</span> The Blue Fiberglass Scam (MERV 1-4)
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          You have seen them. The flimsy, 99-cent blue spun-fiberglass filters sold at every grocery store. In the HVAC industry, we call these <strong>"rock catchers"</strong> or <strong>"bird catchers."</strong>
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          They are MERV 1 to MERV 4. They will stop a pebble, a June bug, or a bird from hitting your blower wheel. They do absolutely nothing to stop dust, pollen, pet dander, or anything that actually impacts your air quality or coats your evaporator coils in sludge. Never buy them. <strong>The absolute bare minimum you should ever put in your home is a pleated MERV 8.</strong>
+        </p>
+      </div>
+
+      <!-- Section 4: FAQs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          Air Filter FAQ
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-teal-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              What is the difference between MERV 8 and MERV 11?
+              <span class="text-teal-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              MERV 8 filters capture basic dust, pollen, and lint. They are the safest choice for older HVAC systems. MERV 11 filters have tighter woven media that captures smaller particles like pet dander and smog, making them ideal for homes with pets or mild allergies.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-teal-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Will a MERV 13 filter damage my AC system?
+              <span class="text-teal-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Yes, if your system is old or has a weak blower motor. MERV 13 filters are highly restrictive. They can cause high static pressure, reducing airflow to the point where your evaporator coils freeze into a block of ice or your blower motor burns out.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-teal-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Are 4-inch thick air filters better than 1-inch filters?
+              <span class="text-teal-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Yes. A 4-inch thick filter has significantly more pleated surface area than a 1-inch filter. This means a 4-inch MERV 11 filter will actually allow more airflow (lower static pressure) through your HVAC system than a 1-inch MERV 8 filter, while capturing much smaller particles.
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Logic -->
+  <script>
+    const valPets = document.getElementById('valPets') as HTMLInputElement;
+    const valAllergy = document.getElementById('valAllergy') as HTMLInputElement;
+    const valSmog = document.getElementById('valSmog') as HTMLInputElement;
+    const valAge = document.getElementById('valAge') as HTMLInputElement;
+
+    const outMerv = document.getElementById('outMerv')!;
+    const outDesc = document.getElementById('outDesc')!;
+    const outCatches = document.getElementById('outCatches')!;
+    const warningBox = document.getElementById('warningBox')!;
+
+    function setupButtons(groupClass: string, hiddenInput: HTMLInputElement) {
+      const btns = document.querySelectorAll(`.${groupClass}`);
+      btns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          // Reset all
+          btns.forEach(b => {
+            b.className = `quiz-btn ${groupClass} bg-white text-gray-700 border-gray-200 border-2 hover:border-teal-400 py-3 px-4 rounded-sm font-bold transition-all`;
+          });
+          // Set Active
+          const target = e.currentTarget as HTMLButtonElement;
+          target.className = `quiz-btn ${groupClass} bg-teal-600 text-white border-teal-600 border-2 py-3 px-4 rounded-sm font-bold transition-all shadow-md`;
+          
+          hiddenInput.value = target.getAttribute('data-val') || 'no';
+          calculate();
+        });
+      });
+    }
+
+    setupButtons('q1', valPets);
+    setupButtons('q2', valAllergy);
+    setupButtons('q3', valSmog);
+    setupButtons('q4', valAge);
+
+    function calculate() {
+      const pets = valPets.value;
+      const allergy = valAllergy.value;
+      const smog = valSmog.value;
+      const age = valAge.value;
+
+      let merv = 8;
+      
+      // Upgrade logic
+      if (pets === 'mild' || pets === 'severe' || allergy === 'mild') {
+        merv = Math.max(merv, 11);
+      }
+      
+      if (allergy === 'severe' || smog === 'yes') {
+        merv = Math.max(merv, 13);
+      }
+
+      // Render Outputs
+      if (merv === 8) {
+        outMerv.innerText = "MERV 8";
+        outDesc.innerText = "Standard Pleated";
+        outCatches.innerHTML = `
+          <li class="flex items-center gap-2">Dust & Lint</li>
+          <li class="flex items-center gap-2">Pollen</li>
+          <li class="flex items-center gap-2">Mold Spores</li>
+          <li class="flex items-center gap-2 text-gray-400"><span></span> Pet Dander</li>
+          <li class="flex items-center gap-2 text-gray-400"><span></span> Smoke / Smog</li>
+          <li class="flex items-center gap-2 text-gray-400"><span></span> Bacteria / Viruses</li>
+        `;
+        warningBox.classList.add('hidden');
+      } else if (merv === 11) {
+        outMerv.innerText = "MERV 11";
+        outDesc.innerText = "Premium Media";
+        outCatches.innerHTML = `
+          <li class="flex items-center gap-2">Dust & Lint</li>
+          <li class="flex items-center gap-2">Pollen & Mold</li>
+          <li class="flex items-center gap-2"><span class="text-green-500 font-bold text-lg"></span> Pet Dander (Fine)</li>
+          <li class="flex items-center gap-2 text-gray-400"><span></span> Heavy Smoke</li>
+          <li class="flex items-center gap-2 text-gray-400"><span></span> Bacteria / Viruses</li>
+        `;
+        warningBox.classList.add('hidden');
+      } else if (merv === 13) {
+        outMerv.innerText = "MERV 13";
+        outDesc.innerText = "Hospital Grade";
+        outCatches.innerHTML = `
+          <li class="flex items-center gap-2">Pet Dander & Pollen</li>
+          <li class="flex items-center gap-2"><span class="text-green-500 font-bold text-lg"></span> Wildfire Smoke / Smog</li>
+          <li class="flex items-center gap-2"><span class="text-green-500 font-bold text-lg"></span> Bacteria & Virus Carriers</li>
+        `;
+        
+        if (age === 'old') {
+          warningBox.classList.remove('hidden');
+        } else {
+          warningBox.classList.add('hidden');
+        }
+      }
+    }
+
+    // Init
+    calculate();
+  </script>
+</Layout>

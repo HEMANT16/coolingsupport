@@ -1,0 +1,429 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "AC Running Cost Calculator | Estimate Your Electricity Bill";
+const description = "Calculate exactly how much it costs to run your air conditioner. Enter your AC tonnage, daily usage, and local electricity rate to estimate your monthly bill.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "AC Running Cost Estimator",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+    "description": "An energy calculator that estimates daily, monthly, and yearly air conditioning costs based on system tonnage, SEER efficiency, usage hours, and local electricity rates.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do you calculate AC electricity cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "To calculate your AC running cost, multiply the AC unit's wattage (in kilowatts) by the hours you run it per day. Then, multiply that number by your local electricity rate (cost per kWh) found on your utility bill."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does it cost to run a central AC for 8 hours?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A standard 3-ton central AC running for 8 hours a day will consume roughly 24 to 28 kWh. At the national average of 0.16 per kWh, it costs approximately 3.80 to 4.50 per day to run."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do inverter air conditioners use less electricity?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Instead of blasting at 100% power and shutting off, inverter ACs act like a dimmer switch, using a variable-speed compressor to maintain temperature using a fraction of the electricity."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does shading my outdoor AC unit save money?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "According to Reddit and HVAC pros, shading your outdoor condenser unit (with trees or an awning) can improve efficiency by up to 10%. Keeping the direct sun off the coils allows it to reject heat easier, lowering your running costs."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is my AC electric bill so high?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The most common reasons for a shockingly high AC bill are dirty condenser coils, a clogged air filter suffocating the blower, or a lack of attic insulation causing the AC to run 24/7 without ever satisfying the thermostat."
+        }
+      }
+    ]
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-yellow-500/20 text-yellow-300 font-bold text-xs uppercase tracking-widest mb-6 border border-yellow-500/30">
+        Stop Guessing Your Energy Bill
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        AC Running Cost <span class="text-yellow-400">Calculator</span>
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-blue-100 max-w-2xl mx-auto mb-8 font-light">
+        Calculate your daily, monthly, and yearly AC electricity bills in 5 seconds.
+      </p>
+    </div>
+  </section>
+
+  <!-- Pre-Calculator SEO Formula Section (To capture Featured Snippets) -->
+  <section class="bg-white py-12 px-4 sm:px-6 lg:px-8 border-b border-gray-100">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">How to Calculate AC Electricity Cost</h2>
+      <p class="text-lg text-gray-700 leading-relaxed mb-6">
+        The universal formula to find the exact running cost of an air conditioner is:
+      </p>
+      <div class="bg-gray-50 border-2 border-gray-200 rounded-sm p-4 inline-block shadow-sm">
+        <code class="text-xl font-mono text-blue-700 font-bold">Monthly Cost = AC Wattage (kW) × Hours × 30 Days × Electricity Rate ($/kWh)</code>
+      </div>
+      <p class="text-gray-600 mt-6 text-sm">
+        *To find your Electricity Rate, look at your most recent utility bill for the "Supply Charge" or "Price to Compare." The US National Average is currently $0.16 per kWh. Enter your system details below to run the math instantly.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Calculator App -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10">
+    <div class="max-w-6xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-gray-900 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <h2 class="text-white font-bold text-lg">Energy Cost Engine</h2>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <!-- Controls (Left: 7 cols) -->
+          <div class="lg:col-span-7 space-y-8">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-blue-50 p-6 rounded-sm border border-blue-100">
+              
+              <!-- Tonnage -->
+              <div class="sm:col-span-2">
+                <div class="flex justify-between items-end mb-4">
+                  <label class="block text-sm font-bold text-blue-900 uppercase tracking-wider">AC Size (Tonnage)</label>
+                  <span class="text-2xl font-black text-blue-600" id="tonDisplay">3.0 Tons</span>
+                </div>
+                <input type="range" id="tonnage" min="1.0" max="5.0" step="0.5" value="3.0" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                <div class="flex justify-between text-xs text-blue-400 mt-2 font-bold">
+                  <span>1.0 Ton</span>
+                  <span>5.0 Tons</span>
+                </div>
+              </div>
+
+              <!-- SEER Rating -->
+              <div class="sm:col-span-2 pt-4 border-t border-blue-200">
+                <div class="flex justify-between items-end mb-4">
+                  <label class="block text-sm font-bold text-blue-900 uppercase tracking-wider">System Efficiency (SEER)</label>
+                  <span class="text-xl font-bold text-blue-900" id="seerDisplay">14 SEER</span>
+                </div>
+                <input type="range" id="seer" min="10" max="24" step="1" value="14" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                <p class="text-xs text-blue-700 mt-3 font-medium">Standard efficiency is 14 SEER. High-efficiency Inverters are 18-24 SEER.</p>
+              </div>
+            </div>
+
+            <!-- Usage & Rate -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              
+              <!-- Hours -->
+              <div>
+                <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Daily Usage</label>
+                <div class="flex justify-between items-center bg-gray-50 border border-gray-300 rounded-sm p-3">
+                  <input type="range" id="hours" min="1" max="24" step="1" value="8" class="flex-grow h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-700 mr-4">
+                  <span class="font-bold text-gray-900 min-w-[50px] text-right" id="hourDisplay">8 hrs</span>
+                </div>
+              </div>
+
+              <!-- Electricity Rate -->
+              <div>
+                <label class="block text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+                  Electricity Rate (per kWh)
+                </label>
+                <div class="relative">
+                  <input type="number" id="rate" value="0.16" step="0.01" min="0.01" max="1.00" class="w-full bg-white border border-gray-300 text-gray-900 text-lg rounded-sm focus:ring-blue-500 focus:border-blue-500 block p-3 font-bold shadow-sm" />
+                </div>
+                <p class="text-xs text-gray-500 mt-2 font-medium">Enter your local rate (e.g., 0.16).</p>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Output Panel (Right: 5 cols) -->
+          <div class="lg:col-span-5 bg-gray-900 rounded-sm p-6 lg:p-8 text-white flex flex-col relative overflow-hidden shadow-md">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-500 rounded-md mix-blend-overlay filter blur-3xl opacity-10 transform translate-x-1/2 -translate-y-1/2"></div>
+            
+            <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-6 border-b border-gray-800 pb-4">Estimated Energy Bill</h3>
+            
+            <div class="space-y-6 flex-grow">
+              
+              <!-- Daily Cost -->
+              <div class="flex justify-between items-center">
+                <span class="text-gray-400 font-medium">Daily Cost:</span>
+                <span class="text-2xl font-mono text-yellow-400" id="outDaily">0.00</span>
+              </div>
+              
+              <div class="w-full h-px bg-gray-800 my-2"></div>
+
+              <!-- Monthly Cost -->
+              <div class="flex flex-col gap-3 bg-blue-900/40 p-6 rounded-sm border border-blue-800 items-center justify-center text-center">
+                <span class="text-blue-300 font-bold uppercase tracking-widest text-xs">Estimated Monthly Bill</span>
+                <span class="text-5xl lg:text-6xl font-black text-white leading-none tracking-tight" id="outMonthly">0.00</span>
+                <span class="text-blue-400 text-xs font-bold mt-2">Assuming 30 Days of Usage</span>
+              </div>
+
+              <!-- Yearly Cost -->
+              <div class="flex justify-between items-center mt-4">
+                <span class="text-gray-400 font-medium">Yearly Cooling Season:</span>
+                <span class="text-xl font-mono text-white" id="outYearly">0.00</span>
+              </div>
+              <p class="text-xs text-gray-500 text-right mt-1">*Assumes a 150-day Summer cooling season.</p>
+              
+            </div>
+
+            <!-- Engineering Spec -->
+            <div class="mt-6 bg-gray-800 border-l-4 border-gray-600 p-4 rounded-r-xl">
+              <h4 class="font-bold text-gray-400 text-xs uppercase tracking-wide mb-1 flex items-center gap-2">
+                <span>️</span> Output Consumption
+              </h4>
+              <p class="text-gray-300 text-xs leading-relaxed font-mono" id="outConsumption">
+                System drawing 2.57 kW per hour.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content (10-Year Veteran Tone) -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1: Inverter ACs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The Inverter Secret (Saving 40% on Bills)
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          If you run the calculator above and your jaw drops at how much your 10-SEER unit is costing you, you might be wondering how people in Florida survive the summer. The secret is <strong>Inverter Technology.</strong>
+        </p>
+        
+        <!-- Generated Graphic -->
+        <div class="mb-8 rounded-sm overflow-hidden shadow-md border border-gray-800 bg-gray-900">
+          <img src="/images/inverter_graph.png" alt="Graph comparing electricity usage of a single stage AC vs an Inverter AC" title="Single-Stage vs Inverter AC Energy Consumption Graph" class="w-full object-cover" />
+          <div class="p-4 bg-gray-900 text-gray-400 text-sm border-t border-gray-800 text-center">
+            <strong>The Spike vs The Curve:</strong> Notice how the Single-Stage AC violently spikes electricity usage every time it kicks on. The Inverter smoothly curves down and barely sips power.
+          </div>
+        </div>
+
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          Old single-stage air conditioners only have two settings: <strong>100% ON</strong> or <strong>100% OFF</strong>. When they kick on, they suffer from something called <em>Locked Rotor Amps (LRA)</em>. This means the compressor requires a massive, expensive surge of electricity just to get the motor spinning. It blasts cold air for 15 minutes, shuts off, and then has to do that expensive start-up spike all over again 20 minutes later. You are paying for that spike every single time.
+        </p>
+        <div class="bg-blue-50 p-6 rounded-sm border border-blue-100">
+          <p class="text-blue-900 font-bold mb-2 flex items-center gap-2"><span>️</span> The Variable-Speed Advantage</p>
+          <p class="text-blue-800 mb-4 leading-relaxed">
+            An Inverter AC (which typically starts at 18-SEER) acts like a dimmer switch. It completely eliminates the start-up spike.
+          </p>
+          <p class="text-blue-800 leading-relaxed">
+            Instead of violently kicking on and off, the compressor smoothly ramps up to cool the house. Once it hits 74°F, it doesn't shut off. It slows down to a crawl—drawing just a tiny trickle of electricity—to perfectly maintain the temperature. Because it never shuts off, it never has to pay the start-up penalty again. This variable-speed operation is how modern units cut electricity bills by up to 40% compared to a standard 14-SEER unit.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 2: The "Turn it Off" Myth -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The "Turn It Off When I Leave" Myth
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          One of the biggest mistakes homeowners make to try and lower their electricity bill is turning the thermostat completely off when they leave for work at 8:00 AM. They think, <em>"Why pay to cool an empty house?"</em>
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          Here is why that is a massive financial mistake.
+        </p>
+        <div class="bg-gray-900 text-white p-6 rounded-sm shadow-md mb-6">
+          <p class="font-bold text-red-400 mb-2 uppercase tracking-wider text-sm">The 10-Year Veteran Rule:</p>
+          <p class="text-gray-300 leading-relaxed">
+            By 5:00 PM, your house isn't just full of hot air. Your couch cushions, your drywall, your hardwood floors, and your mattress have all absorbed 85°F of blistering heat and humidity. When you get home and turn the AC on, the machine has to run at <strong>100% maximum power for 6 hours straight</strong> just to rip the deep heat out of the physical structure of your house. <br><br>
+            It takes significantly less electricity for the AC to cycle on for 10 minutes every hour throughout the day to simply <em>maintain</em> 74°F than it does to execute a 6-hour emergency rescue mission at 5:00 PM. Leave it at 76°F when you leave. Do not turn it off.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 3: Reddit & Quora Consensus -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          Reddit & Quora Consensus: How to Actually Lower Your Bill
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          If you browse the HVAC subreddits or Quora forums, you will quickly find that the community agrees on a few critical, non-obvious ways to lower your AC running costs:
+        </p>
+        <ul class="space-y-4 text-gray-700 text-lg">
+          <li class="flex items-start gap-3">
+            <span class="text-blue-500 font-bold">1.</span>
+            <span><strong>Clean the Condenser Coils:</strong> A dirty outdoor unit acts like an insulated blanket, trapping heat. Spraying down your coils with a hose once a year can lower your electricity draw by up to 15%.</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-blue-500 font-bold">2.</span>
+            <span><strong>Shade the Outdoor Unit:</strong> Planting shrubs (at least 2 feet away for airflow) or installing an awning to keep direct, blistering afternoon sun off the condenser makes it significantly easier for the AC to reject heat, lowering amp draw.</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-blue-500 font-bold">3.</span>
+            <span><strong>Check Your Attic Insulation:</strong> As one Reddit tech put it, <em>"You can buy a 24-SEER spaceship AC, but if you have no blown-in insulation in your attic, you are just air conditioning the sky."</em> Fixing insulation has a higher ROI than replacing the AC itself.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Section 4: FAQs -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          Energy Cost FAQ
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-yellow-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              How do you calculate AC electricity cost?
+              <span class="text-yellow-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              To calculate your AC running cost, multiply the AC unit's wattage (in kilowatts) by the hours you run it per day. Then, multiply that number by your local electricity rate (cost per kWh) found on your utility bill.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-yellow-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              How much does it cost to run a central AC for 8 hours?
+              <span class="text-yellow-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              A standard 3-ton central AC running for 8 hours a day will consume roughly 24 to 28 kWh. At the national average of $0.16 per kWh, it costs approximately $3.80 to $4.50 per day to run.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-yellow-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Do inverter air conditioners use less electricity?
+              <span class="text-yellow-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              Yes. Instead of blasting at 100% power and shutting off, inverter ACs act like a dimmer switch, using a variable-speed compressor to maintain temperature using a fraction of the electricity.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-yellow-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Does shading my outdoor AC unit save money?
+              <span class="text-yellow-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              According to Reddit and HVAC pros, shading your outdoor condenser unit (with trees or an awning) can improve efficiency by up to 10%. Keeping the direct sun off the coils allows it to reject heat easier, lowering your running costs.
+            </div>
+          </details>
+
+          <details class="group bg-gray-50 rounded-sm border border-gray-200 overflow-hidden cursor-pointer open:bg-white open:ring-2 open:ring-yellow-500 open:shadow-md transition-all">
+            <summary class="px-6 py-4 font-bold text-gray-900 flex justify-between items-center select-none">
+              Why is my AC electric bill so high?
+              <span class="text-yellow-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-4 text-gray-700 leading-relaxed border-t border-gray-100 pt-4 text-sm">
+              The most common reasons for a shockingly high AC bill are dirty condenser coils, a clogged air filter suffocating the blower, or a lack of attic insulation causing the AC to run 24/7 without ever satisfying the thermostat.
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Logic -->
+  <script>
+    const tonnageSlider = document.getElementById('tonnage') as HTMLInputElement;
+    const seerSlider = document.getElementById('seer') as HTMLInputElement;
+    const hoursSlider = document.getElementById('hours') as HTMLInputElement;
+    const rateInput = document.getElementById('rate') as HTMLInputElement;
+
+    const tonDisplay = document.getElementById('tonDisplay')!;
+    const seerDisplay = document.getElementById('seerDisplay')!;
+    const hourDisplay = document.getElementById('hourDisplay')!;
+
+    const outDaily = document.getElementById('outDaily')!;
+    const outMonthly = document.getElementById('outMonthly')!;
+    const outYearly = document.getElementById('outYearly')!;
+    const outConsumption = document.getElementById('outConsumption')!;
+
+    function formatMoney(amount: number) {
+      return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
+    }
+
+    function calculate() {
+      const tonnage = parseFloat(tonnageSlider.value);
+      const seer = parseFloat(seerSlider.value);
+      const hours = parseFloat(hoursSlider.value);
+      const rate = parseFloat(rateInput.value) || 0.16; // fallback if empty
+
+      tonDisplay.innerText = `${tonnage.toFixed(1)} Tons`;
+      seerDisplay.innerText = `${seer} SEER`;
+      hourDisplay.innerText = `${hours} hrs`;
+
+      // The Math Engine
+      // Total BTUs
+      const btus = tonnage * 12000;
+      
+      // Wattage (Watts = BTUs / SEER)
+      const totalWatts = btus / seer;
+      
+      // kW
+      const kW = totalWatts / 1000;
+
+      // Daily Cost
+      const dailyCost = kW * hours * rate;
+      
+      // Monthly Cost (30 days)
+      const monthlyCost = dailyCost * 30;
+      
+      // Yearly Cost (Assuming 150 cooling days for a standard summer season)
+      const yearlyCost = dailyCost * 150;
+
+      // Render Outputs
+      outDaily.innerText = formatMoney(dailyCost);
+      outMonthly.innerText = formatMoney(monthlyCost);
+      outYearly.innerText = formatMoney(yearlyCost);
+
+      outConsumption.innerText = `System draws ${kW.toFixed(2)} kW per hour at full load.`;
+    }
+
+    // Event Listeners
+    [tonnageSlider, seerSlider, hoursSlider, rateInput].forEach(el => {
+      el.addEventListener('input', calculate);
+    });
+
+    // Init
+    calculate();
+  </script>
+</Layout>

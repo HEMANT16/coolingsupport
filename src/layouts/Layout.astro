@@ -1,0 +1,235 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | Cooling Support</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <slot name="head" />
+  </head>
+  <body class="bg-gray-50 text-gray-900 font-sans antialiased min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40 transition-transform duration-300 ease-in-out transform">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <a href="/" class="flex-shrink-0 flex items-center gap-2">
+            <span class="text-2xl">❄️</span>
+            <span class="font-bold text-xl text-blue-900 tracking-tight">Cooling Support</span>
+          </a>
+          
+          <!-- Desktop Nav -->
+          <nav class="hidden sm:flex sm:space-x-8">
+            <a href="/" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Calculators</a>
+            <a href="/portable-ac" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Portable ACs</a>
+            <a href="/ac-error-codes" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">AC Error Codes</a>
+            <a href="/guides" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Guides &amp; Troubleshooting</a>
+            <a href="/about-us" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About Us</a>
+          </nav>
+
+          <!-- Mobile Hamburger Button -->
+          <div class="sm:hidden flex items-center" style="z-index:9999;">
+            <button id="mobile-menu-btn" type="button" class="relative z-50 text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600 p-2 cursor-pointer" style="touch-action:manipulation;-webkit-tap-highlight-color:transparent;" aria-label="Toggle Menu" aria-expanded="false" aria-controls="mobile-menu">
+              <!-- Hamburger Icon -->
+              <svg id="hamburger-icon" class="h-7 w-7 block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              <!-- Close Icon -->
+              <svg id="close-icon" class="h-7 w-7 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div id="mobile-menu" class="sm:hidden border-t border-gray-150 bg-white shadow-lg" style="display:none;">
+        <div class="px-2 pt-2 pb-4 space-y-1">
+          <a href="/" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">❄️ Calculators</a>
+          <a href="/portable-ac" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">🧊 Portable ACs</a>
+          <a href="/ac-error-codes" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">🛠️ AC Error Codes</a>
+          <a href="/guides" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">📚 Guides &amp; Troubleshooting</a>
+          <a href="/about-us" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">🛡️ About Us</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 mt-auto text-slate-300">
+      <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="text-sm font-bold text-white tracking-wider uppercase mb-4 flex items-center gap-2"><span class="text-cyan-400">⚡</span> Popular Tools</h3>
+            <ul class="space-y-3">
+              <li><a href="/tools/hvac-load-calculator" class="text-sm hover:text-cyan-400 transition-colors">HVAC Load Calculator</a></li>
+              <li><a href="/tools/inverter-roi-simulator" class="text-sm hover:text-cyan-400 transition-colors">Inverter ROI Simulator</a></li>
+              <li><a href="/tools/capacitor-matcher" class="text-sm hover:text-cyan-400 transition-colors">Capacitor Matcher</a></li>
+              <li><a href="/tools/ac-noise-analyzer" class="text-sm hover:text-cyan-400 transition-colors">AC Noise Analyzer</a></li>
+              <li><a href="/tools/flat-rate-pricing-calculator" class="text-sm hover:text-emerald-400 transition-colors">Flat Rate Pricing Engine</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white tracking-wider uppercase mb-4 flex items-center gap-2"><span class="text-cyan-400">🛠️</span> AC Error Codes</h3>
+            <ul class="space-y-3">
+              <li><a href="/ac-error-codes" class="text-sm font-bold hover:text-cyan-400 transition-colors">AC Error Codes Hub</a></li>
+              <li><a href="/ac-error-codes/carrier-error-code" class="text-sm hover:text-cyan-400 transition-colors">Carrier & Bryant Codes</a></li>
+              <li><a href="/ac-error-codes/trane-error-code" class="text-sm hover:text-cyan-400 transition-colors">Trane & American Standard</a></li>
+              <li><a href="/ac-error-codes/mitsubishi-error-code" class="text-sm hover:text-cyan-400 transition-colors">Mitsubishi Mini-Split</a></li>
+              <li><a href="/ac-error-codes/daikin-error-code" class="text-sm hover:text-cyan-400 transition-colors">Daikin AC Codes</a></li>
+              <li><a href="/ac-error-codes/lg-error-code" class="text-sm hover:text-cyan-400 transition-colors">LG AC Codes</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white tracking-wider uppercase mb-4 flex items-center gap-2"><span class="text-cyan-400">📚</span> Guides & Resources</h3>
+            <ul class="space-y-3">
+              <li><a href="/portable-ac" class="text-sm font-bold hover:text-cyan-400 transition-colors">Portable AC Hub & Sizer</a></li>
+              <li><a href="/guides/ac-not-cooling" class="text-sm hover:text-cyan-400 transition-colors">AC Not Cooling: 5 Causes</a></li>
+              <li><a href="/guides" class="text-sm hover:text-cyan-400 transition-colors">View All Guides</a></li>
+              <li><a href="/sitemap-hub" class="text-sm hover:text-cyan-400 transition-colors">Sitemap Hub</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white tracking-wider uppercase mb-4 flex items-center gap-2"><span class="text-cyan-400">🛡️</span> Trust</h3>
+            <ul class="space-y-3">
+              <li><a href="/methodology" class="text-sm hover:text-cyan-400 transition-colors">Our Methodology</a></li>
+              <li><a href="/about-us" class="text-sm hover:text-cyan-400 transition-colors">About Us</a></li>
+              <li><a href="/contact" class="text-sm hover:text-cyan-400 transition-colors">Contact</a></li>
+              <li><a href="/privacy" class="text-sm hover:text-cyan-400 transition-colors">Privacy Policy</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div class="flex items-center gap-2 shrink-0">
+            <span class="text-2xl">❄️</span>
+            <span class="font-bold text-xl text-white tracking-tight">Cooling Support</span>
+          </div>
+          <p class="text-xs text-slate-500 text-center md:text-left max-w-3xl leading-relaxed">
+            Disclaimer: The calculators and content provided on Cooling Support are for informational and estimation purposes only. Real-world electricity costs, BTU requirements, and HVAC performance may vary based on insulation, local utility tariffs, and climate zones. Always consult a licensed HVAC professional before purchasing or installing equipment.
+          </p>
+          <p class="text-sm text-slate-400 shrink-0">&copy; {new Date().getFullYear()} All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    <script is:inline>
+      (function() {
+        // Wait for DOM to be fully ready
+        function initMobileMenu() {
+          var btn = document.getElementById('mobile-menu-btn');
+          var mobileMenu = document.getElementById('mobile-menu');
+          var hamburgerIcon = document.getElementById('hamburger-icon');
+          var closeIcon = document.getElementById('close-icon');
+          var header = document.querySelector('header');
+
+          if (!btn || !mobileMenu) return;
+
+          var menuOpen = false;
+
+          function toggleMenu(e) {
+            if (e) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+            menuOpen = !menuOpen;
+
+            if (menuOpen) {
+              mobileMenu.style.display = 'block';
+              btn.setAttribute('aria-expanded', 'true');
+              if (hamburgerIcon) {
+                hamburgerIcon.style.display = 'none';
+              }
+              if (closeIcon) {
+                closeIcon.style.display = 'block';
+              }
+            } else {
+              mobileMenu.style.display = 'none';
+              btn.setAttribute('aria-expanded', 'false');
+              if (hamburgerIcon) {
+                hamburgerIcon.style.display = 'block';
+              }
+              if (closeIcon) {
+                closeIcon.style.display = 'none';
+              }
+            }
+          }
+
+          function closeMenu() {
+            menuOpen = false;
+            mobileMenu.style.display = 'none';
+            btn.setAttribute('aria-expanded', 'false');
+            if (hamburgerIcon) {
+              hamburgerIcon.style.display = 'block';
+            }
+            if (closeIcon) {
+              closeIcon.style.display = 'none';
+            }
+          }
+
+          // Remove any old listeners by cloning (safety measure)
+          var newBtn = btn.cloneNode(true);
+          btn.parentNode.replaceChild(newBtn, btn);
+          btn = newBtn;
+
+          // Attach click listener
+          btn.addEventListener('click', toggleMenu, false);
+
+          // Close menu when a link inside it is tapped
+          var menuLinks = mobileMenu.querySelectorAll('a');
+          for (var i = 0; i < menuLinks.length; i++) {
+            menuLinks[i].addEventListener('click', closeMenu, false);
+          }
+
+          // Close on outside click
+          document.addEventListener('click', function(e) {
+            if (menuOpen && !mobileMenu.contains(e.target) && !btn.contains(e.target)) {
+              closeMenu();
+            }
+          }, false);
+
+          // Smart Header Scroll Logic (Hide on scroll down, show on scroll up)
+          var lastScrollY = window.scrollY;
+          window.addEventListener('scroll', function() {
+            var currentScrollY = window.scrollY;
+
+            if (currentScrollY > lastScrollY && currentScrollY > 80) {
+              if (header) {
+                header.classList.add('-translate-y-full');
+              }
+              if (menuOpen) {
+                closeMenu();
+              }
+            } else {
+              if (header) {
+                header.classList.remove('-translate-y-full');
+              }
+            }
+
+            lastScrollY = currentScrollY;
+          });
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initMobileMenu);
+        } else {
+          initMobileMenu();
+        }
+      })();
+    </script>
+  </body>
+</html>

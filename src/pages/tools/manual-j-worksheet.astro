@@ -1,0 +1,490 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// SEO Metadata
+const title = "Free Blank Manual J Worksheet & Template";
+const description = "Download a printable blank Manual J worksheet template for HVAC field use. Easily record room measurements and load calculation data on a clipboard.";
+const canonicalURL = "https://coolingsupport.com/tools/manual-j-worksheet";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title}>
+  <slot name="head">
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:type" content="article" />
+    <link rel="canonical" href={canonicalURL} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "Manual J Worksheet Generator",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+          "url": canonicalURL,
+          "description": description,
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is a Manual J calculation?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Manual J is the residential load calculation procedure published by the Air Conditioning Contractors of America (ACCA). It determines exactly how much heating and cooling a home needs to stay comfortable based on its specific structural measurements, insulation levels, and geographical location."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why do I need a Manual J worksheet in the field?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Before you can run a load calculation in software like Wrightsoft or CoolCalc, you must perform a physical site survey. A field worksheet allows technicians to systematically walk room-by-room and record exact dimensions (Length, Width, Height), window sizes, and insulation R-values on a clipboard without missing any critical data."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why shouldn't I just use the rule of thumb (e.g. 500 sq ft per ton)?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Rules of thumb are highly inaccurate for modern construction. They ignore critical heat load factors like window orientation, insulation quality, and ceiling height. Relying on rules of thumb often results in oversized equipment, leading to short-cycling, poor humidity control, and shortened equipment lifespan."
+              }
+            }
+          ]
+        }
+      ]
+    })} />
+  </slot>
+
+  <div class="max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">Manual J Field Worksheet</h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">Generate a printable room-by-room measurement grid to systematically collect heat load data in the field.</p>
+    </div>
+
+    <!-- Toggle Buttons -->
+    <div class="flex justify-center mb-12 gap-4">
+      <button onclick="printBlankLog()" class="flex flex-col items-center justify-center p-6 bg-white border-2 border-emerald-500 rounded-sm hover:bg-emerald-50 transition-colors shadow-sm group">
+        <span class="text-3xl mb-2 group-hover:scale-110 transition-transform"></span>
+        <span class="font-bold text-emerald-700">Download Blank PDF</span>
+        <span class="text-sm text-emerald-600 mt-1">Print an empty grid for the van</span>
+      </button>
+      
+      <button onclick="printFilledLog()" class="flex flex-col items-center justify-center p-6 bg-white border-2 border-blue-500 rounded-sm hover:bg-blue-50 transition-colors shadow-sm group">
+        <span class="text-3xl mb-2 group-hover:scale-110 transition-transform"></span>
+        <span class="font-bold text-blue-700">Digitize Measurements</span>
+        <span class="text-sm text-blue-600 mt-1">Fill online & print</span>
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- LEFT COLUMN: Editor Form -->
+      <div class="lg:col-span-4 bg-white rounded-sm shadow-md border border-gray-100 h-fit max-h-[1200px] flex flex-col no-print overflow-hidden">
+        
+        <!-- Sticky Header -->
+        <div class="bg-white p-6 border-b border-gray-100 z-10 shadow-sm relative">
+          <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+             Project Details
+          </h2>
+        </div>
+
+        <!-- Scrollable Content -->
+        <div class="p-6 overflow-y-auto custom-scrollbar">
+          <div class="space-y-8">
+            
+            <!-- Project Information -->
+            <div class="bg-gray-50 p-4 rounded-sm border border-gray-200">
+              <h3 class="font-bold text-gray-900 mb-4">Site Information</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Customer / Project Name</label>
+                  <input type="text" id="i_customer" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" value="Smith Residence">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Project Address</label>
+                  <input type="text" id="i_address" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" value="742 Evergreen Terrace">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Outdoor Design Temp</label>
+                    <input type="text" id="i_outdoor" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" value="95°F / 15°F">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Indoor Design Temp</label>
+                    <input type="text" id="i_indoor" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" value="75°F / 70°F">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Room Engine -->
+            <div class="bg-blue-50 p-4 rounded-sm border border-blue-200">
+              <h3 class="font-bold text-blue-900 mb-4">Room Measurements</h3>
+              <p class="text-xs text-blue-700 mb-4">Add the structural data for each room below.</p>
+              
+              <div class="space-y-4 mb-4" id="room_editor">
+                <!-- Dynamically populated via JS -->
+              </div>
+              
+              <div class="bg-white p-4 rounded-lg border border-blue-200 space-y-3 mt-4 shadow-sm">
+                <h4 class="font-bold text-sm text-gray-800">Add New Room</h4>
+                
+                <div>
+                  <label class="block text-xs text-gray-500 mb-1">Room Name</label>
+                  <input type="text" id="new_room" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="e.g. Master Bedroom">
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Length (ft)</label>
+                    <input type="number" id="new_l" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="12" oninput="calculateSqFt()">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Width (ft)</label>
+                    <input type="number" id="new_w" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="10" oninput="calculateSqFt()">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Height (ft)</label>
+                    <input type="number" id="new_h" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="8">
+                  </div>
+                </div>
+                
+                <div>
+                  <label class="block text-xs text-gray-500 mb-1">Total Sq. Ft.</label>
+                  <input type="number" id="new_sqft" class="w-full border-gray-300 bg-gray-100 rounded p-1.5 text-xs font-bold text-blue-700" placeholder="0" readonly>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Windows (Dir / Area)</label>
+                    <input type="text" id="new_win" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="South 3x5">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Doors (Type / Area)</label>
+                    <input type="text" id="new_door" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="Wood 3x7">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Ceiling / Roof</label>
+                    <input type="text" id="new_ceil" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="R-38 Attic">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-500 mb-1">Floor / Found.</label>
+                    <input type="text" id="new_floor" class="w-full border-gray-300 rounded p-1.5 text-xs" placeholder="Slab">
+                  </div>
+                </div>
+
+                <button type="button" onclick="addRoomEntry()" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors mt-2"> Add Room</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Live Preview -->
+      <div class="lg:col-span-8 bg-white p-8 rounded-sm shadow-md border border-gray-200 overflow-x-auto print-friendly-container">
+        
+        <!-- The Actual Document to Print -->
+        <div id="print-area" class="bg-white mx-auto min-w-[900px]">
+          
+          <!-- Document Header -->
+          <div class="flex justify-between items-start border-b-2 border-gray-800 pb-4 mb-6">
+            <div>
+              <h2 class="text-3xl font-bold text-gray-900" id="o_customer">Smith Residence</h2>
+              <p class="text-gray-600 font-medium">ACCA Manual J Field Measurement Worksheet</p>
+              <p class="text-sm text-gray-500 mt-1" id="o_address">742 Evergreen Terrace</p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm text-gray-600">Outdoor Design: <span class="font-bold text-gray-900" id="o_outdoor">95°F / 15°F</span></p>
+              <p class="text-sm text-gray-600">Indoor Design: <span class="font-bold text-gray-900" id="o_indoor">75°F / 70°F</span></p>
+            </div>
+          </div>
+
+          <!-- Room Measurement Grid -->
+          <table class="w-full text-left text-sm border-collapse border border-gray-800 mb-6" id="room_table">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="border border-gray-800 p-2 font-bold w-32">Room Name</th>
+                <th class="border border-gray-800 p-2 font-bold text-center w-24">Dimensions<br/><span class="text-[10px] font-normal">(L x W x H)</span></th>
+                <th class="border border-gray-800 p-2 font-bold text-center w-16">Sq. Ft.<br/><span class="text-[10px] font-normal">(Area)</span></th>
+                <th class="border border-gray-800 p-2 font-bold">Windows<br/><span class="text-[10px] font-normal">(Direction / Area)</span></th>
+                <th class="border border-gray-800 p-2 font-bold">Doors<br/><span class="text-[10px] font-normal">(Type / Area)</span></th>
+                <th class="border border-gray-800 p-2 font-bold">Ceiling / Roof<br/><span class="text-[10px] font-normal">(Insulation Level)</span></th>
+                <th class="border border-gray-800 p-2 font-bold">Floor<br/><span class="text-[10px] font-normal">(Slab / Crawl)</span></th>
+              </tr>
+            </thead>
+            <tbody id="room_preview_body">
+              <!-- Dynamically Populated -->
+            </tbody>
+          </table>
+
+          <!-- Footer Legal -->
+          <div class="text-[10px] text-gray-500 italic mt-8 border-t border-gray-300 pt-2 text-center print-avoid-break">
+            This worksheet is for field data collection only. It does not constitute a certified ACCA Manual J calculation. All data must be entered into ACCA-approved software (e.g. Wrightsoft, CoolCalc) to generate the final heating and cooling load requirements.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO Content Section -->
+    <article class="mt-24 max-w-5xl mx-auto">
+      
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 tracking-tight">The Importance of an Accurate Manual J Worksheet</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          In modern HVAC, guessing the required tonnage of an air conditioner based on square footage is no longer acceptable. A precise ACCA Manual J block load calculation is the only way to ensure optimal comfort, efficiency, and equipment longevity.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div class="bg-gradient-to-br from-blue-50 to-white rounded-sm p-8 border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
+          <div class="text-4xl mb-4"></div>
+          <h3 class="text-2xl font-bold text-blue-900 mb-4">Precision in the Field</h3>
+          <p class="text-gray-700 leading-relaxed">
+            The accuracy of your load calculation software is entirely dependent on the quality of the data entered ("garbage in, garbage out"). Using a standardized <strong>Blank Manual J Worksheet template</strong> ensures that technicians systematically walk room-by-room and never forget to measure a critical window or note the orientation of a wall.
+          </p>
+        </div>
+
+        <div class="bg-gradient-to-br from-purple-50 to-white rounded-sm p-8 border border-purple-100 shadow-sm hover:shadow-md transition-shadow">
+          <div class="text-4xl mb-4">️</div>
+          <h3 class="text-2xl font-bold text-purple-900 mb-4">The Dangers of Oversizing</h3>
+          <p class="text-gray-700 leading-relaxed">
+            Without a proper Manual J calculation, contractors often default to the "rule of thumb" (e.g., 500 sq ft per ton) or replace the existing unit with the exact same size. This often results in severely oversized equipment. Oversized AC units cool the house too quickly and shut off before they can dehumidify the air, resulting in a cold, clammy house, skyrocketing energy bills, and premature compressor failure due to short-cycling.
+          </p>
+        </div>
+      </div>
+
+      <div class="mb-12">
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-8 text-center tracking-tight">Frequently Asked Questions</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <div class="bg-white rounded-sm p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-start gap-2">
+              <span class="text-blue-500 shrink-0"></span> What is a Manual J calculation?
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed pl-7">Manual J is the residential load calculation procedure published by the Air Conditioning Contractors of America (ACCA). It determines exactly how much heating and cooling a home needs based on structural measurements, insulation, and geographic location.</p>
+          </div>
+          
+          <div class="bg-white rounded-sm p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-start gap-2">
+              <span class="text-blue-500 shrink-0"></span> Why use a worksheet in the field?
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed pl-7">Before running a calculation in software like Wrightsoft, you must perform a physical site survey. A field worksheet provides a structured grid for technicians to record exact room dimensions and window sizes on a clipboard without missing data.</p>
+          </div>
+
+          <div class="bg-white rounded-sm p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-start gap-2">
+              <span class="text-blue-500 shrink-0"></span> Is this software ACCA-approved?
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed pl-7">No, this worksheet is strictly a data-collection template for the field. The measurements recorded here must be input into ACCA-approved software (like CoolCalc or Wrightsoft) to generate the certified heat load calculation.</p>
+          </div>
+          
+          <div class="bg-white rounded-sm p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-start gap-2">
+              <span class="text-blue-500 shrink-0"></span> Why not use the Rule of Thumb?
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed pl-7">Rules of thumb ignore critical heat load factors like window orientation, tight construction, and ceiling height. Relying on them often results in oversized equipment, poor humidity control, and shortened equipment lifespan.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </article>
+
+  </div>
+</Layout>
+
+<!-- Print Styling & Logic -->
+<script is:inline>
+  let roomEntries = [
+    { id: 1, name: "Master Bed", l: "15", w: "12", h: "8", sqft: "180", win: "South 2(3x5)", door: "-", ceil: "R-30", floor: "Wood R-19" },
+    { id: 2, name: "Living Room", l: "20", w: "15", h: "10", sqft: "300", win: "West 3(4x6)", door: "Glass Slider", ceil: "R-30", floor: "Wood R-19" },
+    { id: 3, name: "Kitchen", l: "12", w: "10", h: "9", sqft: "120", win: "East 1(3x3)", door: "Solid Wood", ceil: "R-30", floor: "Wood R-19" }
+  ];
+
+  // Sync inputs to preview
+  const inputs = ['customer', 'address', 'outdoor', 'indoor'];
+  inputs.forEach(id => {
+    const el = document.getElementById(`i_${id}`);
+    if (el) {
+      el.addEventListener('input', (e) => {
+        document.getElementById(`o_${id}`).innerText = e.target.value || '________';
+      });
+    }
+  });
+
+  window.calculateSqFt = function() {
+    const l = parseFloat(document.getElementById('new_l').value) || 0;
+    const w = parseFloat(document.getElementById('new_w').value) || 0;
+    document.getElementById('new_sqft').value = (l * w) || 0;
+  }
+
+  window.removeEntry = function(id) {
+    roomEntries = roomEntries.filter(entry => entry.id !== id);
+    renderLog();
+  }
+
+  window.addRoomEntry = function() {
+    const name = document.getElementById('new_room').value.trim();
+    const l = document.getElementById('new_l').value.trim();
+    const w = document.getElementById('new_w').value.trim();
+    const h = document.getElementById('new_h').value.trim();
+    const sqft = document.getElementById('new_sqft').value.trim();
+    const win = document.getElementById('new_win').value.trim();
+    const door = document.getElementById('new_door').value.trim();
+    const ceil = document.getElementById('new_ceil').value.trim();
+    const floor = document.getElementById('new_floor').value.trim();
+
+    if (name) {
+      const newId = Date.now();
+      roomEntries.push({ id: newId, name, l, w, h, sqft, win, door, ceil, floor });
+      
+      // Clear inputs
+      document.getElementById('new_room').value = '';
+      document.getElementById('new_l').value = '';
+      document.getElementById('new_w').value = '';
+      document.getElementById('new_h').value = '';
+      document.getElementById('new_sqft').value = '';
+      document.getElementById('new_win').value = '';
+      document.getElementById('new_door').value = '';
+      document.getElementById('new_ceil').value = '';
+      document.getElementById('new_floor').value = '';
+      
+      renderLog();
+    }
+  }
+
+  function renderLog(isBlank = false) {
+    const editorContainer = document.getElementById('room_editor');
+    const previewContainer = document.getElementById('room_preview_body');
+    
+    let editorHTML = '';
+    let previewHTML = '';
+
+    if (isBlank) {
+      // Render 14 empty rows for printing landscape
+      for(let i=0; i<14; i++) {
+        previewHTML += `
+          <tr>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+            <td class="border border-gray-800 p-4"></td>
+          </tr>
+        `;
+      }
+    } else {
+      // Render actual data
+      roomEntries.forEach((entry) => {
+        // Editor Row
+        editorHTML += `
+          <div class="flex items-center justify-between border-b border-blue-100 py-2 group bg-white px-2 rounded">
+            <div class="text-xs truncate w-full flex items-center gap-2">
+              <button type="button" onclick="removeEntry(${entry.id})" class="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity" title="Remove Room"></button>
+              <span class="font-bold w-24 truncate">${entry.name}</span>
+              <span class="w-16">${entry.l}x${entry.w}x${entry.h}</span>
+              <span class="w-12 text-blue-600 font-bold">${entry.sqft} sf</span>
+            </div>
+          </div>
+        `;
+
+        // Preview Row
+        previewHTML += `
+          <tr>
+            <td class="border border-gray-800 p-2 font-bold">${entry.name}</td>
+            <td class="border border-gray-800 p-2 text-center">${entry.l} x ${entry.w} x ${entry.h}</td>
+            <td class="border border-gray-800 p-2 text-center font-bold text-gray-700">${entry.sqft}</td>
+            <td class="border border-gray-800 p-2">${entry.win || '-'}</td>
+            <td class="border border-gray-800 p-2">${entry.door || '-'}</td>
+            <td class="border border-gray-800 p-2">${entry.ceil || '-'}</td>
+            <td class="border border-gray-800 p-2">${entry.floor || '-'}</td>
+          </tr>
+        `;
+      });
+    }
+
+    editorContainer.innerHTML = editorHTML;
+    previewContainer.innerHTML = previewHTML;
+  }
+
+  // Bulletproof Isolation Print Function - Forcing Landscape
+  function executePrint(isBlank) {
+    const originalBody = document.body.innerHTML;
+    
+    // Clear dummy data if printing blank
+    if(isBlank) {
+      document.getElementById('o_customer').innerText = '________________________';
+      document.getElementById('o_address').innerText = '_________________';
+      document.getElementById('o_outdoor').innerText = '________';
+      document.getElementById('o_indoor').innerText = '________';
+      renderLog(true);
+    } else {
+      renderLog(false);
+    }
+
+    const printContent = document.getElementById('print-area').outerHTML;
+    
+    // Completely isolate print area
+    document.body.innerHTML = printContent;
+    
+    // Inject dynamic print stylesheet - FORCE LANDSCAPE
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @page { size: landscape; margin: 10mm; }
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white !important; }
+      #print-area { width: 100% !important; max-width: none !important; box-shadow: none !important; padding: 0 !important; }
+      .print-avoid-break { page-break-inside: avoid; }
+    `;
+    document.head.appendChild(style);
+
+    setTimeout(() => {
+      window.print();
+      
+      // Restore the site exactly as it was
+      document.body.innerHTML = originalBody;
+      
+      // Re-bind listeners and render after destroying DOM
+      inputs.forEach(id => {
+        const el = document.getElementById(`i_${id}`);
+        if (el) {
+          el.addEventListener('input', (e) => {
+            document.getElementById(`o_${id}`).innerText = e.target.value || '________';
+          });
+        }
+      });
+      renderLog(false); // Restore data
+    }, 500);
+  }
+
+  window.printBlankLog = () => executePrint(true);
+  window.printFilledLog = () => executePrint(false);
+
+  // Initial render
+  renderLog(false);
+</script>
+
+<style>
+  /* Custom scrollbar for editor */
+  .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+</style>

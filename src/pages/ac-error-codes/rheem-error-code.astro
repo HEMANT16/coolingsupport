@@ -1,0 +1,308 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+const rheemCodes = [
+  { code: "Code 00", severity: "diy", severityText: "Normal / Standby", color: "emerald", category: "System Status", desc: "System in standby mode", cause: "No current thermostat demand for heating or cooling.", action: "Normal behavior. Check thermostat settings if you expect the system to run.", difficulty: "DIY", occurrence: "Moderate", proCost: "N/A" },
+  { code: "Code 11", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Ignition", desc: "Failed ignition (no flame sensed)", cause: "Dirty flame sensor rod, closed gas supply valve, or hot surface igniter failure.", action: "Clean flame sensor rod with steel wool. Ensure gas valve is open. Swap igniter: $80 – $150.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "$80 – $150" },
+  { code: "Code 22", severity: "diy", severityText: "DIY Safe", color: "emerald", category: "Limit Switch", desc: "Main limit switch open (Furnace overheat)", cause: "Restricted airflow due to a dirty return air filter or blocked registers.", action: "Switch furnace power off. Replace dirty air filter immediately. Ensure all room vents are open.", difficulty: "DIY", occurrence: "Common", proCost: "N/A" },
+  { code: "Code 33", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Pressure Switch", desc: "Pressure switch failed to close", cause: "Draft inducer motor failed, pressure switch hose cracked, or exhaust flue blocked.", action: "Inspect pressure switch hose for cracks or water. Replace draft motor if dead: $180 – $350.", difficulty: "Moderate", occurrence: "Common", proCost: "$180 – $350" },
+  { code: "Code 55", severity: "danger", severityText: "Stop AC — Danger", color: "red", category: "Safety Switch", desc: "Flame rollout switch open", cause: "Flames traveling outside combustion chamber due to cracked heat exchanger or blocked exhaust.", action: "Shut off gas supply immediately! Call a licensed technician to inspect for cracked heat exchanger: $600 – $2,000.", difficulty: "Professional Only", occurrence: "Rare", proCost: "$600 – $2,000" },
+  { code: "Code E1", severity: "danger", severityText: "Stop AC — Gas Leak", color: "red", category: "Refrigerant", desc: "Low pressure lockout (AC / Heat Pump)", cause: "AC has lost refrigerant charge due to copper coil crack.", action: "Turn unit off. A technician must search, repair leak site, vacuum, and recharge gas: ₹2,500 – ₹5,500 / $150 – $300.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "₹2,500 – ₹5,500 / $150 – $300" },
+  { code: "Code E3", severity: "danger", severityText: "Stop AC — High Pressure", color: "red", category: "Refrigerant", desc: "High pressure switch lockout", cause: "Dirty outdoor condenser coil or failed condenser fan motor restricting heat release.", action: "Clean outdoor unit coil fins. Verify fan motor spins. Call pro if code persists.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "$250 – $600" },
+];
+
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Rheem & Ruud HVAC Error Codes | Diagnostic Lookup Guide",
+    "description": "Step-by-step diagnostic lookup for decoding Rheem and Ruud furnace and air conditioner fault codes (11, 22, 33, 55, E1, E3).",
+    "category": "HVAC Troubleshooting",
+    "author": {
+      "@type": "Person",
+      "name": "Mike Reynolds",
+      "jobTitle": "Master HVAC Technician"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How to read Rheem dual seven-segment display fault codes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rheem and Ruud control boards display codes directly on a built-in dual-digit seven-segment display. Read the code directly (e.g. 11, 22). If in standby, it shows 0 or 00."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does Code 22 mean on a Rheem furnace?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Code 22 indicates that the main limit switch has opened, which means the furnace is overheating. This is most commonly caused by a clogged furnace filter restricting the air flowing over the heat exchanger."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout title="Rheem & Ruud HVAC Error Codes | Diagnostic Lookup Guide">
+  <SEO
+    slot="head"
+    title="Rheem & Ruud HVAC Error Codes | Diagnostic Lookup Guide | Cooling Support"
+    description="Decode Rheem & Ruud furnace and AC control board fault codes (11, 22, 33, 55, E1) instantly. Get diagnostic causes and resets."
+    type="article"
+    schema={schemaData}
+  />
+
+  <!-- Hero Section -->
+  <section class="relative bg-zinc-950 pt-24 pb-20 border-b border-zinc-800 overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] opacity-10 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-amber-600 to-transparent blur-[120px] rounded-full"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 bg-amber-600/10 border border-amber-500/25 text-amber-400 text-xs font-semibold px-5 py-2 rounded-full mb-6 font-mono">
+        ❄️ Rheem &amp; Ruud Diagnostics
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
+        Rheem &amp; Ruud Codes <br />
+        <span class="text-amber-500">Furnace &amp; AC Board Diagnostics</span>
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-8">
+        Decode error codes (11, 22, 33, E1) on your Rheem furnace seven-segment display or AC control board instantly.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Search and Guide -->
+  <div class="bg-zinc-50 min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center space-x-2 text-sm font-semibold text-zinc-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-amber-500 transition-colors">Home</a>
+        <span class="text-zinc-300">/</span>
+        <a href="/ac-error-codes" class="hover:text-amber-500 transition-colors">AC Error Codes</a>
+        <span class="text-zinc-300">/</span>
+        <span class="text-zinc-800 font-bold">Rheem</span>
+      </nav>
+
+      <!-- How to Read Rheem Codes -->
+      <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-4">
+        <h2 class="text-xl font-bold text-zinc-900 flex items-center gap-2">
+          <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          How to Read Rheem &amp; Ruud Codes
+        </h2>
+        <div class="text-sm text-zinc-600 space-y-3 leading-relaxed">
+          <p>
+            Modern Rheem furnaces and AC systems use a dual-digit seven-segment display on the control board:
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Seven-Segment Screen</strong>: Codes appear directly as two digits (e.g. <strong>11</strong> or <strong>22</strong>).</li>
+            <li><strong>Older LED Blinks</strong>: Count the blinking sequence of the green and yellow board LEDs if no screen is present.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Search Engine -->
+      <section class="space-y-6">
+        <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+          <h2 class="text-2xl font-bold text-zinc-900">Rheem Code Lookup</h2>
+          
+          <div style="position: relative; width: 100%;">
+            <div style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; pointer-events: none; color: #a1a1aa; z-index: 10;">
+              <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input
+              type="text"
+              id="rheem-search"
+              placeholder="Search by code (e.g. 11, 22, 33, E1)..."
+              class="w-full pl-14 pr-5 py-4 text-lg bg-zinc-50 border-2 border-zinc-200 rounded-2xl focus:outline-none focus:border-amber-500 transition-colors text-zinc-800 placeholder-zinc-400 shadow-inner"
+            />
+          </div>
+        </div>
+
+        <!-- Cards Container -->
+        <div class="space-y-4" id="rheem-cards-container">
+          {rheemCodes.map((item) => (
+            <div
+              class="rheem-card bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 flex flex-col gap-4 transition-all hover:border-zinc-300"
+              data-code={item.code.toLowerCase()}
+              data-desc={item.desc.toLowerCase()}
+              data-cause={item.cause.toLowerCase()}
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-2">
+                  <span class="font-black text-zinc-900 text-xl font-mono tracking-tight">{item.code}</span>
+                  <span class="text-xs bg-zinc-50 text-zinc-500 px-2.5 py-1 rounded-full font-medium">{item.category}</span>
+                </div>
+                
+                <span class={`text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  item.color === 'emerald' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
+                  item.color === 'amber' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                  item.color === 'orange' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
+                  'bg-rose-50 text-rose-700 border border-rose-100'
+                }`}>
+                  <span class={`w-1.5 h-1.5 rounded-full ${
+                    item.color === 'emerald' ? 'bg-emerald-500' :
+                    item.color === 'amber' ? 'bg-amber-500' :
+                    item.color === 'orange' ? 'bg-orange-500' :
+                    'bg-rose-600'
+                  }`}></span>
+                  {item.severityText}
+                </span>
+              </div>
+
+              <div>
+                <p class="font-bold text-zinc-800 text-base leading-snug">{item.desc}</p>
+              </div>
+
+              <!-- Diagnostic Metrics Panel -->
+              <div class="flex flex-wrap gap-2 items-center text-xs border-t border-b border-zinc-100 py-3 my-1">
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Difficulty:</span>
+                  <span class={`font-bold ${
+                    item.difficulty === 'DIY' ? 'text-emerald-600' :
+                    item.difficulty === 'Moderate' ? 'text-amber-600' :
+                    'text-rose-600'
+                  }`}>{item.difficulty}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Occurrence:</span>
+                  <span class="font-bold text-zinc-700">{item.occurrence}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Est. Pro Cost:</span>
+                  <span class="font-bold text-zinc-700">{item.proCost}</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-zinc-100 pt-4">
+                <div class="bg-zinc-50 rounded-2xl p-4 border border-zinc-100">
+                  <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1.5">Likely Cause</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.cause}</p>
+                </div>
+                <div class="bg-amber-500/5 rounded-2xl p-4 border border-amber-500/10">
+                  <p class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1.5">Recommended Action</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.action}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      
+      <!-- Reddit Verified Solutions Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
+          <h2 class="text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <span class="text-orange-500">💬</span> Reddit Verified HVAC Solutions
+          </h2>
+          <span class="text-xs bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-mono uppercase font-bold tracking-wider">Community Vetted</span>
+        </div>
+        <p class="text-sm text-zinc-500 -mt-2 leading-relaxed">
+          Real-world troubleshooting tips and warning alerts compiled from active discussions on communities like <span class="font-semibold text-zinc-700">r/HVAC</span>, <span class="font-semibold text-zinc-700">r/hvacadvice</span>, and <span class="font-semibold text-zinc-700">r/homeowners</span>.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Community Solution 1 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-orange-500/10 text-orange-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/hvacadvice
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "For Rheem Code 22 (Main Limit Open), remove the air filter and run the furnace briefly. If the code clears, swap your restrictive high-MERV filter for a clean, lower-MERV standard filter." (Source: r/hvacadvice Tech Tip)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Tech Tip:</span>
+              <span>Vetted Community Solution</span>
+            </div>
+          </div>
+          
+          <!-- Community Solution 2 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-blue-500/10 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/HVAC
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "A dirty blower wheel with dust-caked blades won't move enough air even at full speed. If the limit switch keeps tripping and your filter is clean, pull the blower assembly and clean the blades." (Source: r/HVAC Tech Tip)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Homeowner Tip:</span>
+              <span>Verified Fix</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- Visible FAQ Accordion Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {schemaData.find(s => s["@type"] === "FAQPage")?.mainEntity.map((faq) => (
+            <details class="group border border-zinc-200 rounded-2xl transition-all [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-zinc-900 cursor-pointer focus:outline-none select-none">
+                <span>{faq.name}</span>
+                <span class="transition-transform group-open:rotate-180 text-zinc-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-zinc-600 leading-relaxed border-t border-zinc-100 pt-4">
+                {faq.acceptedAnswer.text}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+
+      <!-- Troubleshooting Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Rheem Troubleshooting Guides</h2>
+        
+        <div class="space-y-6">
+          <div class="border-l-4 border-amber-500 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">Resolving Open Limit Switch Code 22</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              <strong>Code 22</strong> triggers when the furnace cabinet gets too hot.
+              <strong>Action</strong>: Immediately turn off the furnace. Pull out the furnace air filter; if it is dark or clogged with dust, replace it. Ensure all dampers or supply vents in the rooms are fully open. Let the unit cool for 15 minutes before restarting.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('rheem-search') as HTMLInputElement | null;
+  if (searchInput) {
+    const cards = document.querySelectorAll<HTMLElement>('.rheem-card');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const code = card.getAttribute('data-code') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const cause = card.getAttribute('data-cause') || '';
+
+        if (query === '' || code.includes(query) || desc.includes(query) || cause.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+</script>

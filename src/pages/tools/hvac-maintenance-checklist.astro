@@ -1,0 +1,702 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// SEO Metadata
+const title = "Free 21-Point Preventative Maintenance Checklist Generator";
+const description = "Create a professional, branded 21-Point HVAC Preventative Maintenance (PM) Checklist. Download a blank PDF for the field or fill it out online for your customers.";
+const canonicalURL = "https://coolingsupport.com/tools/hvac-maintenance-checklist";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title}>
+  <slot name="head">
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:type" content="article" />
+    <link rel="canonical" href={canonicalURL} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "HVAC 21-Point PM Checklist Generator",
+    "author": { "@type": "Person", "name": "Mike Reynolds" },
+          "url": canonicalURL,
+          "description": description,
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is included in a 21-point HVAC inspection?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A 21-point inspection typically includes cleaning the condenser coil, checking refrigerant pressures, testing compressor and fan amp draws, inspecting capacitors and contactors, verifying superheat/subcooling, clearing condensate drains, checking the heat exchanger, testing the ignition system, and evaluating thermostat calibration and airflow."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How often should HVAC preventative maintenance be performed?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "It is highly recommended to perform preventative maintenance twice a year: an AC tune-up in the spring before the summer heat, and a furnace or heat pump tune-up in the fall before the winter cold."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does an HVAC tune-up include adding freon (refrigerant)?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. A standard tune-up includes checking the refrigerant levels (pressures, superheat, and subcooling). If the system is low on refrigerant, it indicates a leak. Locating the leak, repairing it, and adding new refrigerant is almost always billed as an additional repair service."
+              }
+            }
+          ]
+        }
+      ]
+    })} />
+  </slot>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    
+    <!-- Header Section -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-extrabold text-blue-900 mb-4 tracking-tight">21-Point PM Checklist Generator</h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Generate a professional HVAC preventative maintenance report. Download a blank clipboard PDF for your techs, or fill it out online to email to the homeowner.
+      </p>
+    </div>
+
+    <!-- Dual Mode Toggle -->
+    <div class="flex justify-center mb-12 no-print">
+      <div class="bg-gray-200 p-1 rounded-sm inline-flex relative shadow-inner">
+        <button id="tab-blank" class="px-8 py-3 rounded-lg text-sm font-bold transition-all duration-200 bg-white shadow text-blue-600 z-10">
+           Download Blank PDF
+        </button>
+        <button id="tab-online" class="px-8 py-3 rounded-lg text-sm font-bold transition-all duration-200 text-gray-500 hover:text-gray-700 z-10">
+           Fill Online & Generate
+        </button>
+      </div>
+    </div>
+
+    <!-- BLANK PDF MODE HERO -->
+    <div id="blank-mode-hero" class="text-center mb-12 no-print">
+      <div class="bg-blue-50 border border-blue-100 rounded-sm p-8 max-w-3xl mx-auto shadow-sm">
+        <div class="text-5xl mb-4"></div>
+        <h2 class="text-2xl font-bold text-blue-900 mb-2">Ready for the Clipboard?</h2>
+        <p class="text-gray-600 mb-6">
+          Click below to generate a perfectly clean, blank 21-Point checklist. It features fillable lines and empty checkboxes, perfectly formatted for a technician's clipboard. No website branding or headers will print.
+        </p>
+        <button onclick="printChecklist(true)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-sm shadow-lg transition-transform transform hover:scale-105 flex items-center gap-2 mx-auto">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          Print Blank PM Checklist
+        </button>
+      </div>
+    </div>
+
+    <!-- ONLINE GENERATOR MODE -->
+    <div id="online-mode-container" class="hidden">
+      <div id="app_grid" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- LEFT COLUMN: Editor Form -->
+        <div class="lg:col-span-4 bg-white rounded-sm shadow-md p-6 border border-gray-100 h-fit max-h-[1200px] overflow-y-auto no-print">
+          <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2 sticky top-0 bg-white pt-6 pb-4 -mt-6 -mx-6 px-6 z-10 border-b border-gray-200 mb-6 shadow-sm">
+            <span></span> Report Details
+          </h2>
+          
+          <form id="editor-form" class="space-y-8">
+            
+            <!-- Company Information -->
+            <div class="bg-gray-50 p-4 rounded-sm border border-gray-200">
+              <h3 class="font-bold text-gray-700 mb-4">Company Information</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Company Logo</label>
+                  <input type="file" id="i_logo" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                  <p class="text-xs text-gray-400 mt-1">Leave empty to omit logo.</p>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                  <input type="text" id="i_company" class="w-full border-gray-300 rounded-lg p-2 border focus:ring-2 focus:ring-blue-500" placeholder="e.g. Ace Heating & Cooling" value="Ace Heating & Cooling">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Company Phone</label>
+                  <input type="text" id="i_phone" class="w-full border-gray-300 rounded-lg p-2 border focus:ring-2 focus:ring-blue-500" placeholder="(555) 123-4567" value="(555) 123-4567">
+                </div>
+              </div>
+            </div>
+
+            <!-- Customer Information -->
+            <div class="bg-gray-50 p-4 rounded-sm border border-gray-200">
+              <h3 class="font-bold text-gray-700 mb-4">Service Details</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Customer Name</label>
+                  <input type="text" id="i_customer" class="w-full border-gray-300 rounded-lg p-2 border focus:ring-2 focus:ring-blue-500" placeholder="John Doe" value="John Doe">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Service Address</label>
+                  <input type="text" id="i_address" class="w-full border-gray-300 rounded-lg p-2 border focus:ring-2 focus:ring-blue-500" placeholder="123 Main St, City, ST 12345" value="123 Main St, Springfield">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                  <input type="date" id="i_date" class="w-full border-gray-300 rounded-lg p-2 border focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Technician Name</label>
+                  <input type="text" id="i_tech" class="w-full border-gray-300 rounded-lg p-2 border focus:ring-2 focus:ring-blue-500" placeholder="Mike T." value="Mike T.">
+                </div>
+              </div>
+            </div>
+
+            <!-- Equipment Information -->
+            <div class="bg-gray-50 p-4 rounded-sm border border-gray-200">
+              <h3 class="font-bold text-gray-700 mb-4">Equipment Inspected</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">AC Make/Model</label>
+                  <input type="text" id="i_ac_model" class="w-full border-gray-300 rounded-lg p-2 border text-sm" placeholder="Carrier 24ABC6" value="Carrier 24ABC6">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Furnace Make/Model</label>
+                  <input type="text" id="i_furnace_model" class="w-full border-gray-300 rounded-lg p-2 border text-sm" placeholder="Carrier 59TP6" value="Carrier 59TP6">
+                </div>
+              </div>
+            </div>
+
+            <!-- Checklist Statuses -->
+            <div class="bg-blue-50 p-4 rounded-sm border border-blue-200">
+              <h3 class="font-bold text-blue-900 mb-4">Inspection Statuses</h3>
+              <p class="text-xs text-blue-700 mb-4">Select the status for each point. Click the trash icon to remove an item.</p>
+              
+              <div class="space-y-2 text-sm mb-4" id="checklist_editor">
+                <!-- Dynamically populated via JS -->
+              </div>
+              
+              <div class="flex gap-2 mt-4 pt-4 border-t border-blue-200">
+                <input type="text" id="new_item_text" class="flex-grow border-gray-300 rounded-lg p-2 border text-sm focus:ring-2 focus:ring-blue-500" placeholder="Custom inspection point...">
+                <button type="button" onclick="addChecklistItem()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors">Add</button>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="bg-gray-50 p-4 rounded-sm border border-gray-200">
+              <h3 class="font-bold text-gray-700 mb-4">Technician Notes & Recs</h3>
+              <textarea id="i_notes" class="w-full border-gray-300 rounded-lg p-2 border text-sm h-32" placeholder="Summary of findings...">System is operating within manufacturer specifications. Recommend replacing the 45/5mfd capacitor during the next visit as it is measuring slightly below rating. Filter replaced today.</textarea>
+            </div>
+
+            <div class="pt-4 pb-8">
+              <button type="button" onclick="printChecklist(false)" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-sm shadow-lg transition-colors flex justify-center items-center gap-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                Print Completed Report
+              </button>
+            </div>
+            
+          </form>
+        </div>
+
+        <!-- RIGHT COLUMN: Live Print Preview -->
+        <div class="lg:col-span-8 overflow-x-auto no-print">
+          <div class="bg-gray-200 p-4 sm:p-8 rounded-sm min-w-[800px]">
+            
+            <!-- THE ACTUAL PRINTABLE AREA -->
+            <div id="print-area" class="bg-white mx-auto shadow-md relative" style="width: 8.5in; min-height: 11in; padding: 0.5in;">
+              
+              <!-- Header -->
+              <div class="flex justify-between items-start border-b-2 border-blue-900 pb-4 mb-6">
+                <div class="flex items-center gap-4">
+                  <div id="p_logo_container" class="w-24 h-24 bg-gray-100 flex items-center justify-center border border-gray-200 shrink-0 overflow-hidden">
+                    <span class="text-gray-400 text-xs text-center px-2">No Logo</span>
+                    <img id="p_logo_img" class="hidden w-full h-full object-contain" src="" alt="Company Logo" />
+                  </div>
+                  <div>
+                    <div id="p_company" class="text-3xl font-black text-blue-900 tracking-tight leading-none mb-1 empty-min-h-[36px]">Ace Heating & Cooling</div>
+                    <p id="p_phone" class="text-gray-600 font-medium empty-min-h-[24px]">(555) 123-4567</p>
+                    <p id="p_email" class="text-gray-500 text-sm empty-min-h-[20px]">info@acehvac.com</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <h2 class="text-2xl font-bold text-gray-800 uppercase tracking-widest">PM Report</h2>
+                  <div class="mt-2 text-sm text-gray-600">
+                    <span class="font-bold">Date:</span> <span id="p_date" class="empty-min-h-[20px] inline-block min-w-[100px] text-right"></span>
+                  </div>
+                  <div class="mt-1 text-sm text-gray-600">
+                    <span class="font-bold">Tech:</span> <span id="p_tech" class="empty-min-h-[20px] inline-block min-w-[100px] text-right">Mike T.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Customer & System Details -->
+              <div class="grid grid-cols-2 gap-8 mb-8 text-sm">
+                <div>
+                  <h3 class="font-bold text-gray-800 border-b border-gray-300 mb-2 pb-1 uppercase tracking-wider text-xs">Customer Details</h3>
+                  <div class="grid grid-cols-[80px_1fr] gap-2 mb-2">
+                    <span class="font-medium text-gray-600">Name:</span>
+                    <span id="p_customer" class="font-bold text-gray-900 empty-min-h-[20px]">John Doe</span>
+                  </div>
+                  <div class="grid grid-cols-[80px_1fr] gap-2">
+                    <span class="font-medium text-gray-600">Address:</span>
+                    <span id="p_address" class="text-gray-900 empty-min-h-[20px]">123 Main St, Springfield</span>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="font-bold text-gray-800 border-b border-gray-300 mb-2 pb-1 uppercase tracking-wider text-xs">Equipment Inspected</h3>
+                  <div class="grid grid-cols-[80px_1fr] gap-2 mb-2">
+                    <span class="font-medium text-gray-600">A/C:</span>
+                    <span id="p_ac_model" class="text-gray-900 empty-min-h-[20px]">Carrier 24ABC6</span>
+                  </div>
+                  <div class="grid grid-cols-[80px_1fr] gap-2">
+                    <span class="font-medium text-gray-600">Furnace:</span>
+                    <span id="p_furnace_model" class="text-gray-900 empty-min-h-[20px]">Carrier 59TP6</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 21 Point Checklist Table -->
+              <div class="mb-8">
+                <div class="bg-blue-900 text-white text-sm font-bold p-2 uppercase tracking-wider mb-2 text-center">
+                  21-Point Preventative Maintenance Checklist
+                </div>
+                
+                <table class="w-full text-xs border-collapse">
+                  <thead>
+                    <tr class="bg-gray-100 border-b-2 border-gray-300">
+                      <th class="text-left p-2 w-[5%] font-bold">#</th>
+                      <th class="text-left p-2 w-[65%] font-bold">Inspection Point</th>
+                      <th class="text-center p-2 w-[10%]">Pass</th>
+                      <th class="text-center p-2 w-[10%]">Fail</th>
+                      <th class="text-center p-2 w-[10%]">N/A</th>
+                    </tr>
+                  </thead>
+                  <tbody id="p_checklist_body">
+                    <!-- Populated via JS -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Technician Notes -->
+              <div class="mb-12">
+                <h3 class="font-bold text-gray-800 border-b border-gray-300 mb-2 pb-1 uppercase tracking-wider text-xs">Technician Notes & Recommendations</h3>
+                <p id="p_notes" class="text-sm text-gray-700 whitespace-pre-wrap min-h-[100px] empty-min-h-[100px]">System is operating within manufacturer specifications. Recommend replacing the 45/5mfd capacitor during the next visit as it is measuring slightly below rating. Filter replaced today.</p>
+              </div>
+
+              <!-- Signatures -->
+              <div class="grid grid-cols-2 gap-12 mt-16 print-avoid-break">
+                <div>
+                  <div class="border-b border-black h-8 mb-2"></div>
+                  <p class="text-xs text-gray-500 font-medium">Technician Signature</p>
+                </div>
+                <div>
+                  <div class="border-b border-black h-8 mb-2"></div>
+                  <p class="text-xs text-gray-500 font-medium">Customer Acknowledgment</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO Content Section -->
+    <article class="mt-24 max-w-5xl mx-auto">
+      
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 tracking-tight">The Ultimate 21-Point HVAC Preventative Maintenance Checklist</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Preventative maintenance is the lifeblood of a successful HVAC contracting business and the key to longevity for residential heating and cooling systems. Performing comprehensive tune-ups before the peak heating and cooling seasons ensures your customers' systems run efficiently, prevents catastrophic breakdowns, and builds immense trust.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div class="bg-gradient-to-br from-blue-50 to-white rounded-sm p-8 border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
+          <div class="text-4xl mb-4">️</div>
+          <h3 class="text-2xl font-bold text-blue-900 mb-4">Why Standardization Matters</h3>
+          <p class="text-gray-700 leading-relaxed">
+            A formalized <strong>21-Point PM Checklist</strong> provides much-needed standardization. It guarantees that whether your newest apprentice or your senior lead technician is on the job, the customer receives the exact same high level of thorough service. Without a checklist, technicians can easily fall into the habit of "drive-by maintenance"—swapping the filter, hosing down the condenser, and leaving. A physical checklist forces accountability.
+          </p>
+        </div>
+
+        <div class="bg-gradient-to-br from-emerald-50 to-white rounded-sm p-8 border border-emerald-100 shadow-sm hover:shadow-md transition-shadow">
+          <div class="text-4xl mb-4"></div>
+          <h3 class="text-2xl font-bold text-emerald-900 mb-4">Building Trust & Driving Sales</h3>
+          <p class="text-gray-700 leading-relaxed">
+            Homeowners rarely understand the technical aspects of their HVAC system. Handing the customer a completed, branded 21-Point Checklist physicalizes your service. Seeing a list of technical inspections proves the thoroughness of your tune-up. This transparency not only validates the cost of your visit but also drastically increases the conversion rate when selling annual <strong>Preventative Maintenance Agreements (PMAs)</strong>.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-sm p-8 md:p-12 shadow-md border border-gray-100 mb-20">
+        <h3 class="text-3xl font-bold text-gray-900 mb-8 text-center">Key Components of the 21-Point Tune-Up</h3>
+        
+        <div class="space-y-8">
+          <div class="flex flex-col md:flex-row gap-6 items-start">
+            <div class="bg-cyan-100 text-cyan-700 w-16 h-16 rounded-sm flex items-center justify-center shrink-0 text-2xl font-bold shadow-inner">1</div>
+            <div>
+              <h4 class="text-xl font-bold text-gray-900 mb-2">The Cooling System (Air Conditioning)</h4>
+              <p class="text-gray-600 leading-relaxed">The AC inspection focuses heavily on heat transfer and electrical integrity. Cleaning the condenser coil ensures the system can adequately reject heat. Measuring the compressor and fan motor amp draws helps identify motors that are over-amping and nearing failure. Checking the superheat and subcooling ensures the refrigerant charge is exact, which is critical for the compressor's lifespan and the system's SEER rating.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row gap-6 items-start">
+            <div class="bg-orange-100 text-orange-700 w-16 h-16 rounded-sm flex items-center justify-center shrink-0 text-2xl font-bold shadow-inner">2</div>
+            <div>
+              <h4 class="text-xl font-bold text-gray-900 mb-2">The Heating System (Gas Furnace / Heat Pump)</h4>
+              <p class="text-gray-600 leading-relaxed">Heating inspections prioritize safety and ignition reliability. For gas furnaces, checking the heat exchanger for cracks is paramount to prevent carbon monoxide leaks. Cleaning the flame sensor and testing the hot surface ignitor prevents the dreaded "furnace clicking but not firing" no-heat calls in the dead of winter. For heat pumps, verifying the defrost control board operates correctly prevents the outdoor unit from turning into a block of ice.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row gap-6 items-start">
+            <div class="bg-purple-100 text-purple-700 w-16 h-16 rounded-sm flex items-center justify-center shrink-0 text-2xl font-bold shadow-inner">3</div>
+            <div>
+              <h4 class="text-xl font-bold text-gray-900 mb-2">Airflow and Indoor Air Quality</h4>
+              <p class="text-gray-600 leading-relaxed">The most common cause of HVAC failure is restricted airflow. Inspecting and replacing the air filter, clearing the condensate drain line (to prevent ceiling water damage), and checking the blower motor wheel are simple steps that prevent the vast majority of nuisance service calls.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-12">
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-8 text-center tracking-tight">Frequently Asked Questions</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <div class="bg-white rounded-sm p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-start gap-2">
+              <span class="text-blue-500 shrink-0"></span> What is included in a 21-point HVAC inspection?
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed pl-7">A 21-point inspection typically includes cleaning the condenser coil, checking refrigerant pressures, testing compressor and fan amp draws, inspecting capacitors and contactors, verifying superheat/subcooling, clearing condensate drains, checking the heat exchanger, testing the ignition system, and evaluating thermostat calibration and airflow.</p>
+          </div>
+          
+          <div class="bg-white rounded-sm p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-start gap-2">
+              <span class="text-blue-500 shrink-0"></span> How often should PM be performed?
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed pl-7">It is highly recommended to perform preventative maintenance twice a year: an AC tune-up in the spring before the summer heat, and a furnace or heat pump tune-up in the fall before the winter cold.</p>
+          </div>
+
+          <div class="bg-white rounded-sm p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-start gap-2">
+              <span class="text-blue-500 shrink-0"></span> Does a tune-up include adding freon?
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed pl-7">No. A standard tune-up includes checking the refrigerant levels (via pressures, superheat, and subcooling). If the system is low on refrigerant, it indicates a leak. Locating the leak, repairing it, and adding new refrigerant is billed as a separate repair service.</p>
+          </div>
+          
+          <div class="bg-white rounded-sm p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-start gap-2">
+              <span class="text-blue-500 shrink-0"></span> Can I print this checklist for the field?
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed pl-7">Yes! The tool features a "Download Blank PDF" mode. Clicking this will strip all website branding and generate a perfectly clean, printable 8.5x11 PDF document with empty checkboxes and fillable lines.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </article>
+
+  </div>
+</Layout>
+
+<style>
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+  .empty-min-h-\[36px\]:empty { min-height: 36px; display: block; }
+  .empty-min-h-\[24px\]:empty { min-height: 24px; display: block; }
+  .empty-min-h-\[20px\]:empty { min-height: 20px; display: block; }
+  .empty-min-h-\[100px\]:empty { min-height: 100px; display: block; }
+</style>
+
+<script is:inline>
+  // Checklist Data
+  let checklistItems = [
+    { id: 1, text: "Inspect and clean condenser coil" },
+    { id: 2, text: "Check operating refrigerant pressures/temperatures" },
+    { id: 3, text: "Test compressor amp draw" },
+    { id: 4, text: "Test condenser fan motor amp draw" },
+    { id: 5, text: "Inspect and test dual run capacitor(s)" },
+    { id: 6, text: "Inspect contactor for pitting/burns" },
+    { id: 7, text: "Check superheat and subcooling" },
+    { id: 8, text: "Clear and flush condensate drain line" },
+    { id: 9, text: "Inspect indoor evaporator coil (if accessible)" },
+    { id: 10, text: "Measure temperature drop across evaporator" },
+    { id: 11, text: "Inspect heat exchanger for cracks" },
+    { id: 12, text: "Clean and adjust gas burners" },
+    { id: 13, text: "Test ignition system & flame sensor" },
+    { id: 14, text: "Check gas valve operation and pressure" },
+    { id: 15, text: "Inspect flue pipe and draft" },
+    { id: 16, text: "Test high limit safety controls" },
+    { id: 17, text: "Check carbon monoxide levels" },
+    { id: 18, text: "Test defrost cycle (if Heat Pump)" },
+    { id: 19, text: "Inspect and replace air filter" },
+    { id: 20, text: "Check blower motor amp draw and wheel" },
+    { id: 21, text: "Test thermostat operation and calibration" }
+  ];
+
+  // Store the current status of each item (pass, fail, na)
+  const checklistState = {};
+
+  // Setup Date today
+  const d = new Date();
+  const dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  document.getElementById('i_date').value = dateStr;
+
+  // Render Editor & Preview Checklists
+  function renderChecklist() {
+    const editorContainer = document.getElementById('checklist_editor');
+    const previewContainer = document.getElementById('p_checklist_body');
+    
+    let editorHTML = '';
+    let previewHTML = '';
+
+    checklistItems.forEach((item, index) => {
+      // Default to pass
+      if (!checklistState[item.id]) checklistState[item.id] = 'pass';
+      
+      const status = checklistState[item.id];
+      const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+
+      // Build Editor Row
+      editorHTML += `
+        <div class="flex items-center justify-between border-b border-blue-100 py-2 group">
+          <div class="w-7/12 pr-2 truncate text-xs flex items-center gap-1" title="${item.text}">
+            <button type="button" onclick="removeChecklistItem(${item.id})" class="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity" title="Remove Item"></button>
+            <span>${index + 1}. ${item.text}</span>
+          </div>
+          <div class="flex gap-1 w-5/12 justify-end">
+            <button type="button" onclick="updateItem(${item.id}, 'pass')" class="px-2 py-1 rounded text-xs font-bold ${status === 'pass' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-500 hover:bg-gray-300'}">Pass</button>
+            <button type="button" onclick="updateItem(${item.id}, 'fail')" class="px-2 py-1 rounded text-xs font-bold ${status === 'fail' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-500 hover:bg-gray-300'}">Fail</button>
+            <button type="button" onclick="updateItem(${item.id}, 'na')" class="px-2 py-1 rounded text-xs font-bold ${status === 'na' ? 'bg-gray-500 text-white' : 'bg-gray-200 text-gray-500 hover:bg-gray-300'}">N/A</button>
+          </div>
+        </div>
+      `;
+
+      // Build Preview Row
+      // In online mode, we show a black checkmark  or X  to look professional, or empty boxes for printing blank
+      const passBox = status === 'pass' ? '<span class="status-icon font-black"></span>' : '<span class="status-icon text-gray-200"></span>';
+      const failBox = status === 'fail' ? '<span class="status-icon font-black text-lg"></span>' : '<span class="status-icon text-gray-200"></span>';
+      const naBox = status === 'na' ? '<span class="status-icon font-black"></span>' : '<span class="status-icon text-gray-200"></span>';
+
+      previewHTML += `
+        <tr class="${bgClass} border-b border-gray-200">
+          <td class="p-2 text-gray-500">${index + 1}</td>
+          <td class="p-2 text-gray-800">${item.text}</td>
+          <td class="p-2 text-center text-green-700">${passBox}</td>
+          <td class="p-2 text-center text-red-700">${failBox}</td>
+          <td class="p-2 text-center text-gray-700">${naBox}</td>
+        </tr>
+      `;
+    });
+
+    editorContainer.innerHTML = editorHTML;
+    previewContainer.innerHTML = previewHTML;
+  }
+
+  window.updateItem = function(id, newStatus) {
+    checklistState[id] = newStatus;
+    renderChecklist();
+  }
+
+  window.removeChecklistItem = function(id) {
+    checklistItems = checklistItems.filter(item => item.id !== id);
+    delete checklistState[id];
+    renderChecklist();
+  }
+
+  window.addChecklistItem = function() {
+    const input = document.getElementById('new_item_text');
+    const text = input.value.trim();
+    if (text) {
+      const newId = Date.now();
+      checklistItems.push({ id: newId, text: text });
+      checklistState[newId] = 'pass';
+      input.value = '';
+      renderChecklist();
+    }
+  }
+
+  // Initial render
+  renderChecklist();
+
+  // Tab Logic
+  const tabBlank = document.getElementById('tab-blank');
+  const tabOnline = document.getElementById('tab-online');
+  const heroBlank = document.getElementById('blank-mode-hero');
+  const onlineContainer = document.getElementById('online-mode-container');
+
+  tabBlank.addEventListener('click', () => {
+    tabBlank.className = "px-8 py-3 rounded-lg text-sm font-bold transition-all duration-200 bg-white shadow text-blue-600 z-10";
+    tabOnline.className = "px-8 py-3 rounded-lg text-sm font-bold transition-all duration-200 text-gray-500 hover:text-gray-700 z-10";
+    heroBlank.classList.remove('hidden');
+    onlineContainer.classList.add('hidden');
+  });
+
+  tabOnline.addEventListener('click', () => {
+    tabOnline.className = "px-8 py-3 rounded-lg text-sm font-bold transition-all duration-200 bg-white shadow text-blue-600 z-10";
+    tabBlank.className = "px-8 py-3 rounded-lg text-sm font-bold transition-all duration-200 text-gray-500 hover:text-gray-700 z-10";
+    onlineContainer.classList.remove('hidden');
+    heroBlank.classList.add('hidden');
+  });
+
+  // Text Bindings
+  const bindings = [
+    { input: 'i_company', display: 'p_company' },
+    { input: 'i_phone', display: 'p_phone' },
+    { input: 'i_email', display: 'p_email' },
+    { input: 'i_customer', display: 'p_customer' },
+    { input: 'i_address', display: 'p_address' },
+    { input: 'i_date', display: 'p_date' },
+    { input: 'i_tech', display: 'p_tech' },
+    { input: 'i_ac_model', display: 'p_ac_model' },
+    { input: 'i_furnace_model', display: 'p_furnace_model' },
+    { input: 'i_notes', display: 'p_notes' }
+  ];
+
+  bindings.forEach(b => {
+    const elIn = document.getElementById(b.input);
+    const elOut = document.getElementById(b.display);
+    if(elIn && elOut) {
+      elOut.innerText = elIn.value;
+      elIn.addEventListener('input', (e) => {
+        elOut.innerText = e.target.value;
+      });
+    }
+  });
+
+  // Logo Upload
+  document.getElementById('i_logo').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const container = document.getElementById('p_logo_container');
+    const img = document.getElementById('p_logo_img');
+    const span = container.querySelector('span');
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        img.src = e.target.result;
+        img.classList.remove('hidden');
+        span.classList.add('hidden');
+        container.classList.remove('bg-gray-100', 'border');
+      }
+      reader.readAsDataURL(file);
+    } else {
+      img.src = '';
+      img.classList.add('hidden');
+      span.classList.remove('hidden');
+      container.classList.add('bg-gray-100', 'border');
+    }
+  });
+
+  // Print function handling both states
+  window.printChecklist = function(isBlank) {
+    const printArea = document.getElementById('print-area');
+    
+    if (isBlank) {
+      printArea.classList.add('is-blank');
+      // Temporarily clear the text fields
+      bindings.forEach(b => {
+        const elOut = document.getElementById(b.display);
+        if(elOut) {
+          elOut.setAttribute('data-original', elOut.innerText);
+          elOut.innerText = "";
+        }
+      });
+      // Temporarily replace checklist icons with blank boxes
+      const icons = printArea.querySelectorAll('.status-icon');
+      icons.forEach(icon => {
+        icon.setAttribute('data-original-html', icon.innerHTML);
+        icon.setAttribute('data-original-class', icon.className);
+        icon.innerHTML = '';
+        icon.className = 'status-icon text-gray-300';
+      });
+    }
+
+    // Inject bulletproof print CSS
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @media print {
+        body > *:not(#print-container) { display: none !important; }
+        #print-container { display: block !important; width: 100%; margin: 0; padding: 0; }
+        #print-area { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; }
+        
+        .is-blank span[id^="p_"] {
+          border-bottom: 1px solid #cbd5e1 !important;
+          min-width: 150px;
+          display: inline-block;
+        }
+        .is-blank p#p_notes {
+          border: 1px dashed #cbd5e1 !important;
+        }
+        
+        /* Hide the logo box */
+        .is-blank #p_logo_container {
+          border: none !important;
+          background-color: transparent !important;
+        }
+        .is-blank #p_logo_container span, .is-blank #p_logo_container img {
+          display: none !important;
+        }
+
+        /* Ensure borders print */
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        
+        @page {
+          margin: 0.5cm;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Create a temporary container at the body root
+    const printContainer = document.createElement('div');
+    printContainer.id = 'print-container';
+    
+    // Move printArea to the container
+    const originalParent = printArea.parentNode;
+    const originalNextSibling = printArea.nextSibling;
+    printContainer.appendChild(printArea);
+    document.body.appendChild(printContainer);
+
+    // Trigger print
+    window.print();
+    
+    // Restore DOM immediately after print dialog opens/closes
+    setTimeout(() => {
+      if (originalNextSibling) {
+        originalParent.insertBefore(printArea, originalNextSibling);
+      } else {
+        originalParent.appendChild(printArea);
+      }
+      document.body.removeChild(printContainer);
+      document.head.removeChild(style);
+
+      if (isBlank) {
+        printArea.classList.remove('is-blank');
+        bindings.forEach(b => {
+          const elOut = document.getElementById(b.display);
+          if(elOut) {
+            elOut.innerText = elOut.getAttribute('data-original');
+          }
+        });
+        // Restore icons
+        const icons = printArea.querySelectorAll('.status-icon');
+        icons.forEach(icon => {
+          icon.innerHTML = icon.getAttribute('data-original-html');
+          icon.className = icon.getAttribute('data-original-class');
+        });
+      }
+    }, 500);
+  }
+</script>

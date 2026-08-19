@@ -1,0 +1,120 @@
+---
+import Layout from './Layout.astro';
+
+const { frontmatter } = Astro.props;
+const canonicalUrl = `https://coolingsupport.com${Astro.url.pathname}`;
+const keywords = frontmatter.keywords || '';
+
+// Rich JSON-LD TechArticle schema
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": frontmatter.schema || "TechArticle",
+  "headline": frontmatter.title,
+  "description": frontmatter.description,
+  "keywords": keywords,
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonicalUrl
+  },
+  "author": {
+    "@type": "Person",
+    "name": frontmatter.author || "Mike Reynolds",
+    "jobTitle": frontmatter.credentials || "Master HVAC Technician",
+    "url": "https://coolingsupport.com/about-us"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Cooling Support",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://coolingsupport.com/favicon.svg"
+    }
+  },
+  "datePublished": frontmatter.date || new Date().toISOString(),
+  "dateModified": frontmatter.dateModified || frontmatter.date || new Date().toISOString(),
+  "image": frontmatter.image ? `https://coolingsupport.com${frontmatter.image}` : "https://coolingsupport.com/favicon.svg",
+  "articleSection": frontmatter.categoryName || "Technical Articles",
+  "inLanguage": "en-US"
+};
+---
+
+<Layout title={frontmatter.title}>
+  <Fragment slot="head">
+    <!-- Primary SEO Meta -->
+    <meta name="description" content={frontmatter.description} />
+    {keywords && <meta name="keywords" content={keywords} />}
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={frontmatter.title} />
+    <meta property="og:description" content={frontmatter.description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Cooling Support" />
+    <meta property="article:published_time" content={frontmatter.date} />
+    <meta property="article:author" content={frontmatter.author || "Mike Reynolds"} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={frontmatter.title} />
+    <meta name="twitter:description" content={frontmatter.description} />
+
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  </Fragment>
+
+  <!-- Modern Article Header -->
+  <div class="bg-zinc-950 pt-20 pb-16 border-b border-zinc-800 relative overflow-hidden">
+    <!-- Glow Effect -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] opacity-10 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-blue-400 to-transparent blur-[100px] rounded-full"></div>
+    </div>
+    
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <!-- Breadcrumb Context -->
+      <nav class="flex justify-center mb-8 text-sm font-medium text-zinc-500">
+        <ol class="inline-flex items-center space-x-2">
+          <li><a href="/guides" class="hover:text-blue-400 transition-colors">Knowledge Base</a></li>
+          <li><svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></li>
+          <li><a href={frontmatter.categoryUrl || "/guides/articles"} class="hover:text-blue-400 transition-colors">{frontmatter.categoryName || "Articles"}</a></li>
+        </ol>
+      </nav>
+
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-6 leading-tight">
+        {frontmatter.title}
+      </h1>
+      
+      <p class="text-xl text-zinc-400 max-w-3xl mx-auto leading-relaxed mb-10">
+        {frontmatter.description}
+      </p>
+
+      <!-- Author Byline -->
+      <a href="/about-us" class="inline-flex items-center gap-4 group hover:opacity-90 transition-opacity">
+        <img src="/images/mike-reynolds.png" alt="Mike Reynolds" class="w-12 h-12 rounded-full border-2 border-zinc-700 group-hover:border-blue-500 object-cover transition-colors" />
+        <div class="text-left">
+          <p class="text-white font-bold text-sm group-hover:text-blue-400 transition-colors">By {frontmatter.author || "Mike Reynolds"}</p>
+          <p class="text-zinc-500 text-xs font-mono">{frontmatter.credentials || "Master HVAC Technician"}</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Article Content -->
+  <div class="bg-white py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <article class="prose prose-slate prose-lg max-w-none prose-headings:font-extrabold prose-headings:tracking-tight prose-a:text-blue-600 prose-a:font-semibold hover:prose-a:text-blue-500 prose-img:rounded-2xl prose-img:border prose-img:border-slate-200 prose-img:shadow-sm">
+        <slot />
+      </article>
+
+      <!-- CTA Footer -->
+      <div class="mt-16 pt-10 border-t border-slate-200 text-center">
+        <h3 class="text-2xl font-bold text-slate-900 mb-4">Need help running the numbers?</h3>
+        <p class="text-slate-600 mb-6">Use our free engineering calculators to figure out exactly what your home needs.</p>
+        <a href="/" class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors shadow-sm shadow-blue-600/20">
+          Explore Free Calculators
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

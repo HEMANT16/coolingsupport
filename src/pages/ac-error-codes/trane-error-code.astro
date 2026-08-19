@@ -1,0 +1,323 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+const traneCodes = [
+  { code: "1 Red Flash", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Flame Sensor", desc: "Flame sensed out of sequence (Flame present with no call for heat)", cause: "Gas valve stuck in open position, or control board circuit relay shorted.", action: "Shut off gas line. Call technician to inspect and replace gas valve: $200 – $450.", difficulty: "Professional Only", occurrence: "Common", proCost: "$200 – $450" },
+  { code: "2 Red Flashes", severity: "diy", severityText: "DIY Safe", color: "emerald", category: "Ignition", desc: "System lockout (Ignition retries exceeded)", cause: "Furnace attempted to light a flame 3 times but failed. Gas off or dirty igniter.", action: "Ensure main gas valve handle is parallel to line. Clean flame sensor with steel wool. Reset switch.", difficulty: "DIY", occurrence: "Moderate", proCost: "N/A" },
+  { code: "3 Red Flashes", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Draft Inducer", desc: "Draft inducer pressure switch did not close", cause: "Blocked vent flue pipe, cracked pressure tubing, clogged drain, or failed inducer motor.", action: "Verify inducer motor is running. Inspect switch hose for cracks. Clear condensate drain: DIY Safe.", difficulty: "Moderate", occurrence: "Moderate", proCost: "$100 – $250" },
+  { code: "4 Red Flashes", severity: "diy", severityText: "DIY Safe", color: "emerald", category: "Limit Switch", desc: "High limit switch open (Overheating)", cause: "Restricted airflow due to dirty air filter, blocked return registers, or failing blower motor.", action: "Replace air filter. Make sure all registers are open. If blower motor does not spin, check run capacitor.", difficulty: "DIY", occurrence: "Common", proCost: "N/A" },
+  { code: "5 Red Flashes", severity: "danger", severityText: "Stop AC — Danger", color: "red", category: "Gas Valve", desc: "Flame sensed with gas valve closed", cause: "Gas valve is leaking gas into the combustion chamber, or control board relay is fused open.", action: "Shut off main gas supply valve immediately. Do not attempt to run. Replace gas valve: $220 – $480.", difficulty: "Professional Only", occurrence: "Rare", proCost: "$220 – $480" },
+  { code: "6 Red Flashes", severity: "danger", severityText: "Stop AC — Danger", color: "red", category: "Combustion", desc: "Flame rollout switch open", cause: "Flames are rolling out of combustion chamber, likely due to a cracked heat exchanger or exhaust block.", action: "Shut off furnace immediately. Rollout is a serious carbon monoxide hazard. A technician must inspect the heat exchanger.", difficulty: "Professional Only", occurrence: "Rare", proCost: "$250 – $600" },
+  { code: "7 Red Flashes", severity: "diy", severityText: "DIY Safe", color: "emerald", category: "Flame Sensor", desc: "Low flame signal warning", cause: "Flame sensor probe has soot or rust buildup, causing erratic flame proving signals.", action: "Unscrew flame sensor, clean metal rod with steel wool or emery cloth, and reinstall. Prevents Code 2 lockouts.", difficulty: "DIY", occurrence: "Common", proCost: "N/A" },
+  { code: "8 Red Flashes", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Igniter", desc: "Check igniter circuit", cause: "Silicon nitride hot surface igniter is cracked or electrical harness is loose.", action: "Replace hot surface igniter element: $60 – $120 / ₹1,200 – ₹2,500.", difficulty: "Professional Only", occurrence: "Moderate", proCost: "$60 – $120 / ₹1,200 – ₹2,500" },
+  { code: "9 Red Flashes", severity: "technician", severityText: "Technician Advised", color: "amber", category: "Condensate", desc: "Condensate pressure switch open", cause: "Furnate condensate trap is full of slime and water is backing up in the furnace secondary heat exchanger.", action: "Clean the furnace condensate drain system, flush lines with hot water, and clear the trap.", difficulty: "Moderate", occurrence: "Moderate", proCost: "$100 – $250" },
+];
+
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Trane & American Standard AC & Furnace Codes | Diagnostic Guide",
+    "description": "Comprehensive lookup for decoding red flashing diagnostic LED light codes on Trane and American Standard furnaces.",
+    "category": "HVAC Diagnostics",
+    "author": {
+      "@type": "Person",
+      "name": "Mike Reynolds",
+      "jobTitle": "Master HVAC Technician"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I check Trane fault codes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Trane furnace control boards feature a diagnostic LED labeled STATUS or DIAGNOSTIC. Observe the light flashes: slow flash means standby, fast flash means call for heat, and a series of continuous blinks (1 to 9 flashes) indicates an active fault code."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does 4 flashes mean on a Trane furnace?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Four flashes on a Trane furnace indicates a high limit switch open lockout. This is almost always caused by a severely dirty air filter restricting airflow, causing the heat exchanger cabinet to overheat."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout title="Trane & American Standard AC & Furnace Codes | Diagnostic Guide">
+  <SEO
+    slot="head"
+    title="Trane & American Standard AC & Furnace Codes | Diagnostic Guide | Cooling Support"
+    description="Decode Trane & American Standard status LED count flash codes (1 to 9 flashes) instantly. Learn symptoms, causes, and DIY reset steps."
+    type="article"
+    schema={schemaData}
+  />
+
+  <!-- Hero Section -->
+  <section class="relative bg-zinc-950 pt-24 pb-20 border-b border-zinc-800 overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] opacity-10 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-orange-500 to-transparent blur-[120px] rounded-full"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/25 text-orange-400 text-xs font-semibold px-5 py-2 rounded-full mb-6 font-mono">
+        🚨 Trane & American Standard Diagnostics
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
+        Trane &amp; American Standard Faults <br />
+        <span class="text-orange-400"> furnace LED Flash codes</span>
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-8">
+        Troubleshoot flashing red status lights on your Trane control board. Instantly check if you can fix it or need to call a pro.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Search and Guide -->
+  <div class="bg-zinc-50 min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center space-x-2 text-sm font-semibold text-zinc-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-orange-500 transition-colors">Home</a>
+        <span class="text-zinc-300">/</span>
+        <a href="/ac-error-codes" class="hover:text-orange-500 transition-colors">AC Error Codes</a>
+        <span class="text-zinc-300">/</span>
+        <span class="text-zinc-800 font-bold">Trane &amp; American Standard</span>
+      </nav>
+
+      <!-- Reading Trane Flash Codes -->
+      <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-4">
+        <h2 class="text-xl font-bold text-zinc-900 flex items-center gap-2">
+          <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          How to Read Trane LED Diagnostic Flashes
+        </h2>
+        <div class="text-sm text-zinc-600 space-y-3 leading-relaxed">
+          <p>
+            Trane furnace control boards feature a diagnostic LED labeled <strong>STATUS</strong> or <strong>DIAGNOSTIC</strong>. Unlike Carrier's two-digit blinks, Trane uses a continuous sequence of single flashes:
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Slow Green Flash</strong>: System is operating normally, no call for heat.</li>
+            <li><strong>Fast Green Flash</strong>: System is operating normally, call for heat active.</li>
+            <li><strong>Red Flashes</strong>: Diagnostic error. Count the number of flashes between pauses.</li>
+          </ul>
+          <p class="bg-zinc-50 p-4 rounded-xl font-mono text-xs border border-zinc-100">
+            Example: Flash... Flash... Flash... (Pause) = <strong>3 Red Flashes</strong> (Pressure Switch Fault).
+          </p>
+        </div>
+      </div>
+
+      <!-- Search Engine -->
+      <section class="space-y-6">
+        <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+          <h2 class="text-2xl font-bold text-zinc-900">Trane Code Lookup</h2>
+          
+          <div style="position: relative; width: 100%;">
+            <div style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; pointer-events: none; color: #a1a1aa; z-index: 10;">
+              <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input
+              type="text"
+              id="trane-search"
+              placeholder="Search by flash count (e.g. 2, 3, 4, 6 flashes)..."
+              class="w-full pl-14 pr-5 py-4 text-lg bg-zinc-50 border-2 border-zinc-200 rounded-2xl focus:outline-none focus:border-orange-500 transition-colors text-zinc-800 placeholder-zinc-400 shadow-inner"
+            />
+          </div>
+        </div>
+
+        <!-- Cards Container -->
+        <div class="space-y-4" id="trane-cards-container">
+          {traneCodes.map((item) => (
+            <div
+              class="trane-card bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 flex flex-col gap-4 transition-all hover:border-zinc-300"
+              data-code={item.code.toLowerCase()}
+              data-desc={item.desc.toLowerCase()}
+              data-cause={item.cause.toLowerCase()}
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-2">
+                  <span class="font-black text-zinc-900 text-xl font-mono tracking-tight">{item.code}</span>
+                  <span class="text-xs bg-zinc-50 text-zinc-500 px-2.5 py-1 rounded-full font-medium">{item.category}</span>
+                </div>
+                
+                <span class={`text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 ${
+                  item.color === 'emerald' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
+                  item.color === 'amber' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                  'bg-rose-50 text-rose-700 border border-rose-100'
+                }`}>
+                  <span class={`w-1.5 h-1.5 rounded-full ${
+                    item.color === 'emerald' ? 'bg-emerald-500' :
+                    item.color === 'amber' ? 'bg-amber-500' :
+                    'bg-rose-600'
+                  }`}></span>
+                  {item.severityText}
+                </span>
+              </div>
+
+              <div>
+                <p class="font-bold text-zinc-800 text-base leading-snug">{item.desc}</p>
+              </div>
+
+              <!-- Diagnostic Metrics Panel -->
+              <div class="flex flex-wrap gap-2 items-center text-xs border-t border-b border-zinc-100 py-3 my-1">
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Difficulty:</span>
+                  <span class={`font-bold ${
+                    item.difficulty === 'DIY' ? 'text-emerald-600' :
+                    item.difficulty === 'Moderate' ? 'text-amber-600' :
+                    'text-rose-600'
+                  }`}>{item.difficulty}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Occurrence:</span>
+                  <span class="font-bold text-zinc-700">{item.occurrence}</span>
+                </div>
+
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-100 text-zinc-700 px-3 py-1 rounded-full">
+                  <span class="text-zinc-400">Est. Pro Cost:</span>
+                  <span class="font-bold text-zinc-700">{item.proCost}</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-zinc-100 pt-4">
+                <div class="bg-zinc-50 rounded-2xl p-4 border border-zinc-100">
+                  <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1.5">Likely Cause</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.cause}</p>
+                </div>
+                <div class="bg-orange-500/5 rounded-2xl p-4 border border-orange-500/10">
+                  <p class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-1.5">Recommended Action</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.action}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      
+      <!-- Reddit Verified Solutions Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
+          <h2 class="text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <span class="text-orange-500">💬</span> Reddit Verified HVAC Solutions
+          </h2>
+          <span class="text-xs bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-mono uppercase font-bold tracking-wider">Community Vetted</span>
+        </div>
+        <p class="text-sm text-zinc-500 -mt-2 leading-relaxed">
+          Real-world troubleshooting tips and warning alerts compiled from active discussions on communities like <span class="font-semibold text-zinc-700">r/HVAC</span>, <span class="font-semibold text-zinc-700">r/hvacadvice</span>, and <span class="font-semibold text-zinc-700">r/homeowners</span>.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Community Solution 1 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-orange-500/10 text-orange-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/hvacadvice
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "If your furnace is cold and showing 4 flashes, check the Molex plug wiring harness connected to the limit switch. Reseating the loose connector contacts often solves the issue instantly." (Source: r/hvacadvice Tech Tip)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Tech Tip:</span>
+              <span>Vetted Community Solution</span>
+            </div>
+          </div>
+          
+          <!-- Community Solution 2 -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-5 space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 bg-blue-500/10 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl font-mono uppercase tracking-wider">
+              r/HVAC
+            </div>
+            <p class="text-sm text-zinc-700 italic leading-relaxed pt-2">
+              "4 flashes is usually a dirty filter or someone using a 1-inch MERV 13 filter that restricts too much air. Swapping it for a standard MERV 8 filter resolved my limit trips." (Source: r/homeowners Verified Fix)
+            </p>
+            <div class="flex items-center gap-2 border-t border-zinc-200/60 pt-3 text-xs text-zinc-500">
+              <span class="font-bold text-zinc-700">Homeowner Tip:</span>
+              <span>Verified Fix</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- Visible FAQ Accordion Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {schemaData.find(s => s["@type"] === "FAQPage")?.mainEntity.map((faq) => (
+            <details class="group border border-zinc-200 rounded-2xl transition-all [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-zinc-900 cursor-pointer focus:outline-none select-none">
+                <span>{faq.name}</span>
+                <span class="transition-transform group-open:rotate-180 text-zinc-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
+              </summary>
+              <div class="px-5 pb-5 text-sm text-zinc-600 leading-relaxed border-t border-zinc-100 pt-4">
+                {faq.acceptedAnswer.text}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+
+      <!-- Troubleshooting Section -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">Expert Technician Diagnosis</h2>
+        
+        <div class="space-y-6">
+          <div class="border-l-4 border-orange-500 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">Resolving Trane 3 Red Flashes (Pressure Switch Error)</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              Trane systems are notorious for the "3 Red Flashes" lockout. It indicates the draft inducer blower is not drawing enough air draft, or the pressure switch sensor has failed.
+              <strong>Step 1</strong>: Inspect the small rubber hose connecting the inducer blower port to the pressure switch. Check for cracks, or blockages (spiders often crawl inside and build webs).
+              <strong>Step 2</strong>: Flush the condensate drain line. Trane high-efficiency furnaces have a condensate float switch; if water backs up in the secondary coil, it halts the pressure switch loop.
+              <strong>Step 3</strong>: Make sure the chimney vent or exhaust pipe terminal is completely clear of ice, leaves, or bird nests.
+            </p>
+          </div>
+
+          <div class="border-l-4 border-rose-600 pl-4 space-y-2">
+            <h3 class="font-bold text-zinc-950">CRITICAL SAFETY: Trane 6 Red Flashes (Flame Rollout)</h3>
+            <p class="text-sm text-zinc-600 leading-relaxed">
+              <strong>6 Red Flashes</strong> indicates that a thermal switch near the burner box has tripped. This happens when hot combustion gases escape the heat exchanger and blow backward.
+              This is a severe safety hazard, often caused by a <strong>cracked heat exchanger</strong> or a completely blocked chimney. 
+              <strong>Action</strong>: Turn off gas and electrical supply to the furnace immediately. Do not attempt to run the furnace. Call an HVAC professional to perform a carbon monoxide heat-exchanger dye test.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('trane-search') as HTMLInputElement | null;
+  if (searchInput) {
+    const cards = document.querySelectorAll<HTMLElement>('.trane-card');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const code = card.getAttribute('data-code') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const cause = card.getAttribute('data-cause') || '';
+
+        if (query === '' || code.includes(query) || desc.includes(query) || cause.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+</script>

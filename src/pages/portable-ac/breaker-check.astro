@@ -1,0 +1,532 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+const title = "Portable Air Conditioner Circuit Breaker Keeps Tripping? | Circuit Load Calculator";
+const description = "If your portable air conditioner circuit breaker keeps tripping, use this calculator to check your total amp draw with other appliances and see if your 15A or 20A breaker can handle it.";
+---
+
+<Layout title={title}>
+  <SEO
+    slot="head"
+    title={title}
+    description={description}
+    type="WebApplication"
+    schema={[
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Will It Trip My Breaker? Calculator",
+        "description": "An interactive calculator that checks whether a portable AC unit will overload a bedroom circuit breaker when combined with other common household appliances.",
+        "applicationCategory": "CalculatorApplication",
+        "operatingSystem": "WebBrowser",
+        "featureList": "Circuit load calculation, Breaker trip prediction, Appliance amp draw checklist",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I find which outlets share a circuit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Go to your breaker panel and flip off one breaker at a time. Test every outlet in the room with a phone charger or lamp. All dead outlets are on the same circuit. Most bedrooms share 2-4 outlets on a single 15A breaker."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why does my portable AC trip the breaker when the compressor kicks on?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Portable AC compressors draw a massive surge of electricity (LRA - Locked Rotor Amps) for a split second on startup, often 3-5x the normal running amps. If your circuit is already loaded near capacity, this brief spike pushes it over the breaker's trip threshold."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use an extension cord with a portable AC?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You should never use a standard household extension cord with a portable AC. The thin wire creates resistance, generates heat, and can cause a fire. If you must extend the reach, use a heavy-duty 12 AWG appliance cord rated for at least 15 amps, and keep it as short as possible."
+            }
+          }
+        ]
+      }
+    ]}
+  />
+
+  <!-- Hero Section -->
+  <section class="relative bg-slate-900 text-white py-16 sm:py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <!-- Gradient glow -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-0 right-0 w-[300px] h-[300px] bg-orange-500/8 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center justify-center gap-2 text-sm text-slate-400 mb-8" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-white transition-colors">Home</a>
+        <span class="text-slate-600">›</span>
+        <a href="/portable-ac" class="hover:text-white transition-colors">Portable AC Hub</a>
+        <span class="text-slate-600">›</span>
+        <span class="text-amber-400 font-medium">Breaker Check</span>
+      </nav>
+
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 text-amber-400 font-bold text-xs uppercase tracking-widest mb-6 border border-amber-500/25">
+        <span>⚡</span> Electrical Safety
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
+        Portable Air Conditioner <span class="text-amber-400">Circuit Breaker Keeps Tripping?</span>
+      </h1>
+      <p class="text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+        Check your circuit load to see if your portable AC will overload your bedroom breaker.
+      </p>
+    </div>
+  </section>
+
+  <!-- Calculator Section -->
+  <section class="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-slate-50">
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+
+        <!-- Amber/Orange Gradient Header -->
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-100 px-6 sm:px-8 py-6">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center">
+              <span class="text-xl">⚡</span>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">Circuit Load Calculator</h2>
+              <p class="text-sm text-slate-500">Select your AC, breaker, and other appliances</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6 sm:p-8 space-y-8">
+
+          <!-- AC Size Dropdown -->
+          <div>
+            <label for="acSize" class="block text-sm font-bold text-slate-700 uppercase tracking-wider mb-3">
+              Portable AC Size
+            </label>
+            <select id="acSize" class="w-full rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-base p-3.5 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 font-semibold transition-colors">
+              <option value="4.2">5,000 BTU (~4.2A)</option>
+              <option value="6.5">8,000 BTU (~6.5A)</option>
+              <option value="9" selected>10,000 BTU (~9.0A)</option>
+              <option value="10.5">12,000 BTU (~10.5A)</option>
+              <option value="12.5">14,000 BTU (~12.5A)</option>
+            </select>
+          </div>
+
+          <!-- Breaker Size Toggle -->
+          <div>
+            <label class="block text-sm font-bold text-slate-700 uppercase tracking-wider mb-3">
+              Breaker Size
+            </label>
+            <div class="grid grid-cols-2 gap-3">
+              <button id="breaker15" type="button" class="breaker-btn relative flex flex-col items-center gap-1 p-4 rounded-xl border-2 border-amber-400 bg-amber-50 text-slate-900 font-bold transition-all">
+                <span class="text-2xl font-black text-amber-600">15A</span>
+                <span class="text-xs text-slate-500 font-medium">Standard bedrooms</span>
+              </button>
+              <button id="breaker20" type="button" class="breaker-btn relative flex flex-col items-center gap-1 p-4 rounded-xl border-2 border-slate-200 bg-slate-50 text-slate-900 font-bold transition-all hover:border-slate-300">
+                <span class="text-2xl font-black text-slate-400">20A</span>
+                <span class="text-xs text-slate-500 font-medium">Kitchens / newer builds</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Appliance Checklist -->
+          <div>
+            <label class="block text-sm font-bold text-slate-700 uppercase tracking-wider mb-3">
+              Other Appliances on This Circuit
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="applianceGrid">
+              <!-- LED TV 55" -->
+              <label class="appliance-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-amber-300 hover:bg-amber-50/50 transition-all">
+                <input type="checkbox" class="appliance-cb w-5 h-5 rounded-lg text-amber-500 border-slate-300 focus:ring-amber-500 cursor-pointer" data-amps="1.5" />
+                <span class="text-lg">📺</span>
+                <div class="flex-1 min-w-0">
+                  <span class="text-sm font-semibold text-slate-800 block">LED TV 55"</span>
+                  <span class="text-xs text-slate-400">~1.5A</span>
+                </div>
+              </label>
+
+              <!-- Gaming PC -->
+              <label class="appliance-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-amber-300 hover:bg-amber-50/50 transition-all">
+                <input type="checkbox" class="appliance-cb w-5 h-5 rounded-lg text-amber-500 border-slate-300 focus:ring-amber-500 cursor-pointer" data-amps="4.0" />
+                <span class="text-lg">🖥️</span>
+                <div class="flex-1 min-w-0">
+                  <span class="text-sm font-semibold text-slate-800 block">Gaming PC</span>
+                  <span class="text-xs text-slate-400">~4.0A</span>
+                </div>
+              </label>
+
+              <!-- Phone Charger + Lamp -->
+              <label class="appliance-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-amber-300 hover:bg-amber-50/50 transition-all">
+                <input type="checkbox" class="appliance-cb w-5 h-5 rounded-lg text-amber-500 border-slate-300 focus:ring-amber-500 cursor-pointer" data-amps="1.0" />
+                <span class="text-lg">🔌</span>
+                <div class="flex-1 min-w-0">
+                  <span class="text-sm font-semibold text-slate-800 block">Phone Charger + Lamp</span>
+                  <span class="text-xs text-slate-400">~1.0A</span>
+                </div>
+              </label>
+
+              <!-- Vacuum Cleaner -->
+              <label class="appliance-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-amber-300 hover:bg-amber-50/50 transition-all">
+                <input type="checkbox" class="appliance-cb w-5 h-5 rounded-lg text-amber-500 border-slate-300 focus:ring-amber-500 cursor-pointer" data-amps="8.0" />
+                <span class="text-lg">🧹</span>
+                <div class="flex-1 min-w-0">
+                  <span class="text-sm font-semibold text-slate-800 block">Vacuum Cleaner</span>
+                  <span class="text-xs text-slate-400">~8.0A</span>
+                </div>
+              </label>
+
+              <!-- Hair Dryer -->
+              <label class="appliance-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-amber-300 hover:bg-amber-50/50 transition-all">
+                <input type="checkbox" class="appliance-cb w-5 h-5 rounded-lg text-amber-500 border-slate-300 focus:ring-amber-500 cursor-pointer" data-amps="12.0" />
+                <span class="text-lg">💇</span>
+                <div class="flex-1 min-w-0">
+                  <span class="text-sm font-semibold text-slate-800 block">Hair Dryer</span>
+                  <span class="text-xs text-slate-400">~12.0A</span>
+                </div>
+              </label>
+
+              <!-- Game Console -->
+              <label class="appliance-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-amber-300 hover:bg-amber-50/50 transition-all">
+                <input type="checkbox" class="appliance-cb w-5 h-5 rounded-lg text-amber-500 border-slate-300 focus:ring-amber-500 cursor-pointer" data-amps="3.0" />
+                <span class="text-lg">🎮</span>
+                <div class="flex-1 min-w-0">
+                  <span class="text-sm font-semibold text-slate-800 block">Game Console PS5/Xbox</span>
+                  <span class="text-xs text-slate-400">~3.0A</span>
+                </div>
+              </label>
+
+              <!-- Space Heater -->
+              <label class="appliance-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-amber-300 hover:bg-amber-50/50 transition-all">
+                <input type="checkbox" class="appliance-cb w-5 h-5 rounded-lg text-amber-500 border-slate-300 focus:ring-amber-500 cursor-pointer" data-amps="7.0" />
+                <span class="text-lg">🔥</span>
+                <div class="flex-1 min-w-0">
+                  <span class="text-sm font-semibold text-slate-800 block">Space Heater</span>
+                  <span class="text-xs text-slate-400">~7.0A</span>
+                </div>
+              </label>
+
+              <!-- Wi-Fi Router + Modem -->
+              <label class="appliance-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-amber-300 hover:bg-amber-50/50 transition-all">
+                <input type="checkbox" class="appliance-cb w-5 h-5 rounded-lg text-amber-500 border-slate-300 focus:ring-amber-500 cursor-pointer" data-amps="0.5" />
+                <span class="text-lg">📡</span>
+                <div class="flex-1 min-w-0">
+                  <span class="text-sm font-semibold text-slate-800 block">Wi-Fi Router + Modem</span>
+                  <span class="text-xs text-slate-400">~0.5A</span>
+                </div>
+              </label>
+
+              <!-- Microwave -->
+              <label class="appliance-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-amber-300 hover:bg-amber-50/50 transition-all">
+                <input type="checkbox" class="appliance-cb w-5 h-5 rounded-lg text-amber-500 border-slate-300 focus:ring-amber-500 cursor-pointer" data-amps="10.0" />
+                <span class="text-lg">🍿</span>
+                <div class="flex-1 min-w-0">
+                  <span class="text-sm font-semibold text-slate-800 block">Microwave</span>
+                  <span class="text-xs text-slate-400">~10.0A</span>
+                </div>
+              </label>
+
+              <!-- Dehumidifier -->
+              <label class="appliance-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-amber-300 hover:bg-amber-50/50 transition-all">
+                <input type="checkbox" class="appliance-cb w-5 h-5 rounded-lg text-amber-500 border-slate-300 focus:ring-amber-500 cursor-pointer" data-amps="3.5" />
+                <span class="text-lg">💧</span>
+                <div class="flex-1 min-w-0">
+                  <span class="text-sm font-semibold text-slate-800 block">Dehumidifier</span>
+                  <span class="text-xs text-slate-400">~3.5A</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Calculate Button -->
+          <button id="calcBtn" type="button" class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold text-lg shadow-lg shadow-amber-500/25 transition-all active:scale-[0.98] cursor-pointer">
+            ⚡ Check My Circuit Load
+          </button>
+
+          <!-- Results Section -->
+          <div id="resultsSection" class="hidden space-y-6 pt-2">
+
+            <!-- Progress Bar -->
+            <div class="space-y-3">
+              <div class="flex justify-between items-baseline">
+                <span class="text-sm font-bold text-slate-700 uppercase tracking-wider">Circuit Load</span>
+                <span id="totalAmpsDisplay" class="text-lg font-black text-slate-900">0.0 A / 15A</span>
+              </div>
+              <div class="relative h-8 bg-slate-100 rounded-full overflow-visible border border-slate-200">
+                <!-- Fill bar -->
+                <div id="progressBar" class="absolute top-0 left-0 h-full rounded-full transition-all duration-700 ease-out" style="width: 0%; background: linear-gradient(90deg, #22c55e, #22c55e);"></div>
+                <!-- Limit line marker -->
+                <div id="limitLine" class="absolute top-0 h-full w-0.5 bg-slate-900 z-10" style="left: 100%;">
+                  <div class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-slate-600 whitespace-nowrap" id="limitLabel">15A Limit</div>
+                  <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Verdict Box -->
+            <div id="verdictBox" class="rounded-2xl p-6 border-2 transition-all duration-500">
+              <div class="flex items-start gap-4">
+                <span id="verdictEmoji" class="text-4xl flex-shrink-0">🟢</span>
+                <div>
+                  <h3 id="verdictTitle" class="text-xl font-black mb-1">YOU'RE SAFE</h3>
+                  <p id="verdictText" class="text-sm leading-relaxed"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Educational Content -->
+  <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white">
+    <div class="max-w-3xl mx-auto space-y-16">
+
+      <!-- Section 1: Finding shared circuits -->
+      <div>
+        <div class="flex items-start gap-4 mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center flex-shrink-0">
+            <span class="text-2xl">🔍</span>
+          </div>
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">How to Find Which Outlets Share a Circuit</h2>
+          </div>
+        </div>
+        <div class="space-y-4 text-slate-700 text-lg leading-relaxed pl-0 sm:pl-16">
+          <p>
+            Most bedrooms in homes built before 2000 have <strong>all outlets on a single 15-amp breaker</strong>. That means every outlet in the room, including the ceiling light, shares one circuit.
+          </p>
+          <div class="bg-amber-50 border border-amber-200 rounded-xl p-5">
+            <p class="font-bold text-amber-800 mb-3">🧪 The Breaker Panel Test</p>
+            <ol class="space-y-2 text-amber-900 text-base list-decimal list-inside">
+              <li>Plug a lamp or phone charger into every outlet in the room</li>
+              <li>Go to your breaker panel and flip off one breaker at a time</li>
+              <li>Every device that goes dead is on that same circuit</li>
+              <li>Label the breaker with a marker so you know what it controls</li>
+            </ol>
+          </div>
+          <p>
+            If your portable AC shares a circuit with 3-4 other outlets, <strong>everything plugged into those outlets counts toward your breaker limit</strong>. This is the #1 reason portable ACs trip breakers — people don't realize their bedroom TV, gaming PC, and lamp are all on the same 15A circuit.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 2: Compressor startup spike -->
+      <div>
+        <div class="flex items-start gap-4 mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-orange-100 flex items-center justify-center flex-shrink-0">
+            <span class="text-2xl">⚡</span>
+          </div>
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Why Portable ACs Spike on Compressor Startup</h2>
+          </div>
+        </div>
+        <div class="space-y-4 text-slate-700 text-lg leading-relaxed pl-0 sm:pl-16">
+          <p>
+            Every portable AC has two amp ratings that most people never see:
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+              <p class="font-bold text-slate-900 mb-1">RLA — Running Load Amps</p>
+              <p class="text-sm text-slate-600">The steady-state current the compressor draws while running normally. This is what our calculator uses.</p>
+            </div>
+            <div class="bg-red-50 rounded-xl p-5 border border-red-200">
+              <p class="font-bold text-red-800 mb-1">LRA — Locked Rotor Amps</p>
+              <p class="text-sm text-red-700">The massive surge of electricity drawn for a split second when the compressor motor starts up. Typically <strong>3-5x the RLA</strong>.</p>
+            </div>
+          </div>
+          <p>
+            This means a 10,000 BTU unit drawing 9 amps while running can spike to <strong>27-45 amps for a fraction of a second</strong> when the compressor kicks on. If your circuit is already loaded at 12 amps, that spike pushes the total well past 15A and the breaker trips instantly.
+          </p>
+          <p>
+            This is why breakers trip <em>intermittently</em> — the compressor cycles on and off as it maintains temperature, and each startup is a gamble.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 3: Tips -->
+      <div>
+        <div class="flex items-start gap-4 mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center flex-shrink-0">
+            <span class="text-2xl">✅</span>
+          </div>
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Tips to Avoid Tripping Your Breaker</h2>
+          </div>
+        </div>
+        <div class="space-y-4 text-slate-700 text-lg leading-relaxed pl-0 sm:pl-16">
+          <div class="space-y-4">
+            <div class="flex items-start gap-3">
+              <span class="text-green-500 font-bold text-xl mt-0.5">1.</span>
+              <div>
+                <p class="font-bold text-slate-900">Use a dedicated circuit if possible</p>
+                <p class="text-base text-slate-600">If you can plug your portable AC into an outlet on its own breaker (no other devices), you eliminate the overload risk entirely. Some newer bedrooms have a dedicated outlet for this purpose.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-green-500 font-bold text-xl mt-0.5">2.</span>
+              <div>
+                <p class="font-bold text-slate-900">Never use a standard extension cord</p>
+                <p class="text-base text-slate-600">Standard 16 AWG extension cords create resistance, generate heat, and are a fire hazard with high-draw appliances. If you must extend the reach, use a heavy-duty 12 AWG appliance cord rated for 15+ amps, and keep it under 6 feet.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-green-500 font-bold text-xl mt-0.5">3.</span>
+              <div>
+                <p class="font-bold text-slate-900">Unplug high-draw items before running the AC</p>
+                <p class="text-base text-slate-600">Space heaters, hair dryers, and vacuums pull enormous current. Never run these simultaneously with a portable AC on the same circuit.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-green-500 font-bold text-xl mt-0.5">4.</span>
+              <div>
+                <p class="font-bold text-slate-900">Downsize the AC if your circuit can't handle it</p>
+                <p class="text-base text-slate-600">A 5,000 or 8,000 BTU unit draws significantly fewer amps and may be enough for a small bedroom. Slightly less cooling is better than a breaker that trips every 20 minutes.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl p-6 mt-6">
+            <p class="font-bold text-amber-400 mb-2 uppercase tracking-wider text-sm">⚡ Pro Tip</p>
+            <p class="text-slate-300 leading-relaxed">
+              If your breaker trips repeatedly, <strong class="text-white">do not replace it with a larger breaker</strong>. A 15A breaker exists because the wiring in your walls is 14 AWG, which is only rated for 15 amps. Putting a 20A breaker on 14 AWG wire doesn't prevent tripping — it prevents the breaker from doing its job, which is stopping the wire inside your wall from overheating and starting a fire.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Calculator Logic -->
+  <script is:inline>
+    (function() {
+      var acSelect = document.getElementById('acSize');
+      var breaker15Btn = document.getElementById('breaker15');
+      var breaker20Btn = document.getElementById('breaker20');
+      var calcBtn = document.getElementById('calcBtn');
+      var resultsSection = document.getElementById('resultsSection');
+      var progressBar = document.getElementById('progressBar');
+      var limitLine = document.getElementById('limitLine');
+      var limitLabel = document.getElementById('limitLabel');
+      var totalAmpsDisplay = document.getElementById('totalAmpsDisplay');
+      var verdictBox = document.getElementById('verdictBox');
+      var verdictEmoji = document.getElementById('verdictEmoji');
+      var verdictTitle = document.getElementById('verdictTitle');
+      var verdictText = document.getElementById('verdictText');
+
+      var selectedBreaker = 15;
+
+      // Breaker toggle
+      breaker15Btn.addEventListener('click', function() {
+        selectedBreaker = 15;
+        breaker15Btn.className = 'breaker-btn relative flex flex-col items-center gap-1 p-4 rounded-xl border-2 border-amber-400 bg-amber-50 text-slate-900 font-bold transition-all';
+        breaker15Btn.querySelector('span:first-child').className = 'text-2xl font-black text-amber-600';
+        breaker20Btn.className = 'breaker-btn relative flex flex-col items-center gap-1 p-4 rounded-xl border-2 border-slate-200 bg-slate-50 text-slate-900 font-bold transition-all hover:border-slate-300';
+        breaker20Btn.querySelector('span:first-child').className = 'text-2xl font-black text-slate-400';
+      });
+
+      breaker20Btn.addEventListener('click', function() {
+        selectedBreaker = 20;
+        breaker20Btn.className = 'breaker-btn relative flex flex-col items-center gap-1 p-4 rounded-xl border-2 border-amber-400 bg-amber-50 text-slate-900 font-bold transition-all';
+        breaker20Btn.querySelector('span:first-child').className = 'text-2xl font-black text-amber-600';
+        breaker15Btn.className = 'breaker-btn relative flex flex-col items-center gap-1 p-4 rounded-xl border-2 border-slate-200 bg-slate-50 text-slate-900 font-bold transition-all hover:border-slate-300';
+        breaker15Btn.querySelector('span:first-child').className = 'text-2xl font-black text-slate-400';
+      });
+
+      // Calculate
+      calcBtn.addEventListener('click', function() {
+        var acAmps = parseFloat(acSelect.value);
+        var applianceAmps = 0;
+        var checkboxes = document.querySelectorAll('.appliance-cb');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+          if (checkboxes[i].checked) {
+            applianceAmps += parseFloat(checkboxes[i].getAttribute('data-amps'));
+          }
+        }
+
+        var totalAmps = acAmps + applianceAmps;
+        var breakerLimit = selectedBreaker;
+        var loadPercent = (totalAmps / breakerLimit) * 100;
+        var headroom = breakerLimit - totalAmps;
+
+        // Show results
+        resultsSection.classList.remove('hidden');
+
+        // Update total amps display
+        totalAmpsDisplay.textContent = totalAmps.toFixed(1) + ' A / ' + breakerLimit + 'A';
+
+        // Animate progress bar
+        var barWidth = Math.min(loadPercent, 120);
+        progressBar.style.width = barWidth + '%';
+
+        // Limit line position (capped so it stays visible)
+        var limitPos = Math.min(100, (breakerLimit / (Math.max(totalAmps, breakerLimit) * 1.2)) * 100);
+        limitLine.style.left = limitPos + '%';
+        limitLabel.textContent = breakerLimit + 'A Limit';
+
+        // Color the bar based on status
+        var barColor;
+        var verdictState;
+
+        if (totalAmps > breakerLimit) {
+          // Over limit - RED
+          barColor = 'linear-gradient(90deg, #f59e0b, #ef4444, #dc2626)';
+          verdictState = 'red';
+        } else if (headroom < 2) {
+          // Dangerously close - AMBER
+          barColor = 'linear-gradient(90deg, #22c55e, #f59e0b, #f97316)';
+          verdictState = 'amber';
+        } else {
+          // Safe - GREEN
+          barColor = 'linear-gradient(90deg, #22c55e, #22c55e)';
+          verdictState = 'green';
+        }
+
+        progressBar.style.background = barColor;
+
+        // Update verdict box
+        if (verdictState === 'green') {
+          verdictBox.className = 'rounded-2xl p-6 border-2 transition-all duration-500 bg-green-50 border-green-200';
+          verdictEmoji.textContent = '🟢';
+          verdictTitle.textContent = "YOU'RE SAFE";
+          verdictTitle.className = 'text-xl font-black mb-1 text-green-800';
+          verdictText.textContent = 'Your total draw of ' + totalAmps.toFixed(1) + 'A leaves ' + headroom.toFixed(1) + 'A of headroom on your ' + breakerLimit + 'A breaker. You should be fine running everything simultaneously, even with compressor startup spikes.';
+          verdictText.className = 'text-sm leading-relaxed text-green-700';
+        } else if (verdictState === 'amber') {
+          verdictBox.className = 'rounded-2xl p-6 border-2 transition-all duration-500 bg-amber-50 border-amber-200';
+          verdictEmoji.textContent = '🟡';
+          verdictTitle.textContent = 'DANGEROUSLY CLOSE';
+          verdictTitle.className = 'text-xl font-black mb-1 text-amber-800';
+          verdictText.textContent = 'Your total draw of ' + totalAmps.toFixed(1) + 'A leaves only ' + headroom.toFixed(1) + 'A of headroom. The compressor startup spike (LRA) will likely push you over the limit intermittently. Expect the breaker to trip on hot days when the compressor cycles frequently. Unplug non-essential devices.';
+          verdictText.className = 'text-sm leading-relaxed text-amber-700';
+        } else {
+          verdictBox.className = 'rounded-2xl p-6 border-2 transition-all duration-500 bg-red-50 border-red-200';
+          verdictEmoji.textContent = '🔴';
+          verdictTitle.textContent = 'BREAKER WILL TRIP!';
+          verdictTitle.className = 'text-xl font-black mb-1 text-red-800';
+          var overBy = (totalAmps - breakerLimit).toFixed(1);
+          verdictText.textContent = 'Your total draw of ' + totalAmps.toFixed(1) + 'A exceeds your ' + breakerLimit + 'A breaker by ' + overBy + 'A. This circuit will trip immediately. You must remove appliances, use a different circuit, or downsize your portable AC.';
+          verdictText.className = 'text-sm leading-relaxed text-red-700';
+        }
+
+        // Scroll to results
+        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    })();
+  </script>
+</Layout>

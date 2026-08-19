@@ -1,0 +1,825 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SEO from '../../components/SEO.astro';
+
+// Structured database of common error codes across US & Indian brands
+const errorCodes = [
+  // LG
+  { code: "CH01", brand: "LG", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor room temperature sensor fault", cause: "NTC sensor open circuit or short circuit due to moisture or wire damage.", action: "Replace indoor ambient sensor. Estimated cost: ₹300 – ₹500 / $25 – $45." },
+  { code: "CH02", brand: "LG", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor coil temperature sensor fault", cause: "Evaporator coil NTC thermistor failed, broken, or disconnected.", action: "Replace evaporator coil sensor. Estimated cost: ₹300 – ₹500 / $25 – $45." },
+  { code: "CH03", brand: "LG", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Outdoor ambient air temperature sensor fault", cause: "Outdoor condenser air intake thermistor failed or damaged by weather.", action: "Replace outdoor ambient air sensor. Estimated cost: ₹400 – ₹700 / $30 – $55." },
+  { code: "CH05", brand: "LG", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Indoor/Outdoor communication error", cause: "Loose inter-unit wiring joints, signal wire short, or outdoor board failure.", action: "Verify 3-core communication line. If wires are fine, outdoor PCB is damaged. PCB swap: ₹2,500 – ₹5,500 / $150 – $300." },
+  { code: "CH10", brand: "LG", category: "Motor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor blower motor error", cause: "Indoor fan wheel blocked, hall sensor disconnected, or fan motor burned out.", action: "Check for fan blockages. Replace blower motor if winding is open: ₹1,500 – ₹3,500 / $90 – $180." },
+  { code: "CH21", brand: "LG", category: "Electrical", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "IPM DC peak current (Inverter error)", cause: "Compressor locked rotor, IPM power module short circuit, or compressor winding failure.", action: "Turn off MCB. Test compressor terminal resistances. Replace outdoor PCB or compressor: ₹6,000 – ₹12,000 / $350 – $700." },
+  { code: "CH61", brand: "LG", category: "Refrigerant", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "Condenser coil overheat protection", cause: "Outdoor condenser coils completely blocked with dirt, leaves, or pet hair.", action: "Shut off AC. Wash outdoor unit coils thoroughly with a garden hose (low pressure). No professional needed!" },
+
+  // Mitsubishi
+  { code: "E6 / E9", brand: "Mitsubishi", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Indoor/Outdoor unit communication error (Signal error)", cause: "Loss of serial data sync between indoor controller and outdoor board.", action: "Check terminal board S1, S2, S3 wiring joints. Replace main outdoor board: $300 – $600 / ₹4,500 – ₹10,000." },
+  { code: "P1", brand: "Mitsubishi", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Room temperature thermistor error (Intake air)", cause: "Indoor intake air NTC thermistor failed or disconnected.", action: "Replace room air intake thermistor: ₹350 – ₹600 / $25 – $45." },
+  { code: "P2", brand: "Mitsubishi", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Liquid pipe thermistor error (Evaporator coil)", cause: "Evaporator coil liquid line temperature sensor failure.", action: "Replace liquid line coil thermistor: ₹350 – ₹600 / $25 – $45." },
+  { code: "P8", brand: "Mitsubishi", category: "Refrigerant", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Abnormal pipe temperature (Refrigerant leak)", cause: "Low refrigerant charge or complete block in capillary tube / expansion valve.", action: "Stop AC to prevent compressor lock. Check system pressures. Repair copper leak and recharge: ₹2,500 – ₹5,500." },
+  { code: "U4", brand: "Mitsubishi", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Transmission error between units", cause: "Loose signal wire connections or damaged communication board transceiver.", action: "Check inter-unit communication line terminals. Repair frayed wires." },
+  { code: "F2", brand: "Mitsubishi", category: "Condensate", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "Condensate drain overflow protection", cause: "Condensate pan float switch has opened due to a completely plugged drain line.", action: "Clear drain line using a wet/dry vac or pour hot water and vinegar down the drain line: DIY Safe." },
+  { code: "U2", brand: "Mitsubishi", category: "Compressor", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Abnormal discharge temperature (Overheat)", cause: "Compressor has overheated due to low refrigerant or blocked condenser airflow.", action: "Clean outdoor condenser fins. If clean, check gas pressure for leaks: ₹2,500 – ₹5,500 / $150 – $300." },
+  { code: "Fb", brand: "Mitsubishi", category: "PCB Board", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor unit control system error (PCB Board)", cause: "Indoor unit main circuit board memory error or relay fused.", action: "Replace indoor unit control board: ₹1,500 – ₹3,000 / $90 – $180." },
+
+  // Daikin
+  { code: "A6", brand: "Daikin", category: "Motor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor fan motor overload or lock", cause: "Dust buildup on fan blade, loose connector, or dead indoor blower motor.", action: "Clean blower wheel. Replace indoor fan motor if motor is dead: ₹1,800 – ₹4,000 / $100 – $220." },
+  { code: "C4", brand: "Daikin", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Liquid pipe thermistor error", cause: "Indoor heat exchanger liquid pipe NTC sensor failed.", action: "Replace liquid line pipe thermistor: ₹400 – ₹600 / $25 – $40." },
+  { code: "E6", brand: "Daikin", category: "Electrical", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Compressor startup failure (Overcurrent)", cause: "Locked compressor rotor, lack of outdoor airflow, or failed outdoor board.", action: "Check compressor windings and run capacitor (if non-inverter). Outdoor board replacement: ₹5,000 – ₹10,000 / $300 – $600." },
+  { code: "H9", brand: "Daikin", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Outdoor air thermistor error", cause: "Outdoor ambient air temperature sensor broken or out of calibration range.", action: "Replace outdoor intake air thermistor: ₹500 – ₹800 / $35 – $50." },
+  { code: "U4", brand: "Daikin", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Transmission error (Indoor-Outdoor)", cause: "Communication cable between indoor and outdoor unit is loose or broken.", action: "Inspect inter-unit cable connections. Replace communication lines if damaged." },
+  { code: "UA", brand: "Daikin", category: "System", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Indoor-Outdoor model mismatch", cause: "Incompatible indoor and outdoor units connected during installation.", action: "Verify model numbers match design spec. Reprogram main PCB if mismatched settings." },
+
+  // Voltas
+  { code: "E1", brand: "Voltas", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor room temperature sensor error", cause: "NTC sensor disconnected or short-circuited.", action: "Replace room temperature sensor probe: ₹300 – ₹500 / $20 – $35." },
+  { code: "E2", brand: "Voltas", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor coil temperature sensor error", cause: "Evaporator coil sensor failure causing anti-freeze trigger.", action: "Replace coil temperature sensor: ₹300 – ₹500 / $20 – $35." },
+  { code: "E5", brand: "Voltas", category: "Electrical", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Overcurrent / Compressor overload protection", cause: "Severe voltage fluctuations, heavy dirt on condenser, or failed compressor.", action: "Check incoming voltage. Install a digital voltage stabilizer. Clean outdoor unit." },
+  { code: "E6", brand: "Voltas", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Communication line failure", cause: "Data line connection loose, wire broken, or PCB signal port damaged.", action: "Check terminal connection block for rusted joints; replace communication cable." },
+  { code: "EC", brand: "Voltas", category: "Refrigerant", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Refrigerant leakage detected", cause: "Physical hole in copper coils, flare nut leakage, or system out of refrigerant.", action: "Stop AC immediately. Do not run to prevent compressor burnout. Perform leak search, weld, and recharge gas: ₹2,500 – ₹5,500 / $150 – $300." },
+
+  // Samsung
+  { code: "E1 01", brand: "Samsung", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Communication error (Indoor-Outdoor)", cause: "Mismatched wiring configuration or dead outdoor control board.", action: "Verify S-net line connections. Check outdoor unit power status. PCB swap: ₹3,000 – ₹6,500 / $180 – $350." },
+  { code: "E1 21", brand: "Samsung", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor room temperature sensor error", cause: "Room thermistor broken or shorted.", action: "Replace indoor room NTC thermistor: ₹350 – ₹600 / $25 – $40." },
+  { code: "E1 22", brand: "Samsung", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor evaporator coil sensor error", cause: "Evaporator coil thermistor failed.", action: "Replace evaporator coil sensor: ₹350 – ₹600 / $25 – $40." },
+  { code: "E1 54", brand: "Samsung", category: "Motor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor fan motor error", cause: "Indoor blower motor locked, fan capacitor failed, or PCB relay failed.", action: "Verify fan blades spin freely. Replace blower motor: ₹1,800 – ₹3,500 / $100 – $180." },
+  { code: "E5 54", brand: "Samsung", category: "Refrigerant", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Refrigerant leakage or flow restriction", cause: "Copper line leak, blocked capillary, or low gas charge.", action: "Run leak diagnostics, repair copper tubing, and recharge refrigerant: ₹2,500 – ₹5,500 / $150 – $300." },
+
+  // Panasonic
+  { code: "H11", brand: "Panasonic", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Indoor/Outdoor communication failure", cause: "Communication wire disconnected, miswired, or outdoor board dead.", action: "Verify connections on Terminals 1, 2, and 3. Check outdoor PCB fuse." },
+  { code: "H14", brand: "Panasonic", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor intake air temperature sensor fault", cause: "Intake air thermistor open or short circuit.", action: "Replace intake NTC sensor: ₹400 – ₹700 / $30 – $45." },
+  { code: "H15", brand: "Panasonic", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Compressor discharge sensor error", cause: "Compressor discharge pipe thermistor has failed or overheated.", action: "Replace compressor discharge sensor: ₹600 – ₹1,000 / $45 – $65." },
+  { code: "H19", brand: "Panasonic", category: "Motor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor fan motor locked", cause: "Fan motor locked or indoor board driver circuitry failed.", action: "Replace indoor fan motor assembly: ₹1,800 – ₹3,500 / $110 – $200." },
+  { code: "F91", brand: "Panasonic", category: "Refrigerant", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Refrigeration cycle anomaly (Gas Leak)", cause: "Low refrigerant charge, physical leak, or compressor valve failure.", action: "Shut off AC. Perform leak repair, vacuum, and recharge: ₹2,800 – ₹6,000 / $180 – $350." },
+
+  // Blue Star
+  { code: "E1", brand: "Blue Star", category: "Refrigerant", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "High pressure protection", cause: "Dirty condenser coils, blocked outdoor unit, or failed outdoor fan motor.", action: "Clean outdoor condenser fins. Inspect and replace outdoor fan motor if locked." },
+  { code: "E2", brand: "Blue Star", category: "diy", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "Anti-freezing protection", cause: "Restricted airflow due to a dirty return air filter or blocked registers.", action: "Replace or wash air filter. Ensure all vents are open. Run Fan mode to thaw." },
+  { code: "E5", brand: "Blue Star", category: "diy", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "Low voltage protection", cause: "Incoming line voltage dropped below safe operating limit (180V).", action: "Install a heavy-duty digital voltage stabilizer (4KVA/5KVA): ₹1,800 – ₹3,200." },
+  { code: "EC", brand: "Blue Star", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Communication fault", cause: "Data line connection loose or rusted terminal block.", action: "Clean terminal blocks, check connections, and replace signal cable if corroded." },
+
+  // Carrier (US/Indian)
+  { code: "E1", brand: "Carrier", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Indoor/Outdoor communication error", cause: "Loss of signal sync, loose data wire, or main PCB board failure.", action: "Check interconnecting wire joints. If solid, swap main PCB: ₹2,000 – ₹5,500 / $120 – $250." },
+  { code: "E3", brand: "Carrier", category: "Motor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor fan motor speed error", cause: "Fan motor cannot reach targeted RPM. Hall sensor failed or motor burned.", action: "Replace indoor blower motor: ₹1,500 – ₹3,500 / $90 – $180." },
+  { code: "E4", brand: "Carrier", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Evaporator temperature sensor fault", cause: "Indoor evaporator copper coil sensor broken or shorted.", action: "Replace evaporator coil thermistor probe: ₹300 – ₹600 / $25 – $45." },
+  { code: "EC", brand: "Carrier", category: "Refrigerant", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Refrigerant leakage detection", cause: "AC has lost pressure due to a physical crack in copper coils.", action: "Turn off unit. Repair leak site, pull vacuum, and recharge gas: ₹2,500 – ₹5,500 / $150 – $300." },
+  { code: "Code 13", brand: "Carrier", category: "System", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Limit switch lockout (Furnace)", cause: "Furnace overheated multiple times due to a clogged filter or blocked exhaust.", action: "Check air filter. Reset furnace power switch. Replace high-limit switch if faulty." },
+  { code: "Code 31", brand: "Carrier", category: "Electrical", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Pressure switch failed to close (Furnace)", cause: "Clogged condensate drain line or blocked exhaust flue pipe.", action: "Clean condensate trap and drain lines. Clear any bird nests or ice from flue pipe." },
+  { code: "Code 33", brand: "Carrier", category: "System", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Limit switch open (Furnace)", cause: "Blower motor failed or airflow restricted, causing high temperature.", action: "Check blower run capacitor. Replace blower motor or limit switch: $150 – $350." },
+
+  // Trane
+  { code: "1 Flash", brand: "Trane", category: "Electrical", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Flame sensed out of sequence", cause: "Gas valve stuck open or leaking gas into combustion chamber.", action: "Shut off gas supply valve immediately. Replace gas valve assembly." },
+  { code: "2 Flashes", brand: "Trane", category: "diy", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "System lockout (Ignition failure)", cause: "Furnace failed to light flame 3 times in a row. Gas line closed or dirty sensor.", action: "Verify gas valve is ON. Clean flame sensor with steel wool. Reset power switch." },
+  { code: "3 Flashes", brand: "Trane", category: "Electrical", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Pressure switch failed to close", cause: "Inducer draft blower motor failed, or pressure switch hose is cracked/blocked.", action: "Replace inducer blower motor or pressure switch hose: $120 – $280." },
+  { code: "4 Flashes", brand: "Trane", category: "diy", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "High limit switch open (Overheat)", cause: "Clogged air filter completely blocking system airflow.", action: "Remove and replace furnace air filter immediately. Keep registers open." },
+  { code: "5 Flashes", brand: "Trane", category: "danger", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Flame sensed with gas valve closed", cause: "Gas valve leaking gas or control board relay fused open.", action: "Shut off main gas supply immediately. Call a professional to replace valve or PCB." },
+
+  // Goodman
+  { code: "1 Flash", brand: "Goodman", category: "Ignition", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "Ignition failure / flame sensed out of order", cause: "Gas supply valve is closed, flame sensor rod is dirty/oxidized, or hot surface igniter failed.", action: "Verify gas supply handle is parallel to pipe. Clean flame sensor metal rod with steel wool. Reset furnace power switch." },
+  { code: "3 Flashes", brand: "Goodman", category: "Pressure Switch", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Pressure switch stuck open (Inducer warning)", cause: "Draft inducer motor has failed, pressure switch hose is cracked, or exhaust chimney blocked.", action: "Inspect clear plastic hose for cracks/water. Check chimney outlet. Replace pressure switch: $80 – $150." },
+  { code: "4 Flashes", brand: "Goodman", category: "Limit Switch", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "Open high-limit switch (Furnace overheat)", cause: "Clogged air filter, blocked return vents, or failing blower motor restricting air.", action: "Switch furnace power off. Replace dirty air filter immediately. Open all room registers. Wait 10 minutes to reset." },
+  { code: "7 Flashes", brand: "Goodman", category: "Flame Sensor", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "Low flame sensor signal warning", cause: "Flame sensor rod has soot or carbon coating, producing a weak microamp signal.", action: "Unscrew and clean the flame sensor probe with steel wool. Tighten grounding connection." },
+
+  // Lennox
+  { code: "E223", brand: "Lennox", category: "Refrigerant", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Low pressure switch lockout", cause: "Refrigerant charge leak, or severe indoor airflow restriction (frozen evaporator coil).", action: "Shut off AC. Check indoor filter. Call technician for leak search and recharge: ₹2,500 – ₹5,500 / $150 – $350." },
+  { code: "E228", brand: "Lennox", category: "Electrical", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Outdoor unit compressor startup lockout", cause: "Failed dual run capacitor, loose terminal wire plug, or locked compressor rotor.", action: "Measure capacitor rating. Replace failed run capacitor: ₹1,500 – ₹3,000 / $100 – $220." },
+  { code: "E290", brand: "Lennox", category: "Ignition", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "Ignition retry lockout (Furnace)", cause: "Gas valve turned off, dirty furnace flame sensor, or defective igniter.", action: "Check that gas valve is ON. Clean flame sensor probe using steel wool. Reset power switch." },
+  { code: "E312", brand: "Lennox", category: "Voltage", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "Low voltage power protection", cause: "Line voltage input has dropped below 196V or transformer output is low.", action: "Verify household incoming voltage. Install a digital voltage stabilizer to prevent board damage." },
+
+  // Fujitsu
+  { code: "Code 11", brand: "Fujitsu", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Serial communication error (Indoor/Outdoor)", cause: "Terminal block wire S1, S2, or S3 is loose, broken, or miswired.", action: "Check terminal wire continuity. Replace interconnecting cable if damaged. Swap outdoor board if communication chip is dead." },
+  { code: "Code 32", brand: "Fujitsu", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor room temperature thermistor fault", cause: "Room ambient NTC thermistor is open or short-circuited.", action: "Test sensor resistance with a multimeter. Replace room thermistor: ₹400 – ₹800 / $30 – $55." },
+  { code: "Code 97", brand: "Fujitsu", category: "Motor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Outdoor unit fan motor error", cause: "Condenser fan blade locked by dirt/leaves, motor windings open, or PCB driver failed.", action: "Remove debris blocking fan blades. Measure fan motor winding resistance. Replace fan motor: ₹2,000 – ₹4,500 / $120 – $220." },
+
+  // Lloyd
+  { code: "E1", brand: "Lloyd", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor room temperature sensor fault", cause: "Room NTC sensor disconnected or defective.", action: "Replace room temperature thermistor probe. Estimated cost: ₹300 – ₹500." },
+  { code: "E2", brand: "Lloyd", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor evaporator coil sensor fault", cause: "Evaporator coil NTC thermistor open or short circuit.", action: "Replace coil pipe temperature sensor. Estimated cost: ₹300 – ₹500." },
+  { code: "E4", brand: "Lloyd", category: "Motor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor blower motor speed feedback error", cause: "Blower motor hall sensor disconnected or motor windings damaged.", action: "Ensure fan wheel spins freely. Replace indoor fan motor: ₹1,500 – ₹3,000." },
+  { code: "E5", brand: "Lloyd", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Indoor/Outdoor unit communication failure", cause: "Loose terminal joints, damaged wiring, or main control board failure.", action: "Verify signal wire connection. Clean terminals. Swap communication wire: ₹400 – ₹800." },
+  { code: "EC", brand: "Lloyd", category: "Refrigerant", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Refrigerant leakage protection active", cause: "Low pressure trip due to a physical gas leak in indoor or outdoor coils.", action: "Stop AC immediately to prevent compressor failure. Call technician to search, weld, vacuum, and recharge gas: ₹2,500 – ₹5,500." },
+
+  // Whirlpool
+  { code: "E1", brand: "Whirlpool", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Room temperature sensor fault", cause: "Indoor ambient NTC thermistor failed or open.", action: "Replace room air temperature thermistor: ₹300 – ₹500 / $25 – $40." },
+  { code: "E2", brand: "Whirlpool", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor coil temperature sensor fault", cause: "Evaporator coil copper pipe thermistor open/short circuit.", action: "Replace evaporator coil sensor: ₹300 – ₹500 / $25 – $40." },
+  { code: "E6", brand: "Whirlpool", category: "Motor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor fan motor speed error", cause: "Blower fan locked or fan motor winding burned out.", action: "Check blower wheel for dust blockage. Replace indoor fan motor: ₹1,500 – ₹3,200 / $90 – $180." },
+  { code: "F1", brand: "Whirlpool", category: "Refrigerant", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "High pressure or compressor overload protection", cause: "Dirty outdoor condenser coils or failed outdoor condenser fan motor.", action: "Clean outdoor coils. Replace outdoor fan motor if locked: ₹1,800 – ₹3,500 / $110 – $200." },
+
+  // Godrej
+  { code: "E1", brand: "Godrej", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Room temperature thermistor fault", cause: "Ambient NTC sensor failure or board disconnection.", action: "Replace room temperature sensor: ₹300 – ₹500." },
+  { code: "E2", brand: "Godrej", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor coil pipe sensor fault", cause: "Coil NTC sensor broken or short-circuited.", action: "Replace indoor evaporator coil sensor: ₹300 – ₹500." },
+  { code: "E5", brand: "Godrej", category: "Motor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Outdoor DC fan motor error", cause: "Condenser fan blade blocked or motor winding damaged.", action: "Clear debris around outdoor fan. Replace outdoor DC fan motor: ₹1,800 – ₹3,500." },
+  { code: "EC", brand: "Godrej", category: "Refrigerant", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Gas leakage protection triggered", cause: "AC refrigerant pressure is too low, indicating a gas leak.", action: "Shut off AC. Call technician to perform leak test, weld, vacuum, and recharge gas: ₹2,500 – ₹5,000." },
+
+  // Hitachi
+  { code: "01", brand: "Hitachi", category: "Condensate", severity: "diy", severityText: "DIY Safe", color: "emerald", desc: "Indoor condensate switch trip / Drain overflow", cause: "Clogged condensate drain line backing up water in the pan.", action: "Flush the indoor unit drain line with water or vacuum it from outside. Prevents wall water leakage." },
+  { code: "02", brand: "Hitachi", category: "System", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Outdoor unit activation protection (High Pressure)", cause: "Refrigerant overcharged or dirty outdoor condenser block causing high pressure.", action: "Wash outdoor coils. Call technician to check and correct gas pressures: ₹800 – ₹1,800." },
+  { code: "03", brand: "Hitachi", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Communication line error (Indoor-Outdoor)", cause: "Signal line loose, disconnected, or outdoor PCB damaged.", action: "Check signal line continuity. Replace inter-unit 3-core communication line." },
+  { code: "08", brand: "Hitachi", category: "Refrigerant", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Abnormal compressor discharge temperature (Overheat)", cause: "Severe refrigerant leak, blocked expansion capillary, or compressor valve failure.", action: "Stop using the AC. A technician must check for gas leaks and expansion device blockages." },
+
+  // Haier
+  { code: "E1", brand: "Haier", category: "Sensor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Room temperature sensor failure", cause: "NTC sensor failed or unplugged from PCB.", action: "Replace room air sensor: ₹300 – ₹500 / $20 – $35." },
+  { code: "E7", brand: "Haier", category: "Communication", severity: "technician", severityText: "Call Technician", color: "orange", desc: "Communication fault between indoor & outdoor units", cause: "Signal wire disconnected or damaged outdoor board.", action: "Test interconnecting line voltages. Replace communication wire or outdoor board: ₹2,500 – ₹6,000 / $150 – $300." },
+  { code: "E14", brand: "Haier", category: "Motor", severity: "technician", severityText: "Technician Advised", color: "amber", desc: "Indoor fan motor feedback fault", cause: "Blower motor locked, hall sensor failed, or board connection loose.", action: "Inspect blower fan. Replace indoor fan motor: ₹1,500 – ₹3,500 / $95 – $180." },
+  { code: "F11 / F12", brand: "Haier", category: "Electrical", severity: "danger", severityText: "Stop AC — Danger", color: "red", desc: "Compressor startup failure or module protection", cause: "IPM power module overcurrent on outdoor board, or locked compressor rotor.", action: "Turn off power. Measure compressor terminal resistances. Swap outdoor PCB or compressor: ₹5,000 – ₹9,500 / $280 – $550." }
+];
+
+// Brand list and their corresponding display colors and counts
+const brands = [
+  { name: "LG", bg: "bg-red-50 text-red-700 border-red-100", count: errorCodes.filter(c => c.brand === "LG").length },
+  { name: "Mitsubishi", bg: "bg-blue-50 text-blue-700 border-blue-100", count: errorCodes.filter(c => c.brand === "Mitsubishi").length },
+  { name: "Daikin", bg: "bg-blue-50 text-blue-700 border-blue-100", count: errorCodes.filter(c => c.brand === "Daikin").length },
+  { name: "Voltas", bg: "bg-orange-50 text-orange-700 border-orange-100", count: errorCodes.filter(c => c.brand === "Voltas").length },
+  { name: "Samsung", bg: "bg-sky-50 text-sky-700 border-sky-100", count: errorCodes.filter(c => c.brand === "Samsung").length },
+  { name: "Panasonic", bg: "bg-indigo-50 text-indigo-700 border-indigo-100", count: errorCodes.filter(c => c.brand === "Panasonic").length },
+  { name: "Blue Star", bg: "bg-cyan-50 text-cyan-700 border-cyan-100", count: errorCodes.filter(c => c.brand === "Blue Star").length },
+  { name: "Carrier", bg: "bg-emerald-50 text-emerald-700 border-emerald-100", count: errorCodes.filter(c => c.brand === "Carrier").length },
+  { name: "Trane", bg: "bg-slate-50 text-slate-700 border-slate-200", count: errorCodes.filter(c => c.brand === "Trane").length },
+  { name: "Goodman", bg: "bg-amber-50 text-amber-700 border-amber-100", count: errorCodes.filter(c => c.brand === "Goodman").length },
+  { name: "Lennox", bg: "bg-lime-50 text-lime-700 border-lime-100", count: errorCodes.filter(c => c.brand === "Lennox").length },
+  { name: "Fujitsu", bg: "bg-teal-50 text-teal-700 border-teal-100", count: errorCodes.filter(c => c.brand === "Fujitsu").length },
+  { name: "Lloyd", bg: "bg-violet-50 text-violet-700 border-violet-100", count: errorCodes.filter(c => c.brand === "Lloyd").length },
+  { name: "Whirlpool", bg: "bg-pink-50 text-pink-700 border-pink-100", count: errorCodes.filter(c => c.brand === "Whirlpool").length },
+  { name: "Godrej", bg: "bg-rose-50 text-rose-700 border-rose-100", count: errorCodes.filter(c => c.brand === "Godrej").length },
+  { name: "Hitachi", bg: "bg-yellow-50 text-yellow-700 border-yellow-100", count: errorCodes.filter(c => c.brand === "Hitachi").length },
+  { name: "Haier", bg: "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-100", count: errorCodes.filter(c => c.brand === "Haier").length }
+];
+
+// JSON-LD Dataset and FAQ Schemas
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Universal AC Error Code & Fault Directory",
+    "description": "Comprehensive fault code lookup database for major air conditioner brands including Daikin, LG, Voltas, Carrier, Trane, Samsung, Panasonic, Lloyd, Rheem, Lennox, Fujitsu, and Gree.",
+    "url": "https://coolingsupport.com/ac-error-codes",
+    "license": "https://coolingsupport.com/privacy",
+    "creator": {
+      "@type": "Organization",
+      "name": "Cooling Support"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the most common reason for an AC error code?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The most common AC error codes are triggered by dirty air filters blocking airflow (causing coil freezing or pressure faults) or loose inter-unit communication wires between the indoor head and outdoor condenser."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I reset my AC error code?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "To reset an AC error code, perform a hard power cycle: turn off the main circuit breaker (MCB) or unplug the stabilizer for 3 to 5 minutes. This drains control board capacitors and clears transient system faults."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does EC mean on an AC digital display?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The EC fault code indicates refrigerant leakage detection. The system pressure switch has detected a drop in gas charge. Turn off the AC immediately to prevent compressor burnout, and call a technician to repair the leak and recharge."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout title="AC Error Codes: Air Conditioner Diagnostic Directory">
+  <SEO
+    slot="head"
+    title="AC Error Codes: Air Conditioner Diagnostic Directory | Cooling Support"
+    description="Decode error codes on Daikin, LG, Carrier, Trane, Samsung, and 10+ brands instantly. Get likely diagnostic causes, DIY resets, and repair cost guides."
+    type="WebApplication"
+    schema={schemaData}
+  />
+
+  <!-- Hero Section -->
+  <section class="relative bg-zinc-950 pt-24 pb-20 border-b border-zinc-800 overflow-hidden">
+    <!-- Blue Glow Effect -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] opacity-10 pointer-events-none">
+      <div class="absolute inset-0 bg-gradient-to-b from-cyan-400 to-transparent blur-[120px] rounded-full"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/25 text-cyan-400 text-xs font-semibold px-5 py-2 rounded-full mb-6 font-mono">
+        🛠️ Live Diagnostic Database · 2026
+      </div>
+      <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
+        Universal AC Error Codes <br />
+        <span class="text-cyan-400">&amp; Fault Diagnostic Directory</span>
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-8">
+        Search your error code and get the meaning, likely cause, and exact action in seconds. Covers Daikin, LG, Voltas, Samsung, Panasonic, Blue Star, Carrier, and Trane.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Content Container -->
+  <div class="bg-zinc-50 min-h-screen py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Brand Selection Grid -->
+      <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8">
+        <p class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-5">Jump to Brand Directory</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {brands.map((brand) => (
+            <button
+              class={`brand-btn flex items-center justify-between px-4 py-3.5 rounded-2xl border text-sm font-extrabold transition-all hover:shadow-sm cursor-pointer ${brand.bg}`}
+              data-brand={brand.name}
+            >
+              <span>{brand.name}</span>
+              <span class="text-xs font-mono font-medium opacity-65 bg-white/50 px-2 py-0.5 rounded-lg">{brand.count} codes</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Severity Explanation Bar -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white rounded-3xl border border-zinc-200 shadow-sm p-6">
+        <div class="flex items-start gap-3 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+          <span class="w-8 h-8 flex items-center justify-center rounded-xl bg-emerald-500 text-white shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          </span>
+          <div>
+            <p class="font-bold text-emerald-800 text-sm mb-1">DIY Safe</p>
+            <p class="text-xs text-emerald-700 leading-relaxed">Clean filters, replace remote batteries, clear drain clog, or perform MCB resets. No tools needed.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3 p-4 bg-amber-50 rounded-2xl border border-amber-100">
+          <span class="w-8 h-8 flex items-center justify-center rounded-xl bg-amber-500 text-white shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          </span>
+          <div>
+            <p class="font-bold text-amber-800 text-sm mb-1">Technician Advised</p>
+            <p class="text-xs text-amber-700 leading-relaxed">Sensor swap, blower fan issues, PCB capacitor faults. Requires multimeters and components.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3 p-4 bg-rose-50 rounded-2xl border border-rose-100">
+          <span class="w-8 h-8 flex items-center justify-center rounded-xl bg-rose-600 text-white shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          </span>
+          <div>
+            <p class="font-bold text-rose-800 text-sm mb-1">DANGER — Stop AC</p>
+            <p class="text-xs text-rose-700 leading-relaxed">Gas leaks, compressor lockout, short circuits. Shut breaker off immediately and call a certified pro.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Section -->
+      <section class="space-y-6" id="search-section">
+        <div class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+          <h2 class="text-2xl font-bold text-zinc-900">Search Our Universal AC Fault Code Database</h2>
+          
+          <!-- Large Search Bar -->
+          <div style="position: relative; width: 100%;">
+            <div style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; pointer-events: none; color: #a1a1aa; z-index: 10;">
+              <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Type your error code (e.g., CH05, E1, U4, 33)..."
+              class="w-full pl-14 pr-5 py-4 text-lg bg-zinc-50 border-2 border-zinc-200 rounded-2xl focus:outline-none focus:border-cyan-500 transition-colors text-zinc-800 placeholder-zinc-400 shadow-inner"
+            />
+          </div>
+
+          <!-- Double Filters (Brand and Severity) -->
+          <div class="flex flex-col gap-4">
+            <!-- Brand Pills -->
+            <div class="flex flex-wrap gap-2 items-center">
+              <span class="text-xs font-bold text-zinc-500 uppercase tracking-wide mr-2">Brand:</span>
+              <button class="filter-brand-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-zinc-900 text-white" data-brand="all">All</button>
+              {brands.map(brand => (
+                <button
+                  class="filter-brand-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-zinc-100 text-zinc-600 border border-zinc-200 hover:border-zinc-400"
+                  data-brand={brand.name}
+                >
+                  {brand.name}
+                </button>
+              ))}
+            </div>
+
+            <!-- Severity Pills -->
+            <div class="flex flex-wrap gap-2 items-center">
+              <span class="text-xs font-bold text-zinc-500 uppercase tracking-wide mr-2">Severity:</span>
+              <button class="filter-severity-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-zinc-900 text-white" data-severity="all">All</button>
+              <button class="filter-severity-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-white text-zinc-600 border border-zinc-200 hover:border-emerald-400" data-severity="diy">DIY Safe</button>
+              <button class="filter-severity-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-white text-zinc-600 border border-zinc-200 hover:border-amber-400" data-severity="technician">Technician Advised</button>
+              <button class="filter-severity-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-white text-zinc-600 border border-zinc-200 hover:border-rose-400" data-severity="danger">Danger / Urgent</button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between border-t border-zinc-100 pt-4">
+            <p class="text-sm text-zinc-500">
+              Showing <span id="showing-count" class="font-bold text-zinc-950">{errorCodes.length}</span> of <span class="font-bold text-zinc-950">{errorCodes.length}</span> error codes
+            </p>
+          </div>
+        </div>
+
+        <!-- Error Cards List -->
+        <div class="space-y-4" id="error-cards-container">
+          {errorCodes.map((item) => (
+            <div
+              class="error-card bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 flex flex-col gap-4 transition-all hover:border-zinc-300"
+              data-brand={item.brand}
+              data-severity={item.severity}
+              data-code={item.code.toLowerCase()}
+              data-desc={item.desc.toLowerCase()}
+              data-cause={item.cause.toLowerCase()}
+            >
+              <!-- Card Header -->
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-black text-zinc-900 text-xl font-mono tracking-tight">{item.code}</span>
+                  <span class="text-xs font-extrabold bg-zinc-100 text-zinc-600 px-3 py-1 rounded-full uppercase tracking-wider">{item.brand}</span>
+                  <span class="text-xs bg-zinc-50 text-zinc-500 px-2.5 py-1 rounded-full font-medium">{item.category}</span>
+                </div>
+                
+                <span class={`text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 shrink-0 ${
+                  item.color === 'emerald' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
+                  item.color === 'amber' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                  item.color === 'orange' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
+                  'bg-rose-50 text-rose-700 border border-rose-100'
+                }`}>
+                  <span class={`w-1.5 h-1.5 rounded-full ${
+                    item.color === 'emerald' ? 'bg-emerald-500' :
+                    item.color === 'amber' ? 'bg-amber-500' :
+                    item.color === 'orange' ? 'bg-orange-500' :
+                    'bg-rose-600'
+                  }`}></span>
+                  {item.severityText}
+                </span>
+              </div>
+
+              <!-- Meaning -->
+              <div>
+                <p class="font-bold text-zinc-800 text-base leading-snug">{item.desc}</p>
+              </div>
+
+              <!-- Cause & Action Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-zinc-100 pt-4">
+                <div class="bg-zinc-50 rounded-2xl p-4 border border-zinc-100">
+                  <p class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1.5">Likely Cause</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.cause}</p>
+                </div>
+                <div class="bg-cyan-500/5 rounded-2xl p-4 border border-cyan-500/10">
+                  <p class="text-xs font-bold text-cyan-600 uppercase tracking-wider mb-1.5">Recommended Action</p>
+                  <p class="text-sm text-zinc-700 leading-relaxed font-medium">{item.action}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+          
+          <!-- Empty State -->
+          <div id="no-results" class="hidden bg-white rounded-3xl border border-zinc-200 shadow-sm p-12 text-center">
+            <svg class="w-12 h-12 text-zinc-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <h3 class="text-lg font-bold text-zinc-900 mb-1">No Error Codes Found</h3>
+            <p class="text-sm text-zinc-500">We couldn't find any code matching your search criteria. Try typing just the number (e.g. "31") or change filters.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Brand-Specific Diagnostic Manuals -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-zinc-900">Brand-Specific Diagnostic Manuals</h2>
+            <p class="text-sm text-zinc-500 mt-1">Read master troubleshooting manuals and access detailed LED blink/remote code lists for specific brands.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- Carrier -->
+          <a href="/ac-error-codes/carrier-error-code" class="group p-5 bg-zinc-50 hover:bg-red-500/5 rounded-2xl border border-zinc-200/60 hover:border-red-500/20 transition-all flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-zinc-900 group-hover:text-red-600 transition-colors">Carrier &amp; Bryant</h3>
+              <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Furnace LED diagnostic light flashes, limit control fault trees, and blower codes.</p>
+            </div>
+            <div class="mt-4 flex items-center text-xs font-bold text-red-600 opacity-80 group-hover:opacity-100">
+              Read Guide <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+          </a>
+
+          <!-- Trane -->
+          <a href="/ac-error-codes/trane-error-code" class="group p-5 bg-zinc-50 hover:bg-orange-500/5 rounded-2xl border border-zinc-200/60 hover:border-orange-500/20 transition-all flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-zinc-900 group-hover:text-orange-600 transition-colors">Trane &amp; American Standard</h3>
+              <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Status LED count diagnostic charts, ignition retry lockouts, and heat pump codes.</p>
+            </div>
+            <div class="mt-4 flex items-center text-xs font-bold text-orange-600 opacity-80 group-hover:opacity-100">
+              Read Guide <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+          </a>
+
+          <!-- Mitsubishi -->
+          <a href="/ac-error-codes/mitsubishi-error-code" class="group p-5 bg-zinc-50 hover:bg-blue-500/5 rounded-2xl border border-zinc-200/60 hover:border-blue-500/20 transition-all flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-zinc-900 group-hover:text-blue-600 transition-colors">Mitsubishi Mini-Split</h3>
+              <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Ductless wall unit diagnostic codes, timer light flashing counts, and VRF error lookups.</p>
+            </div>
+            <div class="mt-4 flex items-center text-xs font-bold text-blue-600 opacity-80 group-hover:opacity-100">
+              Read Guide <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+          </a>
+
+          <!-- Daikin -->
+          <a href="/ac-error-codes/daikin-error-code" class="group p-5 bg-zinc-50 hover:bg-blue-500/5 rounded-2xl border border-zinc-200/60 hover:border-blue-500/20 transition-all flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-zinc-900 group-hover:text-blue-600 transition-colors">Daikin AC</h3>
+              <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Remote cancel button diagnostic code retrieval, VRV multi-split alarms, and inverter errors.</p>
+            </div>
+            <div class="mt-4 flex items-center text-xs font-bold text-blue-600 opacity-80 group-hover:opacity-100">
+              Read Guide <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+          </a>
+
+          <!-- LG -->
+          <a href="/ac-error-codes/lg-error-code" class="group p-5 bg-zinc-50 hover:bg-red-500/5 rounded-2xl border border-zinc-200/60 hover:border-red-500/20 transition-all flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-zinc-900 group-hover:text-red-600 transition-colors">LG AC</h3>
+              <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Smart inverter fault codes, green/red LED flash pattern count guides, and diagnostic steps.</p>
+            </div>
+            <div class="mt-4 flex items-center text-xs font-bold text-red-600 opacity-80 group-hover:opacity-100">
+              Read Guide <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+          </a>
+
+          <!-- Fujitsu -->
+          <a href="/ac-error-codes/fujitsu-error-code" class="group p-5 bg-zinc-50 hover:bg-teal-500/5 rounded-2xl border border-zinc-200/60 hover:border-teal-500/20 transition-all flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-zinc-900 group-hover:text-teal-600 transition-colors">Fujitsu Halcyon</h3>
+              <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Halcyon mini-split diagnostic codes, remote controller lookup charts, and communication fixes.</p>
+            </div>
+            <div class="mt-4 flex items-center text-xs font-bold text-teal-600 opacity-80 group-hover:opacity-100">
+              Read Guide <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+          </a>
+
+          <!-- Lennox -->
+          <a href="/ac-error-codes/lennox-error-code" class="group p-5 bg-zinc-50 hover:bg-lime-500/5 rounded-2xl border border-zinc-200/60 hover:border-lime-500/20 transition-all flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-zinc-900 group-hover:text-lime-600 transition-colors">Lennox HVAC</h3>
+              <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Dave Lennox Signature Series diagnostic codes, smart thermostat notifications, and circuit errors.</p>
+            </div>
+            <div class="mt-4 flex items-center text-xs font-bold text-lime-600 opacity-80 group-hover:opacity-100">
+              Read Guide <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+          </a>
+
+          <!-- Gree -->
+          <a href="/ac-error-codes/gree-error-code" class="group p-5 bg-zinc-50 hover:bg-emerald-500/5 rounded-2xl border border-zinc-200/60 hover:border-emerald-500/20 transition-all flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-zinc-900 group-hover:text-emerald-600 transition-colors">Gree Mini-Split</h3>
+              <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Mini-split error codes (H1, H5, E6), inverter status LED diagnostics, and overload resets.</p>
+            </div>
+            <div class="mt-4 flex items-center text-xs font-bold text-emerald-600 opacity-80 group-hover:opacity-100">
+              Read Guide <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+          </a>
+
+          <!-- Rheem -->
+          <a href="/ac-error-codes/rheem-error-code" class="group p-5 bg-zinc-50 hover:bg-amber-500/5 rounded-2xl border border-zinc-200/60 hover:border-amber-500/20 transition-all flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-zinc-900 group-hover:text-amber-600 transition-colors">Rheem &amp; Ruud</h3>
+              <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Dual seven-segment control board fault codes, furnace status lights, and ignition resets.</p>
+            </div>
+            <div class="mt-4 flex items-center text-xs font-bold text-amber-600 opacity-80 group-hover:opacity-100">
+              Read Guide <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+          </a>
+
+          <!-- Voltas -->
+          <a href="/ac-error-codes/voltas-error-code" class="group p-5 bg-zinc-50 hover:bg-orange-500/5 rounded-2xl border border-zinc-200/60 hover:border-orange-500/20 transition-all flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-zinc-900 group-hover:text-orange-600 transition-colors">Voltas AC</h3>
+              <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Split AC and window AC error codes (E1, E5, EC), indoor unit flashing display, and sensor fixes.</p>
+            </div>
+            <div class="mt-4 flex items-center text-xs font-bold text-orange-600 opacity-80 group-hover:opacity-100">
+              Read Guide <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+          </a>
+
+          <!-- Lloyd -->
+          <a href="/ac-error-codes/lloyd-error-code" class="group p-5 bg-zinc-50 hover:bg-violet-500/5 rounded-2xl border border-zinc-200/60 hover:border-violet-500/20 transition-all flex flex-col justify-between">
+            <div>
+              <h3 class="font-extrabold text-zinc-900 group-hover:text-violet-600 transition-colors">Lloyd AC</h3>
+              <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">Inverter AC error codes (E2, E5, EC), display sensor malfunctions, and blower speed troubleshooting.</p>
+            </div>
+            <div class="mt-4 flex items-center text-xs font-bold text-violet-600 opacity-80 group-hover:opacity-100">
+              Read Guide <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- Collapsible Brand Reset Instructions -->
+      <section class="bg-white rounded-3xl border border-zinc-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-zinc-900">How to Manually Reset Your AC</h2>
+        <p class="text-sm text-zinc-500">
+          Many error codes are caused by temporary voltage sags or chip glitches. Before paying a technician, try a hard reset. Below are brand-specific steps.
+        </p>
+
+        <div class="space-y-4">
+          <!-- Daikin Reset -->
+          <details class="group border border-zinc-100 rounded-2xl p-5 hover:border-zinc-200 transition-all">
+            <summary class="flex items-center justify-between font-bold text-zinc-950 cursor-pointer list-none">
+              <span class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                Daikin AC Reset Steps
+              </span>
+              <span class="transition-transform group-open:rotate-180">
+                <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </span>
+            </summary>
+            <div class="mt-4 pl-5 text-sm text-zinc-600 space-y-2 leading-relaxed">
+              <p>1. <strong>Hard Power Cycle</strong>: Turn off the AC's main circuit breaker (MCB) for exactly 3 minutes.</p>
+              <p>2. <strong>Remote Reset</strong>: Point the remote at the unit and press the <strong>CANCEL</strong> button for 5 seconds until you hear a continuous beep.</p>
+              <p>3. Restore MCB power and turn the unit ON. Temporary sensor locks should clear.</p>
+            </div>
+          </details>
+
+          <!-- Mitsubishi Reset -->
+          <details class="group border border-zinc-100 rounded-2xl p-5 hover:border-zinc-200 transition-all">
+            <summary class="flex items-center justify-between font-bold text-zinc-950 cursor-pointer list-none">
+              <span class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                Mitsubishi AC Reset Steps
+              </span>
+              <span class="transition-transform group-open:rotate-180">
+                <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </span>
+            </summary>
+            <div class="mt-4 pl-5 text-sm text-zinc-600 space-y-2 leading-relaxed">
+              <p>1. <strong>Isolation Switch / MCB</strong>: Turn off the power switch located near the outdoor unit or flip the AC breaker off.</p>
+              <p>2. Keep the power shut off for 3 to 5 minutes to ensure all capacitors discharge completely.</p>
+              <p>3. Point the remote control at the indoor unit and press the <strong>POWER</strong> button to turn it off.</p>
+              <p>4. Turn the power breaker back on, wait for a beep, then turn the unit ON using the remote control.</p>
+            </div>
+          </details>
+
+          <!-- LG Reset -->
+          <details class="group border border-zinc-100 rounded-2xl p-5 hover:border-zinc-200 transition-all">
+            <summary class="flex items-center justify-between font-bold text-zinc-950 cursor-pointer list-none">
+              <span class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                LG AC Reset Steps
+              </span>
+              <span class="transition-transform group-open:rotate-180">
+                <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </span>
+            </summary>
+            <div class="mt-4 pl-5 text-sm text-zinc-600 space-y-2 leading-relaxed">
+              <p>1. Locate your AC stabilizer or MCB and power it off completely.</p>
+              <p>2. Keep the power shut for 5 minutes to allow the main capacitor on the outdoor board to drain completely.</p>
+              <p>3. Press and hold the power button on the indoor unit's right panel for 5 seconds while power is off.</p>
+              <p>4. Turn the breaker back on and start the system with your remote.</p>
+            </div>
+          </details>
+
+          <!-- Voltas Reset -->
+          <details class="group border border-zinc-100 rounded-2xl p-5 hover:border-zinc-200 transition-all">
+            <summary class="flex items-center justify-between font-bold text-zinc-950 cursor-pointer list-none">
+              <span class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                Voltas AC Reset Steps
+              </span>
+              <span class="transition-transform group-open:rotate-180">
+                <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </span>
+            </summary>
+            <div class="mt-4 pl-5 text-sm text-zinc-600 space-y-2 leading-relaxed">
+              <p>1. Unplug the AC power cord or trip the dedicated MCB switch.</p>
+              <p>2. Remove the AA batteries from your Voltas remote control for 1 minute to reset the remote's transmitter chip.</p>
+              <p>3. Reinsert batteries, restore stabilizer power, and switch on the AC.</p>
+            </div>
+          </details>
+
+          <!-- Carrier & Trane Reset -->
+          <details class="group border border-zinc-100 rounded-2xl p-5 hover:border-zinc-200 transition-all">
+            <summary class="flex items-center justify-between font-bold text-zinc-950 cursor-pointer list-none">
+              <span class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                Carrier / Trane Furnace Reset Steps
+              </span>
+              <span class="transition-transform group-open:rotate-180">
+                <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </span>
+            </summary>
+            <div class="mt-4 pl-5 text-sm text-zinc-600 space-y-2 leading-relaxed">
+              <p>1. <strong>Furnace Board Reset</strong>: Switch off the power toggle switch on the side of the indoor furnace cabinet.</p>
+              <p>2. Turn your wall thermostat settings to <strong>OFF</strong>.</p>
+              <p>3. Wait 60 seconds, turn the furnace power switch back <strong>ON</strong>, and set your thermostat to Heat/Cool. This clears active lockouts (like Code 13 or 2 Flashes).</p>
+            </div>
+          </details>
+
+          <!-- Goodman & Lennox Reset -->
+          <details class="group border border-zinc-100 rounded-2xl p-5 hover:border-zinc-200 transition-all">
+            <summary class="flex items-center justify-between font-bold text-zinc-950 cursor-pointer list-none">
+              <span class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                Goodman &amp; Lennox Reset Steps
+              </span>
+              <span class="transition-transform group-open:rotate-180">
+                <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </span>
+            </summary>
+            <div class="mt-4 pl-5 text-sm text-zinc-600 space-y-2 leading-relaxed">
+              <p>1. <strong>Goodman</strong>: Flip the power switch on the side of the furnace unit to OFF, or switch off the furnace breaker. Wait 60 seconds, then restore power to clear locks like 1 or 3 Flashes.</p>
+              <p>2. <strong>Lennox</strong>: Turn your home thermostat to OFF. Go to your breaker panel and shut off the breakers for both the indoor unit and outdoor unit. Wait 5 minutes to clear control board volatile memory, then power them back on and restart your thermostat.</p>
+            </div>
+          </details>
+
+          <!-- Fujitsu Reset -->
+          <details class="group border border-zinc-100 rounded-2xl p-5 hover:border-zinc-200 transition-all">
+            <summary class="flex items-center justify-between font-bold text-zinc-950 cursor-pointer list-none">
+              <span class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span>
+                Fujitsu AC Reset Steps
+              </span>
+              <span class="transition-transform group-open:rotate-180">
+                <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </span>
+            </summary>
+            <div class="mt-4 pl-5 text-sm text-zinc-600 space-y-2 leading-relaxed">
+              <p>1. Power down the AC using the remote control.</p>
+              <p>2. Locate the outdoor isolator switch next to the condenser or switch off the dedicated outdoor unit circuit breaker.</p>
+              <p>3. Leave the power off for at least 5 minutes. This drains the PCB communication capacitors and resets the inter-unit serial connection.</p>
+              <p>4. Turn the power back on and start the AC using the remote control.</p>
+            </div>
+          </details>
+
+          <!-- Lloyd, Godrej & Whirlpool Reset -->
+          <details class="group border border-zinc-100 rounded-2xl p-5 hover:border-zinc-200 transition-all">
+            <summary class="flex items-center justify-between font-bold text-zinc-950 cursor-pointer list-none">
+              <span class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-violet-500"></span>
+                Lloyd, Godrej &amp; Whirlpool Reset Steps
+              </span>
+              <span class="transition-transform group-open:rotate-180">
+                <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </span>
+            </summary>
+            <div class="mt-4 pl-5 text-sm text-zinc-600 space-y-2 leading-relaxed">
+              <p>1. Switch off the AC main power socket switch or stabilizer switch.</p>
+              <p>2. Remove the AA/AAA batteries from your AC remote controller for 2 full minutes to let its internal IC drain and clear settings.</p>
+              <p>3. Reinsert remote batteries. Restore stabilizer power, and switch the AC on.</p>
+            </div>
+          </details>
+
+          <!-- Hitachi & Haier Reset -->
+          <details class="group border border-zinc-100 rounded-2xl p-5 hover:border-zinc-200 transition-all">
+            <summary class="flex items-center justify-between font-bold text-zinc-950 cursor-pointer list-none">
+              <span class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-fuchsia-500"></span>
+                Hitachi &amp; Haier Reset Steps
+              </span>
+              <span class="transition-transform group-open:rotate-180">
+                <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </span>
+            </summary>
+            <div class="mt-4 pl-5 text-sm text-zinc-600 space-y-2 leading-relaxed">
+              <p>1. Power off the system with your remote control.</p>
+              <p>2. Trip the main MCB power switch for the air conditioner for 3 minutes.</p>
+              <p>3. **Note for Hitachi Float Switch Tripping**: If you see error `01`, simply rebooting will not clear it permanently. You must locate the indoor unit drain line, clean it out, and ensure the drain pan is fully empty before restarting.</p>
+              <p>4. Turn the breaker back on and restart the unit.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  let activeBrand = 'all';
+  let activeSeverity = 'all';
+
+  const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
+  if (searchInput) {
+    const cards = document.querySelectorAll<HTMLElement>('.error-card');
+    const showingCountText = document.getElementById('showing-count');
+    const noResultsDiv = document.getElementById('no-results');
+
+    // Brand quick jump buttons (header)
+    const brandJumpBtns = document.querySelectorAll('.brand-btn');
+    brandJumpBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const brand = btn.getAttribute('data-brand');
+        if (brand) {
+          // Update Brand filter pill state
+          const brandPill = document.querySelector(`.filter-brand-btn[data-brand="${brand}"]`) as HTMLElement | null;
+          if (brandPill) {
+            triggerBrandFilter(brandPill, brand);
+          }
+          // Scroll down to search section
+          document.getElementById('search-section')?.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Brand filter pills (double filter bar)
+    const brandPills = document.querySelectorAll('.filter-brand-btn');
+    brandPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const brand = pill.getAttribute('data-brand');
+        if (brand) {
+          triggerBrandFilter(pill as HTMLElement, brand);
+        }
+      });
+    });
+
+    // Severity filter pills (double filter bar)
+    const severityPills = document.querySelectorAll('.filter-severity-btn');
+    severityPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const severity = pill.getAttribute('data-severity');
+        if (severity) {
+          // Remove active class from other severity pills
+          severityPills.forEach(p => {
+            p.className = 'filter-severity-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-white text-zinc-600 border border-zinc-200';
+          });
+
+          // Set active class on clicked pill
+          if (severity === 'all') {
+            pill.className = 'filter-severity-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-zinc-900 text-white';
+          } else if (severity === 'diy') {
+            pill.className = 'filter-severity-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-emerald-500 text-white';
+          } else if (severity === 'technician') {
+            pill.className = 'filter-severity-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-amber-500 text-white';
+          } else if (severity === 'danger') {
+            pill.className = 'filter-severity-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-rose-600 text-white';
+          }
+
+          activeSeverity = severity;
+          filterCards();
+        }
+      });
+    });
+
+    // Search input keyup
+    searchInput.addEventListener('input', filterCards);
+
+    function triggerBrandFilter(pillElement: HTMLElement, brand: string) {
+      brandPills.forEach(p => {
+        p.className = 'filter-brand-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-zinc-100 text-zinc-600 border border-zinc-200 hover:border-zinc-400';
+      });
+      pillElement.className = 'filter-brand-btn text-xs font-bold px-4 py-2 rounded-full transition-all cursor-pointer bg-zinc-900 text-white';
+      activeBrand = brand;
+      filterCards();
+    }
+
+    function filterCards() {
+      const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+      let matches = 0;
+
+      cards.forEach(card => {
+        const cardBrand = card.getAttribute('data-brand') || '';
+        const cardSeverity = card.getAttribute('data-severity') || '';
+        const code = card.getAttribute('data-code') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const cause = card.getAttribute('data-cause') || '';
+
+        // Check search query matches
+        const matchesQuery = query === '' || 
+          code.includes(query) || 
+          desc.includes(query) || 
+          cause.includes(query);
+
+        // Check brand filters
+        const matchesBrand = activeBrand === 'all' || cardBrand === activeBrand;
+
+        // Check severity filters
+        let matchesSeverity = activeSeverity === 'all';
+        if (activeSeverity === 'diy' && cardSeverity === 'diy') matchesSeverity = true;
+        if (activeSeverity === 'technician' && (cardSeverity === 'technician' || cardSeverity === 'orange')) matchesSeverity = true;
+        if (activeSeverity === 'danger' && cardSeverity === 'danger') matchesSeverity = true;
+
+        if (matchesQuery && matchesBrand && matchesSeverity) {
+          card.style.display = 'flex';
+          matches++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (showingCountText) showingCountText.textContent = String(matches);
+      if (noResultsDiv) {
+        if (matches === 0) {
+          (noResultsDiv as HTMLElement).style.display = 'block';
+        } else {
+          (noResultsDiv as HTMLElement).style.display = 'none';
+        }
+      }
+    }
+  }
+</script>

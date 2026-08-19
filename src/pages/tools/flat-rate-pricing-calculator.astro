@@ -1,0 +1,218 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "HVAC Flat Rate Pricing Calculator | Free Business Tool";
+const description = "Calculate your ideal flat rate pricing for HVAC and plumbing jobs based on part costs, labor hours, and your desired gross profit margin.";
+import AuthorBadge from '../../components/AuthorBadge.astro';
+---
+
+<Layout title={title} description={description}>
+  <!-- JSON-LD Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "HVAC Flat Rate Pricing Calculator",
+    "description": "A B2B calculator tool designed for HVAC and Plumbing contractors to determine the final retail price of a repair job based on part costs, hourly shop rate, and target gross profit margin.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "WebBrowser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+  <!-- Hero Section -->
+  <section class="bg-gray-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-500/20 text-emerald-400 font-bold text-xs uppercase tracking-widest mb-6 border border-emerald-500/30">
+        Contractor Business Suite
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">
+        HVAC Flat Rate <span class="text-emerald-400">Pricing Engine</span>
+      </h1>
+      <div class="mt-8 mb-4 max-w-2xl mx-auto"><AuthorBadge name="Mike Reynolds" role="HVAC Expert" image="/images/mike-reynolds.png" date="June 14, 2026" /></div>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8 font-light">
+        Stop losing money on Time & Materials. Calculate the exact retail price you need to charge to protect your gross profit margins.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Calculator App -->
+  <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 relative z-10">
+    <div class="max-w-6xl mx-auto bg-white rounded-sm shadow-md border border-gray-200 overflow-hidden">
+      
+      <!-- App Header -->
+      <div class="bg-slate-800 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-4 border-emerald-500">
+        <div class="flex items-center gap-3">
+          <span class="text-emerald-400 text-xl"></span>
+          <h2 class="text-white font-bold text-lg">Flat Rate Engine</h2>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <!-- Controls (Left: 7 cols) -->
+          <div class="lg:col-span-7 space-y-6">
+            
+            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-sm mb-2">
+              <p class="text-emerald-800 text-sm"><strong>How it works:</strong> Enter your costs below. The engine uses inverse margin division: <code>(Parts + Labor) ÷ (1 - Margin)</code> to calculate the true retail price.</p>
+            </div>
+
+            <!-- Inputs -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Cost of Part(s)</label>
+                <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-emerald-500 overflow-hidden">
+                  <span class="px-4 bg-gray-100 border-r border-gray-300 flex items-center font-bold text-gray-500">$</span>
+                  <input type="number" id="partCost" value="150" step="1" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Estimated Labor (Hours)</label>
+                <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-emerald-500 overflow-hidden">
+                  <input type="number" id="laborHours" value="1.5" step="0.5" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                  <span class="px-4 bg-gray-100 border-l border-gray-300 flex items-center font-bold text-gray-500">Hrs</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Hourly Shop Rate (Labor)</label>
+                <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-emerald-500 overflow-hidden">
+                  <span class="px-4 bg-gray-100 border-r border-gray-300 flex items-center font-bold text-gray-500">$</span>
+                  <input type="number" id="hourlyRate" value="150" step="5" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Target Gross Margin</label>
+                <div class="flex rounded-sm shadow-sm border-2 border-gray-300 focus-within:border-emerald-500 overflow-hidden">
+                  <input type="number" id="targetMargin" value="50" step="5" class="w-full border-none focus:ring-0 text-gray-900 text-xl font-bold p-3" />
+                  <span class="px-4 bg-gray-100 border-l border-gray-300 flex items-center font-bold text-gray-500">%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Button -->
+            <button id="btnCalculate" class="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xl py-5 rounded-sm shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-3">
+              Calculate Retail Price <span class="text-2xl"></span>
+            </button>
+
+          </div>
+
+          <!-- Output Panel (Right: 5 cols) -->
+          <div class="lg:col-span-5 bg-slate-900 rounded-sm p-6 lg:p-8 text-white flex flex-col relative overflow-hidden shadow-md">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500 rounded-md mix-blend-overlay filter blur-3xl opacity-10 transform translate-x-1/2 -translate-y-1/2"></div>
+            
+            <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-6 border-b border-slate-700 pb-4">Flat Rate Book Price</h3>
+            
+            <div class="space-y-6 flex-grow">
+              
+              <!-- Retail Price Box -->
+              <div class="flex flex-col gap-2 bg-emerald-900/30 p-6 rounded-sm border-2 border-emerald-500 transition-colors text-center">
+                <span class="text-emerald-400 font-bold uppercase tracking-widest text-xs">Final Customer Price</span>
+                <span class="text-5xl font-black text-white leading-none" id="outRetail">--</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div class="bg-slate-800 p-4 rounded-sm border border-slate-700">
+                  <span class="text-slate-400 font-bold uppercase tracking-widest text-[10px] block mb-1">Total Job Cost</span>
+                  <span class="text-2xl font-black text-white" id="outTotalCost">--</span>
+                </div>
+                <div class="bg-slate-800 p-4 rounded-sm border border-slate-700">
+                  <span class="text-slate-400 font-bold uppercase tracking-widest text-[10px] block mb-1">Gross Profit ($)</span>
+                  <span class="text-2xl font-black text-emerald-400" id="outGrossProfit">--</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skyscraper Content -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto space-y-16">
+      
+      <!-- Section 1 -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          Why "Time & Materials" Kills Your Business
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          If you are billing customers based strictly on Time and Materials (T&M), you are fundamentally punishing your best technicians for being fast. 
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          Imagine you have a junior technician who takes 4 hours to replace an inducer motor, and a senior veteran who takes 45 minutes to do the exact same job perfectly. Under T&M billing, the customer pays the junior technician $600 for labor, but the senior veteran only generates $112 for the company. The better you get at your job, the less money you make.
+        </p>
+        <div class="bg-slate-900 text-white p-6 rounded-sm shadow-md mb-6">
+          <p class="font-bold text-emerald-400 mb-2 uppercase tracking-wider text-sm">The Solution: Flat Rate</p>
+          <p class="text-gray-300 leading-relaxed">
+            Flat Rate Pricing fixes this by charging for the <em>value</em> of the task, not the time it takes. You calculate an average time the job should take, apply your profit margin, and put it in a price book. The customer agrees to a fixed price upfront, eliminating "sticker shock" and arguments over the hourly bill.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          The Correct Math (Inverse Division)
+        </h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          Most new business owners make a fatal math mistake when trying to calculate their profit margin. If a part costs $100 and they want a 50% margin, they simply multiply $100 by 1.5, arriving at $150.
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6 font-bold text-red-600">
+          That is a 50% Markup, but only a 33% Profit Margin!
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          If you sell a $100 part for $150, your profit is $50. And $50 is exactly 33% of the final $150 sale price. You did not hit your 50% margin. 
+        </p>
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+          To achieve a true Gross Profit Margin, you must use inverse division: <strong>Cost ÷ (1 - Margin)</strong>. To hit a 50% margin on a $100 cost, you divide $100 by 0.5. The required selling price is $200. The calculator above automatically uses this correct formula.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Script -->
+  <script>
+    const btnCalculate = document.getElementById('btnCalculate')!;
+    const inPartCost = document.getElementById('partCost') as HTMLInputElement;
+    const inLaborHours = document.getElementById('laborHours') as HTMLInputElement;
+    const inHourlyRate = document.getElementById('hourlyRate') as HTMLInputElement;
+    const inTargetMargin = document.getElementById('targetMargin') as HTMLInputElement;
+
+    const outRetail = document.getElementById('outRetail')!;
+    const outTotalCost = document.getElementById('outTotalCost')!;
+    const outGrossProfit = document.getElementById('outGrossProfit')!;
+
+    btnCalculate.addEventListener('click', () => {
+        const partCost = parseFloat(inPartCost.value) || 0;
+        const laborHours = parseFloat(inLaborHours.value) || 0;
+        const hourlyRate = parseFloat(inHourlyRate.value) || 0;
+        let margin = parseFloat(inTargetMargin.value) || 0;
+
+        // Prevent division by zero or negative prices by capping margin at 99%
+        if (margin >= 100) margin = 99;
+        const decimalMargin = margin / 100;
+
+        const laborCost = laborHours * hourlyRate;
+        const totalCost = partCost + laborCost;
+
+        // The correct inverse margin division formula
+        // Retail Price = Total Cost / (1 - Decimal Margin)
+        const retailPrice = totalCost / (1 - decimalMargin);
+        const grossProfit = retailPrice - totalCost;
+
+        outRetail.innerText = `$${retailPrice.toFixed(2)}`;
+        outTotalCost.innerText = `$${totalCost.toFixed(2)}`;
+        outGrossProfit.innerText = `$${grossProfit.toFixed(2)}`;
+    });
+  </script>
+</Layout>
