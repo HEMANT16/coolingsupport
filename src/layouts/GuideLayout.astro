@@ -20,15 +20,11 @@ const schemaData = {
     "@type": "Person",
     "name": frontmatter.author || "Mike Reynolds",
     "jobTitle": frontmatter.credentials || "Master HVAC Technician",
-    "url": "https://coolingsupport.com/about-us"
+    "url": "https://coolingsupport.com/about-us/"
   },
   "publisher": {
-    "@type": "Organization",
     "name": "Cooling Support",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://coolingsupport.com/favicon.svg"
-    }
+    "url": "https://coolingsupport.com/"
   },
   "datePublished": frontmatter.date || new Date().toISOString(),
   "dateModified": frontmatter.dateModified || frontmatter.date || new Date().toISOString(),
@@ -75,9 +71,9 @@ const schemaData = {
       <!-- Breadcrumb Context -->
       <nav class="flex justify-center mb-8 text-sm font-medium text-zinc-500">
         <ol class="inline-flex items-center space-x-2">
-          <li><a href="/guides" class="hover:text-blue-400 transition-colors">Knowledge Base</a></li>
+          <li><a href="/guides/" class="hover:text-blue-400 transition-colors">Knowledge Base</a></li>
           <li><svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></li>
-          <li><a href={frontmatter.categoryUrl || "/guides/articles"} class="hover:text-blue-400 transition-colors">{frontmatter.categoryName || "Articles"}</a></li>
+          <li><a href={frontmatter.categoryUrl || "/guides/articles/"} class="hover:text-blue-400 transition-colors">{frontmatter.categoryName || "Articles"}</a></li>
         </ol>
       </nav>
 
@@ -90,7 +86,7 @@ const schemaData = {
       </p>
 
       <!-- Author Byline -->
-      <a href="/about-us" class="inline-flex items-center gap-4 group hover:opacity-90 transition-opacity">
+      <a href="/about-us/" class="inline-flex items-center gap-4 group hover:opacity-90 transition-opacity">
         <img src="/images/mike-reynolds.png" alt="Mike Reynolds" class="w-12 h-12 rounded-full border-2 border-zinc-700 group-hover:border-blue-500 object-cover transition-colors" />
         <div class="text-left">
           <p class="text-white font-bold text-sm group-hover:text-blue-400 transition-colors">By {frontmatter.author || "Mike Reynolds"}</p>

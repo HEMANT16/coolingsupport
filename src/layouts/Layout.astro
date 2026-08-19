@@ -30,10 +30,10 @@ const { title } = Astro.props;
           <!-- Desktop Nav -->
           <nav class="hidden sm:flex sm:space-x-8">
             <a href="/" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Calculators</a>
-            <a href="/portable-ac" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Portable ACs</a>
-            <a href="/ac-error-codes" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">AC Error Codes</a>
-            <a href="/guides" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Guides &amp; Troubleshooting</a>
-            <a href="/about-us" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About Us</a>
+            <a href="/portable-ac/" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Portable ACs</a>
+            <a href="/ac-error-codes/" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">AC Error Codes</a>
+            <a href="/guides/" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Guides &amp; Troubleshooting</a>
+            <a href="/about-us/" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About Us</a>
           </nav>
 
           <!-- Mobile Hamburger Button -->
@@ -56,10 +56,10 @@ const { title } = Astro.props;
       <div id="mobile-menu" class="sm:hidden border-t border-gray-150 bg-white shadow-lg" style="display:none;">
         <div class="px-2 pt-2 pb-4 space-y-1">
           <a href="/" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">❄️ Calculators</a>
-          <a href="/portable-ac" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">🧊 Portable ACs</a>
-          <a href="/ac-error-codes" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">🛠️ AC Error Codes</a>
-          <a href="/guides" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">📚 Guides &amp; Troubleshooting</a>
-          <a href="/about-us" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">🛡️ About Us</a>
+          <a href="/portable-ac/" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">🧊 Portable ACs</a>
+          <a href="/ac-error-codes/" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">🛠️ AC Error Codes</a>
+          <a href="/guides/" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">📚 Guides &amp; Troubleshooting</a>
+          <a href="/about-us/" class="block text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 px-3 py-3 rounded-xl text-base font-semibold transition-all">🛡️ About Us</a>
         </div>
       </div>
     </header>
@@ -76,40 +76,40 @@ const { title } = Astro.props;
           <div>
             <h3 class="text-sm font-bold text-white tracking-wider uppercase mb-4 flex items-center gap-2"><span class="text-cyan-400">⚡</span> Popular Tools</h3>
             <ul class="space-y-3">
-              <li><a href="/tools/hvac-load-calculator" class="text-sm hover:text-cyan-400 transition-colors">HVAC Load Calculator</a></li>
-              <li><a href="/tools/inverter-roi-simulator" class="text-sm hover:text-cyan-400 transition-colors">Inverter ROI Simulator</a></li>
-              <li><a href="/tools/capacitor-matcher" class="text-sm hover:text-cyan-400 transition-colors">Capacitor Matcher</a></li>
-              <li><a href="/tools/ac-noise-analyzer" class="text-sm hover:text-cyan-400 transition-colors">AC Noise Analyzer</a></li>
-              <li><a href="/tools/flat-rate-pricing-calculator" class="text-sm hover:text-emerald-400 transition-colors">Flat Rate Pricing Engine</a></li>
+              <li><a href="/tools/hvac-load-calculator/" class="text-sm hover:text-cyan-400 transition-colors">HVAC Load Calculator</a></li>
+              <li><a href="/tools/inverter-roi-simulator/" class="text-sm hover:text-cyan-400 transition-colors">Inverter ROI Simulator</a></li>
+              <li><a href="/tools/capacitor-matcher/" class="text-sm hover:text-cyan-400 transition-colors">Capacitor Matcher</a></li>
+              <li><a href="/tools/ac-noise-analyzer/" class="text-sm hover:text-cyan-400 transition-colors">AC Noise Analyzer</a></li>
+              <li><a href="/tools/flat-rate-pricing-calculator/" class="text-sm hover:text-emerald-400 transition-colors">Flat Rate Pricing Engine</a></li>
             </ul>
           </div>
           <div>
             <h3 class="text-sm font-bold text-white tracking-wider uppercase mb-4 flex items-center gap-2"><span class="text-cyan-400">🛠️</span> AC Error Codes</h3>
             <ul class="space-y-3">
-              <li><a href="/ac-error-codes" class="text-sm font-bold hover:text-cyan-400 transition-colors">AC Error Codes Hub</a></li>
-              <li><a href="/ac-error-codes/carrier-error-code" class="text-sm hover:text-cyan-400 transition-colors">Carrier & Bryant Codes</a></li>
-              <li><a href="/ac-error-codes/trane-error-code" class="text-sm hover:text-cyan-400 transition-colors">Trane & American Standard</a></li>
-              <li><a href="/ac-error-codes/mitsubishi-error-code" class="text-sm hover:text-cyan-400 transition-colors">Mitsubishi Mini-Split</a></li>
-              <li><a href="/ac-error-codes/daikin-error-code" class="text-sm hover:text-cyan-400 transition-colors">Daikin AC Codes</a></li>
-              <li><a href="/ac-error-codes/lg-error-code" class="text-sm hover:text-cyan-400 transition-colors">LG AC Codes</a></li>
+              <li><a href="/ac-error-codes/" class="text-sm font-bold hover:text-cyan-400 transition-colors">AC Error Codes Hub</a></li>
+              <li><a href="/ac-error-codes/carrier-error-code/" class="text-sm hover:text-cyan-400 transition-colors">Carrier & Bryant Codes</a></li>
+              <li><a href="/ac-error-codes/trane-error-code/" class="text-sm hover:text-cyan-400 transition-colors">Trane & American Standard</a></li>
+              <li><a href="/ac-error-codes/mitsubishi-error-code/" class="text-sm hover:text-cyan-400 transition-colors">Mitsubishi Mini-Split</a></li>
+              <li><a href="/ac-error-codes/daikin-error-code/" class="text-sm hover:text-cyan-400 transition-colors">Daikin AC Codes</a></li>
+              <li><a href="/ac-error-codes/lg-error-code/" class="text-sm hover:text-cyan-400 transition-colors">LG AC Codes</a></li>
             </ul>
           </div>
           <div>
             <h3 class="text-sm font-bold text-white tracking-wider uppercase mb-4 flex items-center gap-2"><span class="text-cyan-400">📚</span> Guides & Resources</h3>
             <ul class="space-y-3">
-              <li><a href="/portable-ac" class="text-sm font-bold hover:text-cyan-400 transition-colors">Portable AC Hub & Sizer</a></li>
-              <li><a href="/guides/ac-not-cooling" class="text-sm hover:text-cyan-400 transition-colors">AC Not Cooling: 5 Causes</a></li>
-              <li><a href="/guides" class="text-sm hover:text-cyan-400 transition-colors">View All Guides</a></li>
-              <li><a href="/sitemap-hub" class="text-sm hover:text-cyan-400 transition-colors">Sitemap Hub</a></li>
+              <li><a href="/portable-ac/" class="text-sm font-bold hover:text-cyan-400 transition-colors">Portable AC Hub & Sizer</a></li>
+              <li><a href="/guides/ac-not-cooling/" class="text-sm hover:text-cyan-400 transition-colors">AC Not Cooling: 5 Causes</a></li>
+              <li><a href="/guides/" class="text-sm hover:text-cyan-400 transition-colors">View All Guides</a></li>
+              <li><a href="/sitemap-hub/" class="text-sm hover:text-cyan-400 transition-colors">Sitemap Hub</a></li>
             </ul>
           </div>
           <div>
             <h3 class="text-sm font-bold text-white tracking-wider uppercase mb-4 flex items-center gap-2"><span class="text-cyan-400">🛡️</span> Trust</h3>
             <ul class="space-y-3">
-              <li><a href="/methodology" class="text-sm hover:text-cyan-400 transition-colors">Our Methodology</a></li>
-              <li><a href="/about-us" class="text-sm hover:text-cyan-400 transition-colors">About Us</a></li>
-              <li><a href="/contact" class="text-sm hover:text-cyan-400 transition-colors">Contact</a></li>
-              <li><a href="/privacy" class="text-sm hover:text-cyan-400 transition-colors">Privacy Policy</a></li>
+              <li><a href="/methodology/" class="text-sm hover:text-cyan-400 transition-colors">Our Methodology</a></li>
+              <li><a href="/about-us/" class="text-sm hover:text-cyan-400 transition-colors">About Us</a></li>
+              <li><a href="/contact/" class="text-sm hover:text-cyan-400 transition-colors">Contact</a></li>
+              <li><a href="/privacy/" class="text-sm hover:text-cyan-400 transition-colors">Privacy Policy</a></li>
             </ul>
           </div>
         </div>
